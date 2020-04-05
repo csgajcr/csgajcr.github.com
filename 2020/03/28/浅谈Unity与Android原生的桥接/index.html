@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Unity,桥接," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前言在网络上，有许多关于 Unity 和 Android 互相调用的文章，里面的内容大同小异，都给出了相互调用最基本的方法。在这些文章中，有许多文章是很久之前的，里面的代码放到现在已经无法正常运行了，并且基本都说的比较简单。本篇文章介绍的是以Android项目为主，Unity项目为辅，以实战场景为基准来实现 Unity 和 Android 的桥接。在这其中，需要考虑桥接的功能型、稳定性、可拓展性、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈Unity与Android原生的桥接">
+<meta property="og:url" content="http://blog.jcr.pub/2020/03/28/%E6%B5%85%E8%B0%88Unity%E4%B8%8EAndroid%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%8E%A5/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="前言在网络上，有许多关于 Unity 和 Android 互相调用的文章，里面的内容大同小异，都给出了相互调用最基本的方法。在这些文章中，有许多文章是很久之前的，里面的代码放到现在已经无法正常运行了，并且基本都说的比较简单。本篇文章介绍的是以Android项目为主，Unity项目为辅，以实战场景为基准来实现 Unity 和 Android 的桥接。在这其中，需要考虑桥接的功能型、稳定性、可拓展性、">
+<meta property="article:published_time" content="2020-03-28T10:04:41.000Z">
+<meta property="article:modified_time" content="2020-04-05T08:11:39.583Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="桥接">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.jcr.pub/2020/03/28/浅谈Unity与Android原生的桥接/"/>
+
+
+
+
+
+  <title>浅谈Unity与Android原生的桥接 | Jcr's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jcr's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">An Android developer</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2020/03/28/%E6%B5%85%E8%B0%88Unity%E4%B8%8EAndroid%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%8E%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jcr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅谈Unity与Android原生的桥接</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-28T18:04:41+08:00">
+                2020-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/03/28/%E6%B5%85%E8%B0%88Unity%E4%B8%8EAndroid%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%8E%A5/" class="leancloud_visitors" data-flag-title="浅谈Unity与Android原生的桥接">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在网络上，有许多关于 <em>Unity</em> 和 <em>Android</em> 互相调用的文章，里面的内容大同小异，都给出了相互调用最基本的方法。在这些文章中，有许多文章是很久之前的，里面的代码放到现在已经无法正常运行了，并且基本都说的比较简单。<br>本篇文章介绍的是以Android项目为主，Unity项目为辅，以实战场景为基准来实现 <em>Unity</em> 和 <em>Android</em> 的桥接。在这其中，需要考虑桥接的功能型、稳定性、可拓展性、以及结合 <em>Android</em> 原生开发的一些特性。<br>那么究竟是如何实现的呢，请看下方详解！</p>
+<a id="more"></a>
+<h2 id="一、原理概述"><a href="#一、原理概述" class="headerlink" title="一、原理概述"></a>一、原理概述</h2><p><em>Unity</em> 和 <em>Android</em> 桥接的原理和网络上大多数文章是一致的。<br>Unity 调用 Android 使用的是C#脚本所提供的 <em>AndroidJava</em> 系列工具类。<br>C#代码如下：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> javaClass = <span class="keyword">new</span> AndroidJavaClass(<span class="string">"[Java class package name]"</span>);</span><br><span class="line">javaClass.CallStatic&lt;<span class="keyword">string</span>&gt;(<span class="string">"methodName"</span>, <span class="string">"params1"</span>);</span><br></pre></td></tr></table></figure>
+<p>使用AndroidJavaClass调用是即方便又强大的，支持回调和返回值。且性能优秀。<br>Android 调用 Unity 使用的是 Unity 提供的 Jar包里的方法。代码如下：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">UnityPlayer</span><span class="selector-class">.UnitySendMessage</span>(</span><br><span class="line">            <span class="string">"Unity Object Name"</span>,</span><br><span class="line">            <span class="string">"MethodName"</span>,</span><br><span class="line">            <span class="string">"message"</span></span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<p>Unity Object Name 为 Unity 中场景对象的名称。<br>MethodName 为该对象绑定的脚本中的方法。<br>message 为发送的内容。<br>可以看到，Android 调用 Unity 的方式没有返回值，且只能是一个字符串类型的参数。所以如果想要达到两端统一调用，就需要一定的封装。那么具体是怎么封装的呢？请继续往下看！</p>
+<h2 id="二、架构分析"><a href="#二、架构分析" class="headerlink" title="二、架构分析"></a>二、架构分析</h2><p>首先，我们要对 Unity 与 Android 的桥接部分（以下简称：桥接层）进行架构的设计。</p>
+<blockquote>
+<p>注：本篇文章主要讨论以 Android 项目为主的情况，即为，Android 需要为Unity 提供大量功能接口。Unity 为 Android 部分提供少量接口。所以，这里的架构分析主要以 Android 原生部分的桥接层设计来进行后续的讲解。  </p>
+</blockquote>
+<p>架构的设计除了桥接层本身提供的业务功能，还需要考虑以下几个点：  </p>
+<ul>
+<li>方法调用设计</li>
+<li>回调机制的设计</li>
+<li>可拓展性</li>
+<li>接入便捷性</li>
+<li>可移植性</li>
+</ul>
+<p>这里先解释一下，为什么需要单独列出来回调机制的设计。在上文原理概述中，可以看到，Android 调用 Unity 的场景不支持回调、返回值和非字符串的传参。所以这里我们如果不进行回调机制的设计，那么将无法满足双方回调的场景。<br>下面，我们来逐一分析每一个点需要如何满足。</p>
+<h3 id="2-1-方法调用"><a href="#2-1-方法调用" class="headerlink" title="2.1 方法调用"></a>2.1 方法调用</h3><p>由于 Android 和 Unity 底层提供的相互调用接口不一致，所以如果想要达到相同的调用效果。就需要自行封装一套调用协议。这里，我们使用大家所熟知的 JSON 来作为方法调用协议的载体。<br>在调用的时候，将方法和其参数、回调信息，封装到一个对象中，序列化为JSON后传给对方。<br>方法调用协议举例：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	"name": "methodName",</span><br><span class="line">	"callback": <span class="keyword">false</span>,</span><br><span class="line">	"args": [</span><br><span class="line">		"&#123;\"<span class="type">name</span>\":\"argName1\",\"<span class="keyword">value</span>\":\"value1\"&#125;",</span><br><span class="line">		"&#123;\"<span class="type">name</span>\":\"argName2\",\"<span class="keyword">value</span>\":\"value2\"&#125;"</span><br><span class="line">	],</span><br><span class="line">	"callbackId": "callbackID"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上方的 JSON 就是方法对象序列化后的内容。方法对象的定义：  </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">data <span class="keyword">class</span> <span class="symbol">Command</span>(</span><br><span class="line">    /**</span><br><span class="line">     * 指令名称</span><br><span class="line">     * 回调情况下<span class="symbol">name</span>为回调<span class="symbol">ID</span></span><br><span class="line">     */</span><br><span class="line">    <span class="symbol">var</span> <span class="symbol">name: <span class="symbol">String</span>,</span></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 是否是回调指令</span><br><span class="line">     */</span><br><span class="line">    <span class="symbol">var</span> <span class="symbol">callback: <span class="symbol">Boolean</span>,</span></span><br><span class="line">    /**</span><br><span class="line">     * 参数<span class="symbol">List</span></span><br><span class="line">     */</span><br><span class="line">    <span class="symbol">var</span> <span class="symbol">args: <span class="symbol">List</span></span>&lt;<span class="symbol">String</span>&gt;,</span><br><span class="line">    /**</span><br><span class="line">     * 回调<span class="symbol">ID</span></span><br><span class="line">     */</span><br><span class="line">    <span class="symbol">var</span> <span class="symbol">callbackId: <span class="symbol">String</span></span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>方法对象（下文也称指令对象）<br>方法对象主要分为两类，使用Command.callback字段来区分：<br>方法调用的对象：callback为false，代表一次普通的方法调用。<br>回调的对象：callback为true，代表一次回调的调用。<br>callback相关的介绍请参考下方「2.2 回调机制」<br>简单解释一下每个参数的意义：  </p>
+<ul>
+<li>Command.name 指令名称  </li>
+</ul>
+<p>指令名称代表要调用的方法是什么。对方通过指令名称去执行对应的操作。<br><strong>注：在回调指令中，指令名称为回调的ID。</strong></p>
+<ul>
+<li>Command.args 参数列表  </li>
+</ul>
+<p>参数列表是一个字符串列表。列表每一个元素为一个参数信息的JSON。参数没有顺序要求。</p>
+<ul>
+<li>Command.callbackId 回调ID  </li>
+</ul>
+<p>callbackId代表当次调用所携带的回调。callbackId由调用方生成并维护。在需要回调时，被调用方根据callbackId发送回调指令实现回调的效果。<br>callbackId格式32位随机字符串。</p>
+<hr>
+<p>因为 Unity 调用 Android 是支持返回值的。所以这里也对返回值进行了一次包装。类似网络请求的返回实体。<br>实体定义如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Result</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> static <span class="keyword">final</span> <span class="built_in">int</span> RESULT_SUCCESS = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> static <span class="keyword">final</span> <span class="built_in">int</span> RESULT_EXCEPTION = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> code = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> String message;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回结果</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Object result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Unity 调用获取返回值的方式：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> resultJson = bridgeClass.<span class="type">CallStatic</span>&lt;<span class="built_in">string</span>&gt;(<span class="string">"onUnityCall"</span>, commandJson);</span><br><span class="line"><span class="keyword">var</span> <span class="literal">result</span> = <span class="type">JsonUtility</span>.<span class="type">FromJson</span>&lt;<span class="type">Result</span>&lt;T&gt;&gt;(resultJson);</span><br></pre></td></tr></table></figure>
+<p><strong>注：这里的 onUnityCall 为 Android 提供的桥接入口方法。</strong></p>
+<h3 id="2-2-回调机制"><a href="#2-2-回调机制" class="headerlink" title="2.2 回调机制"></a>2.2 回调机制</h3><p>Command 方法对象已经可以满足我们的方法调用需求了。那么回调机制是如何设计的呢？<br>这里我们统一设计了一套回调机制。Unity 和 Android 均使用这套机制。以 Unity 部分举例，在需要传递回调的时候。会有一个回调的处理器来创建回调，创建之后将回调缓存起来，并为一个回调生成一个ID。这个ID和回调绑定。然后将此回调ID添加到 Command 对象 callbackId 字段上后发送。<br>附加 callbackId 的指令示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"name"</span>: <span class="string">"TipService.dialog"</span>,</span><br><span class="line">	<span class="attr">"callback"</span>: <span class="literal">false</span>,</span><br><span class="line">	<span class="attr">"args"</span>: [<span class="string">"&#123;\"name\":\"message\",\"value\":\"Hello Unity and Android.\"&#125;"</span>],</span><br><span class="line">	<span class="attr">"callbackId"</span>: <span class="string">"8710a212ffac41b5910462937ed62059"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Android 在接收到这个 Command 后执行异步操作。在需要回调的时候发送一条专用于回调指令通知对方。回调指令的 Command.callback 会置为 true。name 为 回调的ID，示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"name"</span>: <span class="string">"baf6b37f562e45b9b0ad7da4f00c91f8"</span>,</span><br><span class="line">	<span class="attr">"callback"</span>: <span class="literal">true</span>,</span><br><span class="line">	<span class="attr">"args"</span>: [<span class="string">"&#123;\"name\":\"isOK\",\"value\":true&#125;"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Unity 在收到回调指令后会交给回调处理器处理，根据name 找到对应的ID，取出回调，并将参数传递过去，调用回调。这样就形成了回调的闭环。同时，这样的设计是支持回调嵌套的（回调中调用回调）。</p>
+<blockquote>
+<p>注：这样的回调方式不支持一次传递多个回调，多回调的场景，可以单个回调传递多个参数，以参数来区分。</p>
+</blockquote>
+<h3 id="2-3-可移植性"><a href="#2-3-可移植性" class="headerlink" title="2.3 可移植性"></a>2.3 可移植性</h3><p>可移植性对桥接层来说同样很重要，我们需要考虑后续接入到其他应用中的情况。这里的可移植性主要针对 Android 的桥接部分。<br>首先，桥接层单独成一个模块。且尽可能的少依赖第三方库。所以我在这里的设计，仅引入了GSON作为序列化的工具库。以及将 Unity 提供的 jar 包作为编译时依赖。</p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">compileOnly</span> <span class="function"><span class="title">files</span>(<span class="string">'libs/unity-classes.jar'</span>)</span></span><br></pre></td></tr></table></figure>
+<p>其次，桥接层需要下沉到项目架构的最底部。不依赖任何其他业务模块。也就代表他需要和你的业务逻辑解耦合，提供的服务以接口注册的方式来处理和分发。<br>所以桥接层提供了服务的基类，注册接口和实例的相关功能。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注册提供Unity方法的Service实例</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> service service实例</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void registerInstance(IUnityService service) &#123;</span><br><span class="line">        BridgeServiceManager.INSTANCE.register(service);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注册服务接口</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> serviceClass</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void register(<span class="class"><span class="keyword">Class</span>&lt;? <span class="keyword">extends</span> <span class="title">IUnityService</span>&gt; <span class="title">serviceClass</span>) </span>&#123;</span><br><span class="line">        BridgeServiceManager.INSTANCE.addInterface(serviceClass);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>有了注册的方式，上层业务模块就可以将自己的服务实现放到业务层，使用之前注册就可以。</p>
+<h3 id="2-4-接入便捷性"><a href="#2-4-接入便捷性" class="headerlink" title="2.4 接入便捷性"></a>2.4 接入便捷性</h3><p>接入便捷性主要考虑的方便业务层使用。所以对业务层注册进来的接口和实例，我采用的是注解处理 + 反射的方式进行调用。使得接入方在接口仅关心定义，实现类里仅关心实现。设计方式有点参考 Spring Controller 和 Retrofit Service。<br>举例：服务接口的定义：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@UnityBridgeService</span>(<span class="string">"ToastService"</span>)</span><br><span class="line">interface <span class="attribute">UnityToastService  </span>: IUnityService &#123;</span><br><span class="line">    <span class="variable">@UnityBridgeMethod</span>(name = <span class="string">"show"</span>)</span><br><span class="line">    fun showToast(<span class="variable">@Param</span>(<span class="string">"msg"</span>) <span class="attribute">msg</span>: String, <span class="variable">@Param</span>(<span class="string">"time"</span>) <span class="attribute">time</span>: Long)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>举例：接口实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnityToastServiceImpl</span> : <span class="type">UnityToastService &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">showToast</span><span class="params">(msg: <span class="type">String</span>, time: <span class="type">Long</span>)</span></span> &#123;</span><br><span class="line">        QtToast.show(msg, time)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用时：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="module-access"><span class="module"><span class="identifier">UnityBridge</span>.</span></span>register(UnityToastService::<span class="keyword">class</span>.java)</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">UnityBridge</span>.</span></span>register<span class="constructor">Instance(UnityToastServiceImpl()</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：在接入便捷性上，可以考虑开发 Gradle 插件来实现服务接口和实现的自动注入。</p>
+</blockquote>
+<h3 id="2-5-可拓展性"><a href="#2-5-可拓展性" class="headerlink" title="2.5 可拓展性"></a>2.5 可拓展性</h3><p>可拓展性和可移植性做的工作是相差不大的。在前面的设计基础上，已经满足了桥接层服务的可拓展性。</p>
+<h2 id="三、如何实现"><a href="#三、如何实现" class="headerlink" title="三、如何实现"></a>三、如何实现</h2><p>这一节主要挑选一些实现时涉及主流程、难点的一些实现来举例说明。的</p>
+<h3 id="3-1-桥接入口"><a href="#3-1-桥接入口" class="headerlink" title="3.1 桥接入口"></a>3.1 桥接入口</h3><p>桥接入口我定义了一个统一入口，也就是 Unity 的调用全部从一个方法进入，代码如下：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Unity调用入口方法</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param command 指令序列化json</span></span><br><span class="line"><span class="comment">     * @return 返回值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    public static String on<span class="constructor">UnityCall(String <span class="params">command</span>)</span> &#123;</span><br><span class="line">        Result result;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">LogUtils</span>.</span><span class="module"><span class="identifier">INSTANCE</span>.</span></span>i(<span class="string">"Received command:"</span> + command);</span><br><span class="line">            Object obj = <span class="module-access"><span class="module"><span class="identifier">CommandManager</span>.</span><span class="module"><span class="identifier">INSTANCE</span>.</span></span>on<span class="constructor">CommandReceived(<span class="params">command</span>)</span>;</span><br><span class="line">            result = <span class="module-access"><span class="module"><span class="identifier">ResultUtils</span>.</span><span class="module"><span class="identifier">INSTANCE</span>.</span></span>get<span class="constructor">SuccessResult(<span class="params">obj</span>)</span>;</span><br><span class="line">        &#125; catch (Throwable thr) &#123;</span><br><span class="line">            result = <span class="module-access"><span class="module"><span class="identifier">ResultUtils</span>.</span><span class="module"><span class="identifier">INSTANCE</span>.</span></span>get<span class="constructor">ErrorResult(<span class="params">thr</span>)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        return <span class="module-access"><span class="module"><span class="identifier">Warehouse</span>.</span><span class="module"><span class="identifier">INSTANCE</span>.</span></span>get<span class="constructor">Gson()</span>.<span class="keyword">to</span><span class="constructor">Json(<span class="params">result</span>)</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：由于 Unity 调用 Android 是通过底层反射，不支持Kotlin代码，所以入口的类需要使用 Java 编写。</p>
+</blockquote>
+<h3 id="3-2-Command-处理流程"><a href="#3-2-Command-处理流程" class="headerlink" title="3.2 Command 处理流程"></a>3.2 Command 处理流程</h3><p>Command（指令） 的处理从入口调用后，会经过以下几步处理：</p>
+<ol>
+<li>反序列化</li>
+<li>检查指令信息是否合法</li>
+<li>检查本地是否提供该指令的处理服务。</li>
+<li>判断是否为回调指令</li>
+<li>执行指令</li>
+</ol>
+<p>以上流程代码较为简单，我定义了 <code>CommandManager</code> 来做以上的事情。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">            command = <span class="module-access"><span class="module"><span class="identifier">Warehouse</span>.</span></span>gson.from<span class="constructor">Json(<span class="params">commandJson</span>, Command::<span class="params">class</span>.<span class="params">java</span>)</span></span><br><span class="line">        &#125; catch (e: Throwable) &#123;</span><br><span class="line">            throw <span class="constructor">UnityBridgeRuntimeException(<span class="string">"Gson serialized error.Please check command json correctly or not. - $&#123;e.message&#125;"</span>)</span></span><br><span class="line">        &#125;</span><br><span class="line">        check<span class="constructor">CommandAvailable(<span class="params">command</span>)</span></span><br><span class="line">        return <span class="keyword">if</span> (<span class="module-access"><span class="module"><span class="identifier">CallbackController</span>.</span></span>command<span class="constructor">IsCallback(<span class="params">command</span>)</span>) &#123;</span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">CallbackController</span>.</span></span>execute<span class="constructor">Callback(<span class="params">command</span>)</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">CommandController</span>.</span></span>execute<span class="constructor">Command(<span class="params">command</span>)</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-回调控制"><a href="#3-3-回调控制" class="headerlink" title="3.3 回调控制"></a>3.3 回调控制</h3><p>如果业务层提供的方法需要回调，我提供了一个回调的基类和实现来方便使用。<br>回调接口如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ICallbackHandler</span> :<span class="type"></span></span></span><br><span class="line">    IMethodChainInvoke&lt;ICallbackHandler&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 清除参数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">clearParams</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 调用回调</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">call</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要提供回调的服务接口举例：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@UnityBridgeService(<span class="meta-string">"MessageService"</span>)</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UnityMessageService</span> : <span class="type">IUnityService &#123;</span></span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@UnityBridgeMethod(name = <span class="meta-string">"registerSingleMessageListener"</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">registerMessageListener</span><span class="params">(<span class="meta">@Param(<span class="meta-string">"cmd"</span>)</span> messageCmd: <span class="type">Int</span>, callbackHandler: <span class="type">ICallbackHandler</span>)</span></span>: String</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在执行 Command 时，会反射调用，反射调用就会判断如果参数列表中包含 ICallbackHandler 就会去实例化一个回调处理的辅助类传递下去。<br>回调处理的辅助类定义如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="class"><span class="keyword">class</span> <span class="title">CallbackHandler</span></span>(<span class="keyword">var</span> id: String) : ICallbackHandler &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 参数map</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> params: MutableMap&lt;String, Any?&gt; = ConcurrentHashMap()</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 回调中的回调对象（用于回调中需要回调的场景）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> callback: AbsCallback? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">clearParams</span><span class="params">()</span></span> &#123;</span><br><span class="line">        params.clear()</span><br><span class="line">        callback = <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">putParam</span><span class="params">(name: <span class="type">String</span>, value: <span class="type">Any</span>?)</span></span>: CallbackHandler &#123;</span><br><span class="line">        params[name] = value</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">setCallback</span><span class="params">(callback: <span class="type">AbsCallback</span>)</span></span>: CallbackHandler &#123;</span><br><span class="line">        <span class="keyword">this</span>.callback = callback</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">call</span><span class="params">()</span></span> &#123;</span><br><span class="line">        CallbackController.sendCallbackCommand(id, params, callback)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：上方代码中 AbsCallback 相关的代码是用于 Unity 回调 Android 的场景。其他代码是 Android 回调 Unity 的场景。所以如果理解困难时，AbsCallback 相关代码可以去掉。</p>
+</blockquote>
+<h3 id="3-4-反射调用"><a href="#3-4-反射调用" class="headerlink" title="3.4 反射调用"></a>3.4 反射调用</h3><p>反射调用是这套设计的核心之一了，反射本身代码没有太多的难点。只是有几点需要注意：</p>
+<ol>
+<li>Kotlin 基础数据类型 Gson 反序列化不支持。</li>
+<li>由于需要获取 <code>@Param</code> 注解的值与指令对象的参数做映射，所以序列化需要经过2次，第一次根据名字映射，获取到参数的类型，第二次再根据参数类型反序列化具体的值。</li>
+</ol>
+<p>处理 Kotlin 基础数据类型的代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">kotlinClassConvert</span><span class="params">(clazz: <span class="type">Class</span>&lt;*&gt;)</span></span>: Class&lt;*&gt; &#123;</span><br><span class="line">        <span class="keyword">when</span> (clazz) &#123;</span><br><span class="line">            <span class="built_in">Int</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span> -&gt;</span></span><br><span class="line">                <span class="keyword">return</span> Integer::<span class="class"><span class="keyword">class</span>.<span class="title">java</span></span></span><br><span class="line">            <span class="built_in">Boolean</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span> -&gt;</span></span><br><span class="line">                <span class="keyword">return</span> java.lang.<span class="built_in">Boolean</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span></span></span><br><span class="line">            <span class="built_in">Float</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span> -&gt;</span></span><br><span class="line">                <span class="keyword">return</span> java.lang.<span class="built_in">Float</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span></span></span><br><span class="line">            <span class="built_in">Double</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span> -&gt;</span></span><br><span class="line">                <span class="keyword">return</span> java.lang.<span class="built_in">Double</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span></span></span><br><span class="line">            <span class="built_in">Byte</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span> -&gt;</span></span><br><span class="line">                <span class="keyword">return</span> java.lang.<span class="built_in">Byte</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span></span></span><br><span class="line">            <span class="built_in">Char</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span> -&gt;</span></span><br><span class="line">                <span class="keyword">return</span> java.lang.Character::<span class="class"><span class="keyword">class</span>.<span class="title">java</span></span></span><br><span class="line">            <span class="built_in">Short</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span> -&gt;</span></span><br><span class="line">                <span class="keyword">return</span> java.lang.<span class="built_in">Short</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span></span></span><br><span class="line">            <span class="built_in">Long</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span> -&gt;</span></span><br><span class="line">                <span class="keyword">return</span> java.lang.<span class="built_in">Long</span>::<span class="class"><span class="keyword">class</span>.<span class="title">java</span></span></span><br><span class="line">            <span class="keyword">else</span> -&gt;</span><br><span class="line">                <span class="keyword">return</span> clazz</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>两次反序列化处理调用参数代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T : Any?&gt;</span> <span class="title">findCommandParam</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        command: <span class="type">Command</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">        paramName: <span class="type">String</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">        paramType: <span class="type">Class</span>&lt;<span class="type">T</span>&gt;</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span>: CommandParam&lt;T&gt; &#123;</span><br><span class="line">        command.args.forEach &#123;</span><br><span class="line">            <span class="keyword">val</span> commandParamName = Warehouse.gson.fromJson(it, CommandParamName::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">            <span class="keyword">if</span> (commandParamName.name == paramName) &#123;</span><br><span class="line">                <span class="comment">//构造带泛型的反序列化type</span></span><br><span class="line">                <span class="keyword">val</span> type = TypeToken.getParameterized(CommandParam::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>, <span class="type">paramType).type</span></span></span><br><span class="line">                <span class="keyword">return</span> Warehouse.gson.fromJson(it, type)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> CommandParam(paramName, <span class="literal">null</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>反射调用代码：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">fun</span> reflect<span class="constructor">Invoke(<span class="params">command</span>: Command, <span class="params">method</span>: Method, <span class="params">instance</span>: Any)</span>: Any? &#123;</span><br><span class="line">        <span class="keyword">val</span> args = Array&lt;Any?&gt;(<span class="keyword">method</span>.parameterTypes.size) &#123; null &#125;</span><br><span class="line">        <span class="keyword">val</span> commandArgs = <span class="number">1</span></span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">CommandUtils</span>.</span></span>get<span class="constructor">MethodParamsName(<span class="params">method</span>)</span>.forEachIndexed &#123; index, paramName -&gt;</span><br><span class="line">            <span class="keyword">val</span> typeClass = <span class="module-access"><span class="module"><span class="identifier">CommandUtils</span>.</span></span>kotlin<span class="constructor">ClassConvert(<span class="params">method</span>.<span class="params">parameterTypes</span>[<span class="params">index</span>])</span></span><br><span class="line">            <span class="keyword">if</span> (typeClass<span class="operator"> == </span>ICallbackHandler::<span class="keyword">class</span>.java) &#123;</span><br><span class="line">                <span class="comment">//方法的参数类型是回调类型 并且command中带有回调的ID，则创建一个handler</span></span><br><span class="line">                <span class="keyword">if</span> (<span class="module-access"><span class="module"><span class="identifier">CallbackController</span>.</span></span>command<span class="constructor">HasCallback(<span class="params">command</span>)</span>) &#123;</span><br><span class="line">                    args<span class="literal">[<span class="identifier">index</span>]</span> = <span class="constructor">CallbackHandler(<span class="params">command</span>.<span class="params">callbackId</span>!!)</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">val</span> commandParam = find<span class="constructor">CommandParam(<span class="params">command</span>, <span class="params">paramName</span>, <span class="params">typeClass</span>)</span></span><br><span class="line">                args<span class="literal">[<span class="identifier">index</span>]</span> = commandParam.value</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        return <span class="keyword">method</span>.invoke(instance, *args)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="四、关于开源"><a href="#四、关于开源" class="headerlink" title="四、关于开源"></a>四、关于开源</h2><p>目前我没有考虑开源桥接层的模块，因为在我们的项目中，桥接层的应用还没有得到复杂场景的检验，稳定性无法保证得很好。在后需桥接层迭代成熟后，再考虑开源。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jcr
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.jcr.pub/2020/03/28/%E6%B5%85%E8%B0%88Unity%E4%B8%8EAndroid%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%8E%A5/" title="浅谈Unity与Android原生的桥接">http://blog.jcr.pub/2020/03/28/%E6%B5%85%E8%B0%88Unity%E4%B8%8EAndroid%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%8E%A5/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+            <a href="/tags/%E6%A1%A5%E6%8E%A5/" rel="tag"># 桥接</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/25/Kotlin%E5%8F%8D%E5%B0%84%E9%81%87%E5%88%B0%E7%9A%84%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/" rel="next" title="Kotlin反射遇到的细节问题记录">
+                <i class="fa fa-chevron-left"></i> Kotlin反射遇到的细节问题记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Jcr" />
+          <p class="site-author-name" itemprop="name">Jcr</p>
+           
+              <p class="site-description motion-element" itemprop="description">Jcr - An Android developer </p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、原理概述"><span class="nav-text">一、原理概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、架构分析"><span class="nav-text">二、架构分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-方法调用"><span class="nav-text">2.1 方法调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-回调机制"><span class="nav-text">2.2 回调机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-可移植性"><span class="nav-text">2.3 可移植性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-接入便捷性"><span class="nav-text">2.4 接入便捷性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-可拓展性"><span class="nav-text">2.5 可拓展性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、如何实现"><span class="nav-text">三、如何实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-桥接入口"><span class="nav-text">3.1 桥接入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Command-处理流程"><span class="nav-text">3.2 Command 处理流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-回调控制"><span class="nav-text">3.3 回调控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-反射调用"><span class="nav-text">3.4 反射调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、关于开源"><span class="nav-text">四、关于开源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2019 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz", "E3QdwSk7zihkWEvVryc0lqS1");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
