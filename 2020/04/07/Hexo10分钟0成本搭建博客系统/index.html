@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="博客,Hexo,教程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前言10分钟、0成本这两个词毫不夸张。对于许多想写博客的小伙伴来说。在哪里写博客一直是一个难题，有的人选择CSDN，有的人选择知乎、有的人选择简书，还有的人选择自己搭建博客系统。  PS：作为一名程序员，当然要用个性化的博客系统才有意思嘛。  所以对比了许多博客系统之后我选择了 Hexo.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo - 10分钟0成本搭建博客系统">
+<meta property="og:url" content="http://blog.jcr.pub/2020/04/07/Hexo10%E5%88%86%E9%92%9F0%E6%88%90%E6%9C%AC%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="前言10分钟、0成本这两个词毫不夸张。对于许多想写博客的小伙伴来说。在哪里写博客一直是一个难题，有的人选择CSDN，有的人选择知乎、有的人选择简书，还有的人选择自己搭建博客系统。  PS：作为一名程序员，当然要用个性化的博客系统才有意思嘛。  所以对比了许多博客系统之后我选择了 Hexo.">
+<meta property="og:image" content="http://blog.jcr.pub/img/hexo/1586677596533.jpg">
+<meta property="og:image" content="http://blog.jcr.pub/img/hexo/WX20200412-165150@2x.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/hexo/WX20200412-165732@2x.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/hexo/1586681972615.jpg">
+<meta property="og:image" content="http://blog.jcr.pub/img/hexo/1586684326821.jpg">
+<meta property="og:image" content="http://blog.jcr.pub/img/hexo/1587219784808.jpg">
+<meta property="og:image" content="http://blog.jcr.pub/img/hexo/1587220246946.jpg">
+<meta property="og:image" content="http://blog.jcr.pub/img/hexo/1587222831141.jpg">
+<meta property="article:published_time" content="2020-04-07T09:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-18T15:46:33.483Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.jcr.pub/img/hexo/1586677596533.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.jcr.pub/2020/04/07/Hexo10分钟0成本搭建博客系统/"/>
+
+
+
+
+
+  <title>Hexo - 10分钟0成本搭建博客系统 | Jcr's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jcr's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">An Android developer</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2020/04/07/Hexo10%E5%88%86%E9%92%9F0%E6%88%90%E6%9C%AC%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jcr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hexo - 10分钟0成本搭建博客系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-07T17:00:00+08:00">
+                2020-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index">
+                    <span itemprop="name">博客</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/04/07/Hexo10%E5%88%86%E9%92%9F0%E6%88%90%E6%9C%AC%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F/" class="leancloud_visitors" data-flag-title="Hexo - 10分钟0成本搭建博客系统">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>10分钟、0成本这两个词毫不夸张。对于许多想写博客的小伙伴来说。在哪里写博客一直是一个难题，有的人选择CSDN，有的人选择知乎、有的人选择简书，还有的人选择自己搭建博客系统。</p>
+<blockquote>
+<p>PS：作为一名程序员，当然要用个性化的博客系统才有意思嘛。</p>
+</blockquote>
+<p>所以对比了许多博客系统之后我选择了 Hexo.</p>
+<a id="more"></a>
+<blockquote>
+<p>想直接看怎么搭建的小伙伴，请跳至「二、开始！」阅读。</p>
+</blockquote>
+<h2 id="一、为什么选择-Hexo"><a href="#一、为什么选择-Hexo" class="headerlink" title="一、为什么选择 Hexo"></a>一、为什么选择 Hexo</h2><h3 id="1-1-Hexo-的优势"><a href="#1-1-Hexo-的优势" class="headerlink" title="1.1 Hexo 的优势"></a>1.1 Hexo 的优势</h3><p>Hexo 官网对 Hexo 的一句话概括为：</p>
+<blockquote>
+<p>A fast, simple &amp; powerful blog framework</p>
+</blockquote>
+<p>这句话概括了 Hexo 的优点：</p>
+<ul>
+<li>快速搭建</li>
+<li>简洁、方便</li>
+<li>功能强大</li>
+</ul>
+<p>在我个人使用 Hexo 的过程中，能够感觉到 Hexo 特别适合个人博客的编写。特别针对是程序员群体，使用 Markdown 标记语言，让写作者无需太关心排版和格式。如果配上 Git 版本管理和 GitHub Pages 的发布。那更是无需充钱，也能更强！</p>
+<h3 id="1-2-对比-WordPress"><a href="#1-2-对比-WordPress" class="headerlink" title="1.2 对比 WordPress"></a>1.2 对比 WordPress</h3><p>拿我自己的真实使用经历来说，在使用 Hexo 之前，很长时间我一直使用的 WordPress。WordPress就像博客界的老大哥，生态强大，系统强大，支持的东西很多。但正因为这样，使得 WordPress 变得重了起来。在使用时部署成本和管理成本较高。这里我自己总结了一下对比的表格： </p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>WordPress</th>
+<th>Hexo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>部署成本</td>
+<td>高</td>
+<td>极低</td>
+</tr>
+<tr>
+<td>使用成本</td>
+<td>低</td>
+<td>中</td>
+</tr>
+<tr>
+<td>费用</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>学习成本</td>
+<td>中</td>
+<td>高</td>
+</tr>
+<tr>
+<td>管理成本</td>
+<td>高</td>
+<td>低</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注：这里没有列出具体的对比项，仅是综合成了一个项目方便对比。比如 WordPress 部署成本包括：服务器、域名（备案）、数据库、PHP环境、性能要求等。</p>
+</blockquote>
+<p>总结一下，在个人博客的场景：  </p>
+<ul>
+<li>如果没有一点儿程序基础。建议使用 WordPress.</li>
+<li>如果有程序基础，建议使用 Hexo.</li>
+</ul>
+<h3 id="1-3-对比其他博客系统"><a href="#1-3-对比其他博客系统" class="headerlink" title="1.3 对比其他博客系统"></a>1.3 对比其他博客系统</h3><p>其他的博客系统因为没有使用过，所以不敢妄言。在非静态博客上，WordPress 可以作为代表进行对比（参考上方）。静态博客上，Jekyll 给我个人的感觉各方面都不如 Hexo。</p>
+<h2 id="二、开始！"><a href="#二、开始！" class="headerlink" title="二、开始！"></a>二、开始！</h2><p>终于开始了~这里可以恰个表，看一下你的操作步骤加起来使用了多久？</p>
+<h3 id="2-1-准备工作"><a href="#2-1-准备工作" class="headerlink" title="2.1 准备工作"></a>2.1 准备工作</h3><p>以下软件是需要准备的：</p>
+<ul>
+<li>nodejs/npm - <a href="https://nodejs.org/en/" target="_blank" rel="noopener">官网地址</a></li>
+<li>Git </li>
+</ul>
+<p>如果不知道如何安装/使用请百度。<br>Windows 系统的控制台可以使用 GitBash.</p>
+<h3 id="2-2-安装-Hexo"><a href="#2-2-安装-Hexo" class="headerlink" title="2.2 安装 Hexo"></a>2.2 安装 Hexo</h3><ol>
+<li>打开 <code>控制台</code> </li>
+<li>输入 <code>npm install hexo-cli -g</code></li>
+</ol>
+<p>输入后效果如下：<br><img src="/img/hexo/1586677596533.jpg" alt=""></p>
+<ol start="3">
+<li><p>CD 到你的博客目录。比如我要在桌面创建一个目录，则 CD 到桌面。  </p>
+</li>
+<li><p>输入 <code>hexo init my_blog</code></p>
+</li>
+</ol>
+<p>这一步可能比较耗时，因为是从网上下载最新的 hexo 博客项目到本地。<br>执行效果如下：<br><img src="/img/hexo/WX20200412-165150@2x.png" alt=""></p>
+<ol start="5">
+<li>输入 <code>cd my_blog</code></li>
+<li>输入 <code>npm install</code></li>
+<li>输入 <code>hexo server</code></li>
+</ol>
+<p>执行结果如下：<br><img src="/img/hexo/WX20200412-165732@2x.png" alt=""></p>
+<p>打开浏览器 访问 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 即可看到博客的样子了。<br><img src="/img/hexo/1586681972615.jpg" alt=""></p>
+<p>到这里，一个基础的博客系统就搭建完成了。这里使用的是默认主题 landscape.如果你觉得这个主题还 OK 的话，就可以开始你的写作啦。</p>
+<hr>
+<p>这里简单介绍一下博客目录：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">├── _<span class="selector-tag">config</span><span class="selector-class">.yml</span> 博客配置文件</span><br><span class="line">├── <span class="selector-tag">db</span><span class="selector-class">.json</span></span><br><span class="line">├── <span class="selector-tag">node_modules</span> </span><br><span class="line">├── <span class="selector-tag">package-lock</span><span class="selector-class">.json</span></span><br><span class="line">├── <span class="selector-tag">package</span><span class="selector-class">.json</span></span><br><span class="line">├── <span class="selector-tag">scaffolds</span> 模板</span><br><span class="line">│   ├── <span class="selector-tag">draft</span><span class="selector-class">.md</span> 新草稿的模板</span><br><span class="line">│   ├── <span class="selector-tag">page</span><span class="selector-class">.md</span> 新页面的模板</span><br><span class="line">│   └── <span class="selector-tag">post</span><span class="selector-class">.md</span> 新文章的模板</span><br><span class="line">├── <span class="selector-tag">source</span> </span><br><span class="line">│   └── _<span class="selector-tag">posts</span> 文章目录</span><br><span class="line">│       └── <span class="selector-tag">hello-world</span><span class="selector-class">.md</span> 自动生成的文章，可删除.</span><br><span class="line">└── <span class="selector-tag">themes</span> 主题目录</span><br><span class="line">    └── <span class="selector-tag">landscape</span> 默认主题（<span class="selector-tag">landscape</span>）</span><br><span class="line">            ├── _<span class="selector-tag">config</span><span class="selector-class">.yml</span> 主题的配置文件</span><br></pre></td></tr></table></figure>
+
+<p>在 Hexo 中，任何的页面、文章，我们都可以用 Markdown 文件来书写。所以在上图中，文章和页面的模板都是<code>.md</code>文件，创建时，都会以模板文件的格式创建。</p>
+<h3 id="2-3-写博客"><a href="#2-3-写博客" class="headerlink" title="2.3 写博客"></a>2.3 写博客</h3><ol>
+<li>输入 <code>hexo n &quot;第一篇博客&quot;</code></li>
+</ol>
+<p>输入后会在 <code>source/_posts</code> 目录下创建一篇新的<code>第一篇博客.md</code>文件。编辑它就可以开始写作啦。</p>
+<p>生成的文件格式如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">title:</span> <span class="string">第一篇博客</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020</span><span class="number">-04</span><span class="number">-12</span> <span class="number">17</span><span class="string">:16:10</span></span><br><span class="line"><span class="attr">tags:</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+<p>我们可以为这篇文章添加分类和标签，格式如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">title:</span> <span class="string">第一篇博客</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020</span><span class="number">-04</span><span class="number">-12</span> <span class="number">17</span><span class="string">:16:10</span></span><br><span class="line"><span class="attr">tags:</span> <span class="string">[标签1,标签2]</span></span><br><span class="line"><span class="attr">categories:</span> <span class="string">分类名</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+<p>在<code>---</code>之后的就是文章的正文了。文章的内容就写在这里。</p>
+<blockquote>
+<p>关于写作相关的指令，深入的使用方式请参考官方文档链接，在「四、参考资料」中。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>关于编辑器的选型：  </p>
+<ol>
+<li>Visual Studio Code (推荐) 清爽的写作环境，安装 Markdown 插件后支持可视化编辑。</li>
+<li>IDEA/WebStorm/…  习惯使用 <code>jetbrains</code> 系列软件的可以使用。同样需要安装 Markdown 插件后支持可视化编辑。</li>
+<li>Sublime Text   </li>
+</ol>
+</blockquote>
+<p>编辑器选型可以看自己的爱好。用任何文本编辑器都可以。Hexo 也提供可视化博客管理插件。详情可查看：<a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener">https://github.com/jaredly/hexo-admin</a></p>
+<h3 id="2-4-发布到-Github-Pages"><a href="#2-4-发布到-Github-Pages" class="headerlink" title="2.4 发布到 Github Pages"></a>2.4 发布到 Github Pages</h3><p>Github Pages 是一个由 Github 提供给开源项目的免费静态网页部署服务。只需要你将静态网页文件提交到仓库，按照格式配置，即可使用。<br>成功部署后的域名为 <code>***.github.io</code> 参考：<a href="https://csgajcr.github.io/" target="_blank" rel="noopener">https://csgajcr.github.io/</a><br>操作步骤如下：  </p>
+<ol>
+<li>拥有一个 Github 账号</li>
+<li>新建一个仓库，仓库名字为 [你的账号名].github.io  </li>
+</ol>
+<p>比如我的账号名叫 csgajcr 那么我的仓库名称就需要叫 <code>csgajcr.github.io</code></p>
+<ol start="3">
+<li>安装 Hexo git 部署插件 </li>
+</ol>
+<p>控制台执行命令 <code>npm install hexo-deployer-git --save</code>  </p>
+<blockquote>
+<p>注：在 Hexo 中，部署可以直接使用插件来部署，很方便。除了 git 之外也支持其他多种部署方式。请参考：<a href="https://hexo.io/docs/one-command-deployment" target="_blank" rel="noopener">https://hexo.io/docs/one-command-deployment</a></p>
+</blockquote>
+<ol start="4">
+<li>配置博客配置文件</li>
+</ol>
+<p>打开 <code>_config.yml</code>.<br>将文件最后面 <code>deploy</code> 的配置修改为：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">- <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repository</span>: git<span class="variable">@github</span>.<span class="attribute">com</span>:csgajcr/csgajcr.github.io.git #</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>发布</li>
+</ol>
+<p>控制台执行命令 <code>hexo clean &amp;&amp; hexo d -g</code><br>发布成功后，就可以在你的 git 仓库下看到生成的静态文件啦。<br>此时访问 [你的账号名].github.io 即可查看你的博客了。</p>
+<blockquote>
+<p>如果 Github Pages 未生效，到仓库设置中查看 Github Pages 选项是否正常。<br>正常的截图如下：<br><img src="/img/hexo/1586684326821.jpg" alt=""></p>
+</blockquote>
+<hr>
+<blockquote>
+<p>注：这里多说一句，部署的原理是将 <code>hexo clean &amp;&amp; hexo d -g</code> 命令生成的文件提交到 <code>Github</code> 仓库（生成的文件在 <code>public</code> 目录下）。所以在排查一些问题的时候，可以查看生成的 <code>public</code> 文件夹下的网页文件是否正常。</p>
+</blockquote>
+<h2 id="三、常用功能"><a href="#三、常用功能" class="headerlink" title="三、常用功能"></a>三、常用功能</h2><h3 id="3-1-更换主题"><a href="#3-1-更换主题" class="headerlink" title="3.1 更换主题"></a>3.1 更换主题</h3><p>如果你是一个专注写作，不在意博客主题的人，那么也许这里你可以选择跳过。默认的 <code>landscape</code> 主题美观度和支持度上都算不错。<br>如果你是一个有个性的人，那么你可以花几个小时的时间来选择和配置一款你自己喜欢的主题。<br>如果你是一个喜欢折腾的人，那么你可以花几天的时间，来定制化你的主题，并为你的主题增添很多独有的色彩。  </p>
+<hr>
+<p>主题的文件在 <code>themes</code> 目录下：<br>在一个初始的项目下，里面会自带一个 <code>landscape</code> 的文件夹，这便是主题的文件了。<br>那么如何更换主题呢？</p>
+<ol>
+<li>选择一款你中意的主题，在这里选择。 <a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a> </li>
+<li>这里我们随便拿一个举例，比如 <code>A-Ayer</code><img width="240px" src="/img/hexo/1587219784808.jpg"/>
+这里点进去，就是预览主题。在预览主题的最下方，会有主题的 `Github` 链接。
+<img width="240px" src="/img/hexo/1587220246946.jpg"/>
+
+</li>
+</ol>
+<blockquote>
+<p>当然这是先预览再看主题安装的方式，如果你不想预览，你也可以直接在 <code>Github</code> 上搜索你想使用的主题。</p>
+</blockquote>
+<p>一般来说在主题的 Github 仓库的 README 文件中有相应主题的配置教程。例如 <code>A-Ayer</code> 的主题配置教程如下：</p>
+<img width="240px" src="/img/hexo/1587222831141.jpg"/>
+<br/>
+
+<blockquote>
+<p><strong>每种不同的主题，安装方式都大致相同，参数配置可能会有所区别。这里就是大家主要花时间需要去折腾的地方了。</strong></p>
+</blockquote>
+<h3 id="3-2-配置文件解析"><a href="#3-2-配置文件解析" class="headerlink" title="3.2 配置文件解析"></a>3.2 配置文件解析</h3><p>详细全面的项目配置文件解析请参考 「四、参考资料」 中 Hexo 博客配置文件详解. <a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/configuration.html</a><br>博客的整体配置文件路径(<code>source/_config.yaml</code>)，下面介绍的栏目都在此配置文件中修改。</p>
+<ol>
+<li><p>网站标题 - title<br>顾名思义，修改后会影响博客的标题。例如：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">title: Jcr<span class="symbol">'s</span> Blog</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>网站描述 - description<br>修改后会影响博客的描述信息。例如</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">description</span>: <span class="string">'Jcr - An Android developer '</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>网站部署链接 - url<br>部署链接会影响项目资源的生成，请设置自己实际的部署域名。例如：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">url:</span> <span class="string">http:</span><span class="comment">//blog.jcr.pub</span></span><br><span class="line"><span class="string">root:</span> /</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 root 为博客所部署的 <code>path</code> 信息，如果设置不对，可能会导致网页的部分资源访问不到。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="3-3-添加页面"><a href="#3-3-添加页面" class="headerlink" title="3.3 添加页面"></a>3.3 添加页面</h3><p>在 <code>Hexo</code> 中，页面也是一个 <code>markdown</code> 文件。我们新建页面和新建文章有一点点区别。<br>新建页面的命令为：<code>hexo new page [页面名称]</code>。以新建关于页面的操作步骤举例：</p>
+<ol>
+<li>执行 <code>hexo new page about</code></li>
+</ol>
+<p>执行成功后控制台会提示：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO  <span class="string">Created:</span> <span class="regexp">~/Desktop/</span>my_blog<span class="regexp">/source/</span>about/index.md</span><br></pre></td></tr></table></figure>
+<p>一般的主题都会附带关于页面的配置（即为主题配置文件中包含<code>about: /about/</code>），所以关于页面的新建就完成啦。</p>
+<h3 id="3-4-分类、标签和模板"><a href="#3-4-分类、标签和模板" class="headerlink" title="3.4 分类、标签和模板"></a>3.4 分类、标签和模板</h3><p>我们挨个介绍吧。</p>
+<h4 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h4><p>模板是指的我们新建文章或页面后，自动生成的 <code>MD</code> 文件里的内容。比如你的博客开头都是以某种格式的，就可以去模板里修改，修改后生成的新文章都会根据模板来创建。</p>
+<h4 id="分类、标签"><a href="#分类、标签" class="headerlink" title="分类、标签"></a>分类、标签</h4><p>文章的分类标签是在文章的信息定义处指定，例如：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: Typescript学习记录</span><br><span class="line">date: 2020<span class="string">-04</span><span class="string">-13</span> 19:46:25</span><br><span class="line">categories: javascript</span><br><span class="line"><span class="keyword">tags:</span> [javascript,前端,Web,typescript]</span><br></pre></td></tr></table></figure>
+<p>分类只能指定一个，标签可以多个。通过这种方式设置的标签和分类将会在博客的<code>标签</code>页和<code>分类</code>页中自动生成。   </p>
+<p>分类、标签的另一种配置方式：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">title: Hexo - 10分钟0成本搭建博客系统</span><br><span class="line">categories:</span><br><span class="line">  - 博客</span><br><span class="line"><span class="keyword">tags:</span></span><br><span class="line">  - 博客</span><br><span class="line">  - Hexo</span><br><span class="line">  - 教程</span><br><span class="line">date: 2020<span class="string">-04</span><span class="string">-07</span> 17:00:00</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="3-5-其他"><a href="#3-5-其他" class="headerlink" title="3.5 其他"></a>3.5 其他</h3><p>暂时没想到别的，大部分都可以参考「四、参考资料」中使用。等想到了再更新吧。</p>
+<h2 id="四、参考资料"><a href="#四、参考资料" class="headerlink" title="四、参考资料"></a>四、参考资料</h2><ol>
+<li>Hexo 主题列表</li>
+</ol>
+<p><a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a></p>
+<ol start="2">
+<li>Hexo 插件列表</li>
+</ol>
+<p><a href="https://hexo.io/plugins/" target="_blank" rel="noopener">https://hexo.io/plugins/</a></p>
+<ol start="3">
+<li>Hexo 博客配置文件详解</li>
+</ol>
+<p><a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/configuration.html</a></p>
+<ol start="4">
+<li>Hexo 命令大全</li>
+</ol>
+<p><a href="https://hexo.io/zh-cn/docs/commands" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/commands</a></p>
+<ol start="5">
+<li>Hexo 模板的使用</li>
+</ol>
+<p><a href="https://hexo.io/zh-cn/docs/templates" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/templates</a></p>
+<ol start="6">
+<li>Hexo 写作</li>
+</ol>
+<p><a href="https://hexo.io/zh-cn/docs/writing" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/writing</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jcr
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.jcr.pub/2020/04/07/Hexo10%E5%88%86%E9%92%9F0%E6%88%90%E6%9C%AC%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F/" title="Hexo - 10分钟0成本搭建博客系统">http://blog.jcr.pub/2020/04/07/Hexo10%E5%88%86%E9%92%9F0%E6%88%90%E6%9C%AC%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"># 博客</a>
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+            <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"># 教程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/28/%E6%B5%85%E8%B0%88Unity%E4%B8%8EAndroid%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%8E%A5/" rel="next" title="浅谈Unity与Android原生的桥接">
+                <i class="fa fa-chevron-left"></i> 浅谈Unity与Android原生的桥接
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/13/Typescript%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="prev" title="Typescript学习记录">
+                Typescript学习记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Jcr" />
+          <p class="site-author-name" itemprop="name">Jcr</p>
+           
+              <p class="site-description motion-element" itemprop="description">Jcr - An Android developer </p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、为什么选择-Hexo"><span class="nav-text">一、为什么选择 Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Hexo-的优势"><span class="nav-text">1.1 Hexo 的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-对比-WordPress"><span class="nav-text">1.2 对比 WordPress</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-对比其他博客系统"><span class="nav-text">1.3 对比其他博客系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、开始！"><span class="nav-text">二、开始！</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-准备工作"><span class="nav-text">2.1 准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-安装-Hexo"><span class="nav-text">2.2 安装 Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-写博客"><span class="nav-text">2.3 写博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-发布到-Github-Pages"><span class="nav-text">2.4 发布到 Github Pages</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、常用功能"><span class="nav-text">三、常用功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-更换主题"><span class="nav-text">3.1 更换主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-配置文件解析"><span class="nav-text">3.2 配置文件解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-添加页面"><span class="nav-text">3.3 添加页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-分类、标签和模板"><span class="nav-text">3.4 分类、标签和模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模板"><span class="nav-text">模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分类、标签"><span class="nav-text">分类、标签</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-其他"><span class="nav-text">3.5 其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、参考资料"><span class="nav-text">四、参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2019 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz", "E3QdwSk7zihkWEvVryc0lqS1");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
