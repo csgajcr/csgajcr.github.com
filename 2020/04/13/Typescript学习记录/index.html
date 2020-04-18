@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="javascript,前端,Web,typescript," />
 
 
 
@@ -94,16 +94,19 @@
 
 
 
-<meta name="description" content="你好，我是Jcr。欢迎来到我博客的「关于」一栏。来到这里，一定是想了解我吧。我是一名 Android 程序员。在重庆工作。技术上主攻 Android 方向，同时也对后端和 Web 前端感兴趣，偶尔也会折腾折腾。生活上，平时喜欢打游戏，运动上也打打乒乓球啥的。游戏栈：LOL、DNF、魔兽RPG…如果你想要联系我，可以通过下方联系方式噢~QQ：610691723">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于">
-<meta property="og:url" content="http://blog.jcr.pub/about/index.html">
+<meta name="description" content="前言 TypeScript 是一门很好的语言 - Jcr  这句话足以代表我对 TypeScript （以下简称TS）的评价。说说学习 TS 的缘由吧。最近公司突然需要我用 TS 研发前端项目。虽然我是一名 Android 开发者，但是公司需要我，我当然就得站出来了~ 于是我花了半天时间学习 TS，好在我有 ES6 和 Kotlin 的基础。所以 TS 学习起来也很轻松，学习完成后直接上手使用感觉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Typescript学习记录">
+<meta property="og:url" content="http://blog.jcr.pub/2020/04/13/Typescript%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Jcr&#39;s Blog">
-<meta property="og:description" content="你好，我是Jcr。欢迎来到我博客的「关于」一栏。来到这里，一定是想了解我吧。我是一名 Android 程序员。在重庆工作。技术上主攻 Android 方向，同时也对后端和 Web 前端感兴趣，偶尔也会折腾折腾。生活上，平时喜欢打游戏，运动上也打打乒乓球啥的。游戏栈：LOL、DNF、魔兽RPG…如果你想要联系我，可以通过下方联系方式噢~QQ：610691723">
-<meta property="article:published_time" content="2020-03-21T08:59:18.000Z">
-<meta property="article:modified_time" content="2020-04-07T06:17:19.571Z">
+<meta property="og:description" content="前言 TypeScript 是一门很好的语言 - Jcr  这句话足以代表我对 TypeScript （以下简称TS）的评价。说说学习 TS 的缘由吧。最近公司突然需要我用 TS 研发前端项目。虽然我是一名 Android 开发者，但是公司需要我，我当然就得站出来了~ 于是我花了半天时间学习 TS，好在我有 ES6 和 Kotlin 的基础。所以 TS 学习起来也很轻松，学习完成后直接上手使用感觉">
+<meta property="article:published_time" content="2020-04-13T11:46:25.000Z">
+<meta property="article:modified_time" content="2020-04-18T16:22:46.554Z">
 <meta property="article:author" content="Jcr">
-<meta property="article:tag" content="Jcr Android Blog">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="typescript">
 <meta name="twitter:card" content="summary">
 
 
@@ -133,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.jcr.pub/about/"/>
+  <link rel="canonical" href="http://blog.jcr.pub/2020/04/13/Typescript学习记录/"/>
 
 
 
 
 
-  <title>关于 | Jcr's Blog</title>
+  <title>Typescript学习记录 | Jcr's Blog</title>
   
 
 
@@ -280,34 +283,212 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2020/04/13/Typescript%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jcr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">关于</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <p>你好，我是Jcr。<br>欢迎来到我博客的「关于」一栏。来到这里，一定是想了解我吧。<br>我是一名 <em>Android</em> 程序员。在重庆工作。技术上主攻 <em>Android</em> 方向，同时也对后端和 <em>Web</em> 前端感兴趣，偶尔也会折腾折腾。<br>生活上，平时喜欢打游戏，运动上也打打乒乓球啥的。<br>游戏栈：<br>LOL、DNF、魔兽RPG…<br>如果你想要联系我，可以通过下方联系方式噢~<br>QQ：610691723</p>
-
+          <h1 class="post-title" itemprop="name headline">Typescript学习记录</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-13T19:46:25+08:00">
+                2020-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/04/13/Typescript%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" class="leancloud_visitors" data-flag-title="Typescript学习记录">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>TypeScript 是一门很好的语言 - Jcr</p>
+</blockquote>
+<p>这句话足以代表我对 <code>TypeScript</code> （以下简称TS）的评价。<br>说说学习 TS 的缘由吧。最近公司突然需要我用 TS 研发前端项目。虽然我是一名 Android 开发者，但是公司需要我，我当然就得站出来了~ 于是我花了半天时间学习 TS，好在我有 ES6 和 Kotlin 的基础。所以 TS 学习起来也很轻松，学习完成后直接上手使用感觉非常顺手。让我逐渐爱上了这门语言。</p>
+<a id="more"></a>
+
+<blockquote>
+<p><strong>这篇文章主要写一些感悟，没有什么干货。</strong></p>
+</blockquote>
+<h2 id="学习经历"><a href="#学习经历" class="headerlink" title="学习经历"></a>学习经历</h2><p>因为项目的紧急程度，所以只有计划 4H 的工作时间来学习，我没有去找一套视频教程来慢慢看慢慢实践，而是直接跑去找了一个 Gitbook 的 TS 教程，里面挑重要的看，一些基础的变量，循环这些就直接跳过了。文档地址：<a href="https://ts.xcatliu.com/basics/primitive-data-types" target="_blank" rel="noopener">https://ts.xcatliu.com/basics/primitive-data-types</a>   </p>
+<h2 id="项目实践经历"><a href="#项目实践经历" class="headerlink" title="项目实践经历"></a>项目实践经历</h2><p>我们项目是使用的 <code>Vuejs</code> 所以其实还需要去学习 <code>vue-porperty-decorator</code> 相关的东西。这里我们只讨论项目中 TS 的实战经历，开始使用 TS 的时候，让我感觉很有亲切感。TS 终于让写前端回到了有面向对象的感觉，熟悉的接口定义，熟悉的 Kotlin 问号操作符等等特性让我能够运筹帷幄。这些优化，都让项目的可维护性和代码可读性强了很多。想到之前自己一直是用 ES6 写前端写着玩还自我感觉良好，真后悔没有早点学 TS。<br>另外，TS用了会上瘾，用了之后再也不想去用 ES 了~</p>
+<h2 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h2><p>我准备把我后续或者正在研发的项目都改为 TS ，虽然可能工作量比较大，但是 TS 的语言魅力还是很足的。并且之前我都是用 <code>WebStorm</code> 进行前端的开发，后续也会尝试 <code>VSCode</code> 来开发。</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jcr
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.jcr.pub/2020/04/13/Typescript%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" title="Typescript学习记录">http://blog.jcr.pub/2020/04/13/Typescript%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+          
+            <a href="/tags/Web/" rel="tag"># Web</a>
+          
+            <a href="/tags/typescript/" rel="tag"># typescript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/07/Hexo10%E5%88%86%E9%92%9F0%E6%88%90%E6%9C%AC%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F/" rel="next" title="Hexo - 10分钟0成本搭建博客系统">
+                <i class="fa fa-chevron-left"></i> Hexo - 10分钟0成本搭建博客系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -340,8 +521,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -409,6 +599,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习经历"><span class="nav-text">学习经历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目实践经历"><span class="nav-text">项目实践经历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续计划"><span class="nav-text">后续计划</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -522,10 +728,10 @@
   
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
