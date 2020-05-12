@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据分析," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前言我是一名程序员，最近才开始了解数据分析这一部分的知识，开始的时候，在网上搜索了一些资料进行阅读。但网络上的资料混杂，很难找到一个既简洁又官方的讲解，大部分的资料都是从某一个视角来讲解数据分析，给我一种 10 个人有 10 种数据分析方式的感觉。这对我这样新手来说，有些摸不着头脑。于是我将我最近阅读的一些数据分析的资料和文章进行归纳，输出了这篇文章。这篇文章的主要内容是我个人对数据分析基础的认知">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识「数据分析」">
+<meta property="og:url" content="http://blog.jcr.pub/2020/05/09/first-understanding-data-analysis/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="前言我是一名程序员，最近才开始了解数据分析这一部分的知识，开始的时候，在网上搜索了一些资料进行阅读。但网络上的资料混杂，很难找到一个既简洁又官方的讲解，大部分的资料都是从某一个视角来讲解数据分析，给我一种 10 个人有 10 种数据分析方式的感觉。这对我这样新手来说，有些摸不着头脑。于是我将我最近阅读的一些数据分析的资料和文章进行归纳，输出了这篇文章。这篇文章的主要内容是我个人对数据分析基础的认知">
+<meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/d0f025ca-504b-4658-b4e4-0074a1718141.png">
+<meta property="article:published_time" content="2020-05-09T15:08:46.000Z">
+<meta property="article:modified_time" content="2020-05-12T14:00:12.767Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="数据分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgkr.cn-bj.ufileos.com/d0f025ca-504b-4658-b4e4-0074a1718141.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.jcr.pub/2020/05/09/first-understanding-data-analysis/"/>
+
+
+
+
+
+  <title>初识「数据分析」 | Jcr's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jcr's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">A positive and progressive Android developer</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2020/05/09/first-understanding-data-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jcr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">初识「数据分析」</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-09T23:08:46+08:00">
+                2020-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index">
+                    <span itemprop="name">数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/05/09/first-understanding-data-analysis/" class="leancloud_visitors" data-flag-title="初识「数据分析」">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我是一名程序员，最近才开始了解数据分析这一部分的知识，开始的时候，在网上搜索了一些资料进行阅读。但网络上的资料混杂，很难找到一个既简洁又官方的讲解，大部分的资料都是从某一个视角来讲解数据分析，给我一种 10 个人有 10 种数据分析方式的感觉。这对我这样新手来说，有些摸不着头脑。于是我将我最近阅读的一些数据分析的资料和文章进行归纳，输出了这篇文章。这篇文章的主要内容是我个人对数据分析基础的认知，希望能对你有所帮助。</p>
+<a id="more"></a>
+
+<h2 id="一、数据分析是什么"><a href="#一、数据分析是什么" class="headerlink" title="一、数据分析是什么"></a>一、数据分析是什么</h2><p>引用百度百科的一句话：</p>
+<blockquote>
+<p>数据分析是指用适当的统计分析方法对收集来的大量数据进行分析，将它们加以汇总和理解并消化，以求最大化地开发数据的功能，发挥数据的作用。数据分析是为了提取有用信息和形成结论而对数据加以详细研究和概括总结的过程。   </p>
+</blockquote>
+<p>这句话很专业，也概括了数据分析的作用。通俗一点，数据分析就是从数据中获取信息，再将信息转换为价值。    </p>
+<h3 id="1-1-数据分析的作用"><a href="#1-1-数据分析的作用" class="headerlink" title="1.1 数据分析的作用"></a>1.1 数据分析的作用</h3><p>每一次数据分析都需要带有目的，所以我们可以把数据分析的作用和我们分析的目的结合起来分类。<br>根据我个人的理解，我将其主要分为以下几类：</p>
+<ul>
+<li><p>探索性分析<br>表示着这次数据分析的目的是探索。从已有的数据中找到一些特征点，根据特征点来推断出新的结论。比如：分析用户购物车数据，发现买了电脑的用户大部分都会购买键鼠套装。    </p>
+</li>
+<li><p>诊断性分析<br>表示这次数据分析的目的是诊断。一般用在发生一个事件之后，我们想找到这个事件的原因。这个事件可以是销量增长或下降、日活偶然增加或减少等等。</p>
+</li>
+<li><p>预测性分析<br>表示这次数据分析的目的是预测。一般用在分析一个事件所产生的的影响。比如：分析去年双十一的增长以预测今年的销量增长。   </p>
+</li>
+<li><p>验证性分析<br>表示这次数据分析的目的是验证。一般用在某一个产品功能更新之后，或者运营方案实行之后。对数据进行分析以验证是否和预期相符。</p>
+</li>
+</ul>
+<h2 id="二、数据分析流程"><a href="#二、数据分析流程" class="headerlink" title="二、数据分析流程"></a>二、数据分析流程</h2><p>网络上有许多各领域的数据分析流程，这里不做过多赘述。本节我主要以互联网产品的角度来谈一谈数据分析的基本流程。<br>在数据分析的流程开始之前，请确定本次数据分析的目的。即为：确定数据分析的类型，参考「1.1 数据分析的作用」。</p>
+<h3 id="2-1-数据采集"><a href="#2-1-数据采集" class="headerlink" title="2.1 数据采集"></a>2.1 数据采集</h3><p>顾名思义，数据采集就是从各个渠道获取数据。在当下的互联网产品中，一般数据的采集有三种方式：</p>
+<ol>
+<li>客户端自主研发打点</li>
+<li>客户端接入第三方数据统计平台</li>
+<li>服务器访问日志/数据库数据</li>
+</ol>
+<p>让我们来逐一分析每个方式的特点：</p>
+<ol>
+<li><strong>客户端自主研发打点</strong><br>自研是最准确也是定制化程度最高的一种数据采集方式。这种方式一般由产品经理/运营人员在版本发布之前，预先制定出需要打点的位置。交于研发将打点代码写好后发布。   </li>
+</ol>
+<p><strong>优势</strong>：准确，定制化程度很高，保证信息安全。<br><strong>劣势</strong>：需要一定研发成本，且每次埋点都需要发布前提前埋点。（当然理论上技术层面也可以做到动态更改埋点，不过会极大程度提高研发成本，且受限于客户端的一些应用规则，效果不理想，具体原因不做详述）</p>
+<ol start="2">
+<li><strong>客户端接入第三方数据统计平台</strong><br>接入第三方统计平台是目前对于中小型产品最方便快捷的方式，效果也不差。第三方统计平台一般功能强大，不光在数据采集上，一般会把后面的数据整理、分析步骤都有包含。这里主要介绍我所了解的两款平台：</li>
+</ol>
+<ul>
+<li>GrowingIO<br>GrowingIO 在最开始接入的时候并没有什么问题。在传统数据采集都是通过代码埋点实现的情况下，其惊艳的动态配置埋点功能更是如虎添翼。前期在我们的产品中使用并没有什么问题。但好景不长，随着使用时间的增加，我们发现了以下问题：<br>① 其统计的数据并不准确，和我们通过其他方式统计的数据对不上。<br>② 接入 GrowingIO 的免费时间用完。需要收费，且费用不便宜。<br>③ 数据分析功能有一些需要收费，如果想拿到 GrowingIO 采集的数据，我们自己分析，也需要额外收费。<br>综合来说，GrowingIO 如果将数据统计做准确，那么就是除了贵啥都好了。</li>
+<li>友盟<br>友盟的接入就给了我一种不太好的印象，接入和使用并不算方便。不过好在其免费的功能也可以满足我们的需求。所以中小产品接入友盟是一个不错的选择。</li>
+</ul>
+<ol start="3">
+<li><strong>服务器访问日志/数据库数据</strong><br>通过这种方式的数据采集往往是通过固定的脚本，定期从日志或数据库中采集并计算出想要的信息。比如我们可以编写一个脚本，每天固定的时间计算出一个时段的访问量，活跃度，某些功能的使用频率等等。从信息安全的角度来说，一般的企业是不会允许生产数据被随意访问。即使访问也有很严格监控和审批流程。抛开安全性来说，服务器上的数据能满足的场景是有限的。有些数据需要在用户设备上才能采集。</li>
+</ol>
+<blockquote>
+<p>注：数据的采集方式可以多种混用，在分析之前，根据我们之前确定的数据分析目的而去选择所需的数据即可。</p>
+</blockquote>
+<hr>
+<p>上述内容只是从互联网产品的角度触发讨论数据采集。数据采集的方式多种多样，我们不必局限于此，如果我们的产品和新媒体运营有关，那么一些新媒体的阅读量、转化率等等也可以作为数据采集的一部分。如果我们的产品包含社群运营，那么用户活跃度、黏性等等也是同理。总而言之，只要是对我们数据分析目的有帮助的数据，都需要尽可能的设计方式去采集。</p>
+<h3 id="2-2-数据整理"><a href="#2-2-数据整理" class="headerlink" title="2.2 数据整理"></a>2.2 数据整理</h3><p>数据整理的过程，就像是对数据进行了一次净化。通过「2.1 数据采集」得到的数据往往是混杂的。数据来源于不同渠道，形式也是多种多样。这些数据往往多余我们做分析所需要的。比如，我们需要分析的内容是本月的销量走势相比上个月怎么样。那么我们只需要本月的销量总额以及上月和本月每一天的销量数据即可。通过这些数据绘制出两张走势图，结果就会很明了。但往往我们所拿到的数据有很多，这些数据来源于不同的渠道，可能对于分析我们刚才的问题并没有什么作用，甚至还有一些脏数据。数据整理的过程就是将这些脏数据和无意义的数据都去掉。只留下对分析有帮助的数据。并将其汇总，方便下一步的分析工作。整理过后的数据可以是一个文本文件、二进制文件、各种数据库资源、Excel 表格等等。</p>
+<h3 id="2-3-数据分析"><a href="#2-3-数据分析" class="headerlink" title="2.3 数据分析"></a>2.3 数据分析</h3><p>从上一步，我们已经拿到了对我们很关心的数据。那么数据分析这一步也是整个过程的核心。结合我们最开始数据分析的目的，通过这些数据计算出我们想要的指标，这些一个又一个的指标是我们得出结论的重要因素之一。<br>数据分析的形式同样也是多种多样，这里列举几类：</p>
+<ol>
+<li><strong>Excel 表格分析</strong><br>如果上一步的数据汇总是在一个 Excel 表格中进行的。那么也许直接用 Excel 表格进行分析会更加高效。Excel 有很强大的计算功能，可以根据你的指标计算需求写出公式，来达到你想要的结果。同时，Excel 的统计功能也很强大，只要你能将 Excel 玩的很溜，那么对于中小型的数据分析，Excel 也许是最适合的工具。</li>
+<li><strong>图表绘制分析</strong><br>图表分析的方式一般对分析者的代码和逻辑能力需要一定要求。图表的生成，需要将上一步的数据按照图表的维度进行处理，处理完成后再以图表形式输出。那么不会写代码就不能绘制图表了吗？其实也不是。网络上有一些可视化的数据分析工具，支持无代码自定义图表维度，设置好后输出。不过这样的方式还是会有一些局限性。自定义程度不高。如果要做一名高级数据分析师，算法和代码能力是必备的。</li>
+<li><strong>高阶数据分析</strong><br>高阶数据分析将会在下文「四、高阶数据分析」中进行介绍。这里列出来作为数据分析方式的一类。这一类往往定制化程度更高，难度也越大。</li>
+</ol>
+<h3 id="2-4-得出结论"><a href="#2-4-得出结论" class="headerlink" title="2.4 得出结论"></a>2.4 得出结论</h3><p>有了数据分析的结果之后，得出结论的过程就很简单了。结论的形式也有很多，可以是文档、可以是报表、可以是一篇总结等等。总之，结论就是将数据分析得出的结果归纳、推导和总结。</p>
+<h2 id="三、完整的案例"><a href="#三、完整的案例" class="headerlink" title="三、完整的案例"></a>三、完整的案例</h2><p>由于我只是一名初识数据分析的程序员，所以如果我来做一个完整的案例难免会有很多遗漏之处以及不准确的地方，于是我找了一些文章来做参考。</p>
+<ul>
+<li>产品经理角度的数据分析：<a href="https://36kr.com/p/5171146" target="_blank" rel="noopener">https://36kr.com/p/5171146</a>   </li>
+<li>代码（R 语言）数据分析简单案例：<a href="https://zhuanlan.zhihu.com/p/25428774" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25428774</a></li>
+<li>Excel 数据分析案例：<a href="https://zhuanlan.zhihu.com/p/39520206" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/39520206</a></li>
+</ul>
+<h2 id="四、高阶数据分析"><a href="#四、高阶数据分析" class="headerlink" title="四、高阶数据分析"></a>四、高阶数据分析</h2><p>这里，我请教了我一位做数据分析的同学。从同学那里了解了一些高阶数据分析的流程和其所需要的能力。接下来我挨个介绍：</p>
+<ul>
+<li>高阶数据分析介绍<br>高阶数据分析和大数据分析有一定的相似性。一般需要去做高阶数据分析的企业都会有专业的数据分析师/建模师来做这件事情。其实说的通俗一点，高阶数据分析就是将普通数据分析的流程每一步都复杂化，主流程不变。</li>
+<li>高阶数据分析的应用场景<br>高阶数据分析一般应用在大型数据量、高度定制化、复杂的分析需求的场景。例如：美团接单优化、滴滴出行订单分配优化、大流量平台日志分析<br>总之，就是很牛逼的数据分析就对了。</li>
+<li>高阶数据分析流程<br>这里用一张图来描述更加易懂。</li>
+</ul>
+<p><img src="https://imgkr.cn-bj.ufileos.com/d0f025ca-504b-4658-b4e4-0074a1718141.png" alt="image"></p>
+<p>这个流程是高阶数据分析里面较为简单的流程了。不过基本概括了高阶数据分析的流程。这里我主要把「数据分析」一步展开了，采集和整理都没有展开说明，其实真实的场景，大型数据的采集和整理还有很多讲究，这里就不做过多赘述了。数据建模、模型研发、数据模型化这些名词的解释我放在了下文。</p>
+<ul>
+<li>数据建模<br>我们都听说过数学建模，数据建模和数学建模有着一些相似性。根据我们数据分析的目的，普通的维度划分已经难以满足我们的需求了。所以需要建立数据模型是将多个维度，以一种关联的形式混合在一起。一般专业的数据建模师会采用伪代码或者 R 语言来对模型进行描述，建模对算法能力的要求较高。</li>
+<li>模型研发<br>这一步比较容易理解，就是将上一步建好的数学模型用编程语言研发出来。一般用于研发模型的语言有：Python、R 语言。</li>
+<li>数据模型化<br>这一步是将之前数据整理之后的数据，按照模型的要求，输入给模型。让数据模型化。这里可能有些抽象，类比一下，就像我们将橡皮泥放进模具，出来之后，就可以得到模具样子的橡皮泥了。</li>
+<li>数据分析<br>这里的数据分析流程和「2.3 数据分析」类似。不同的是，这里分析的是经过数据模型化之后，输出的数据。</li>
+</ul>
+<h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>在未来，无论是从事什么工作的人，数据分析的思维能力是必备的，初识数据分析，可以让我们了解数据分析的基础思维。在职场和生活中，这个能力可以让我们从数据中洞察出深层次的规律。学会数据分析思维能力，更能让我们脱颖而出。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jcr
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.jcr.pub/2020/05/09/first-understanding-data-analysis/" title="初识「数据分析」">http://blog.jcr.pub/2020/05/09/first-understanding-data-analysis/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"># 数据分析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/19/deep-thinking-after-reading/" rel="next" title="《深度思维》读后感">
+                <i class="fa fa-chevron-left"></i> 《深度思维》读后感
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Jcr" />
+          <p class="site-author-name" itemprop="name">Jcr</p>
+           
+              <p class="site-description motion-element" itemprop="description">Jcr - A positive and progressive Android developer </p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、数据分析是什么"><span class="nav-text">一、数据分析是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-数据分析的作用"><span class="nav-text">1.1 数据分析的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数据分析流程"><span class="nav-text">二、数据分析流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-数据采集"><span class="nav-text">2.1 数据采集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-数据整理"><span class="nav-text">2.2 数据整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-数据分析"><span class="nav-text">2.3 数据分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-得出结论"><span class="nav-text">2.4 得出结论</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、完整的案例"><span class="nav-text">三、完整的案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、高阶数据分析"><span class="nav-text">四、高阶数据分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、总结"><span class="nav-text">五、总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2019 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz", "E3QdwSk7zihkWEvVryc0lqS1");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
