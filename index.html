@@ -146,6 +146,15 @@
 
 
 
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66569732";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
 
 
 
@@ -395,7 +404,7 @@
 
       
         
-          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近遇到一个问题，有一段 PHP 代码需要设置到长时间的 IO 操作，而这一段会阻塞请求所在的线程，导致请求超时。<br>你可能会说，这有啥难的，开个线程异步去做，做好了更新状态就 OK 了。这真是一个不错的方案，可惜这一整套代码都是别人的。如果要修改代码，业务上会牵一发而动全身，所以我的解决办法是尽量不修改代码的情况下，通过配置超时时间来解决这个问题。</p>
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近遇到一个问题，有一段 PHP 代码需要涉及到长时间的 IO 操作，而这一段会阻塞请求所在的线程，导致请求超时。<br>你可能会说，这有啥难的，开个线程异步去做，做好了更新状态就 OK 了。这真是一个不错的方案，可惜这一整套代码都是别人的。如果要修改代码，业务上会牵一发而动全身，所以我的解决办法是尽量不修改代码的情况下，通过配置超时时间来解决这个问题。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/06/22/resolve-php-method-timeout/#more" rel="contents">
