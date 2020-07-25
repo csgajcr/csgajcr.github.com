@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="读书之前《金字塔原理》 - 麦肯锡经典培训教材，一听就觉得这本书相当的牛逼。我读书有看前言和序言的习惯，这一段往往是说这本书的主要内容和多么多么牛逼。看完之后，成功的勾起了我的阅读兴趣，有一种我看完就能智力 +10 的感觉。好了，开始阅读吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《金字塔原理》读书笔记">
+<meta property="og:url" content="http://blog.jcr.pub/2020/06/27/pyramid-principle-after-reading/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="读书之前《金字塔原理》 - 麦肯锡经典培训教材，一听就觉得这本书相当的牛逼。我读书有看前言和序言的习惯，这一段往往是说这本书的主要内容和多么多么牛逼。看完之后，成功的勾起了我的阅读兴趣，有一种我看完就能智力 +10 的感觉。好了，开始阅读吧。">
+<meta property="article:published_time" content="2020-06-27T05:34:04.000Z">
+<meta property="article:modified_time" content="2020-07-25T07:29:18.008Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="Jcr Android Blog">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.jcr.pub/2020/06/27/pyramid-principle-after-reading/"/>
+
+
+
+
+
+  <title>《金字塔原理》读书笔记 | Jcr's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-170483642-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66569732";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jcr's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">A positive and progressive Android developer</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2020/06/27/pyramid-principle-after-reading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jcr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《金字塔原理》读书笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-27T13:34:04+08:00">
+                2020-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/06/27/pyramid-principle-after-reading/" class="leancloud_visitors" data-flag-title="《金字塔原理》读书笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="读书之前"><a href="#读书之前" class="headerlink" title="读书之前"></a>读书之前</h2><p>《金字塔原理》 - 麦肯锡经典培训教材，一听就觉得这本书相当的牛逼。我读书有看前言和序言的习惯，这一段往往是说这本书的主要内容和多么多么牛逼。看完之后，成功的勾起了我的阅读兴趣，有一种我看完就能智力 +10 的感觉。好了，开始阅读吧。</p>
+<a id="more"></a>
+
+<h2 id="一、表达的逻辑"><a href="#一、表达的逻辑" class="headerlink" title="一、表达的逻辑"></a>一、表达的逻辑</h2><h3 id="1-1-为什么要用金字塔结构"><a href="#1-1-为什么要用金字塔结构" class="headerlink" title="1.1 为什么要用金字塔结构"></a>1.1 为什么要用金字塔结构</h3><p>归类分组，自上而下，结论先行。<br>条理清晰的文章需要不断自上而下的输出，而不只是一开始的自上而下。<br>组织文章的时候，应该按照金字塔结构，中心思想 -&gt; 章节思想 -&gt; 段落思想 -&gt; 句子思想。且每一个思想需要满足四种模式中的一种：   </p>
+<ol>
+<li>演绎顺序：大前提、小前提、结论</li>
+<li>时间（步骤）顺序：第一、第二、第三</li>
+<li>结构（空间）顺序：重庆、上海、北京</li>
+<li>程度（重要性）顺序：最重要、次重要、不重要</li>
+</ol>
+<h3 id="1-2-金字塔内部的结构"><a href="#1-2-金字塔内部的结构" class="headerlink" title="1.2 金字塔内部的结构"></a>1.2 金字塔内部的结构</h3><p>三种子结构：   </p>
+<ol>
+<li>疑问 - 回答式的对话</li>
+<li>横向的演绎或归纳推理</li>
+<li>讲故事的序言</li>
+</ol>
+<ul>
+<li><p>演绎推理：<br>第一个思想对现象做表述，第二个思想对第一个轮数据的主语或者谓语做表述，第三个思想从第一、第二个思想中得出表述。</p>
+</li>
+<li><p>归纳推理：<br>从一组归纳性论述中得出共同点，并加以推理得出一个推论。</p>
+</li>
+<li><p>序言的结构<br>背景、冲突、问题、回答 四个要素。</p>
+</li>
+</ul>
+<h3 id="1-3-如何构建金字塔结构"><a href="#1-3-如何构建金字塔结构" class="headerlink" title="1.3 如何构建金字塔结构"></a>1.3 如何构建金字塔结构</h3><h4 id="1-3-1-自上而下法"><a href="#1-3-1-自上而下法" class="headerlink" title="1.3.1 自上而下法"></a>1.3.1 自上而下法</h4><ol>
+<li>画出主题方框</li>
+<li>设想主要疑问</li>
+<li>写出对该疑问的回答</li>
+<li>说明“背景”</li>
+<li>指出冲突</li>
+<li>检查主要疑问和答案</li>
+</ol>
+<blockquote>
+<p>提示：</p>
+<ol>
+<li>提出主题思想</li>
+<li>设想受众的主要疑问</li>
+<li>写序言：背景 - 冲突 - 疑问 - 回答</li>
+<li>与受众进行疑问 - 回答式的对话</li>
+<li>对受众的新疑问，重复进行疑问 - 回答式的对话</li>
+</ol>
+</blockquote>
+<h3 id="1-3-2-自下而上法"><a href="#1-3-2-自下而上法" class="headerlink" title="1.3.2 自下而上法"></a>1.3.2 自下而上法</h3><ol>
+<li>列出想要表达的点</li>
+<li>找出各点之间的联系</li>
+<li>得出结论</li>
+<li>倒推出序言</li>
+</ol>
+<h3 id="1-4-序言的具体写法"><a href="#1-4-序言的具体写法" class="headerlink" title="1.4 序言的具体写法"></a>1.4 序言的具体写法</h3><p>标准顺序：<br>背景 -&gt; 冲突 -&gt; 疑问 -&gt; 解决方案   </p>
+<p>序言需要和主题相关，提出的疑问和解决方案需要和主题箱匹配。<br>序言里描述主题思想的部分最好列出关键句，关键句的作用不光可以对主题进行描述，也是整篇文章的框架结构。   </p>
+<p>每一个关键句下的内容最好也采用：背景 -&gt; 冲突 -&gt; 疑问 -&gt; 解答的方式，但比序言简单很多。其主要目的是提示读者已知的信息和衔接下面要说的信息。</p>
+<p>序言的常见模式：</p>
+<ol>
+<li>发出指示式 - 我们应该做什么、如何做</li>
+<li>请求支持式 - 我们是否应该这么做</li>
+<li>解释做法式 - 我们应该如何做</li>
+<li>比较选择式 - 我们应该做什么</li>
+</ol>
+<h3 id="1-5-演绎推理和归纳推理"><a href="#1-5-演绎推理和归纳推理" class="headerlink" title="1.5 演绎推理和归纳推理"></a>1.5 演绎推理和归纳推理</h3><ol>
+<li>演绎推理<br>演绎推理需要具有逻辑性。即为，条件 A ，条件 B，因此结论 C。条件 A 和 B 需要有关联，A 和 B 同时出现时，得出结论 C。<br>优点：更符合思想思考的顺序<br>缺点：如果演绎推理超过三步，就会变得繁琐复杂，且读者理解起来不够清晰。   </li>
+</ol>
+<p>演绎推理可以分为以下三步：</p>
+<ul>
+<li>出现的问题或存在的现象</li>
+<li>产生问题的根源、原因</li>
+<li>解决问题的方案</li>
+</ul>
+<ol start="2">
+<li>归纳推理   <ul>
+<li>正确定义一组思想。找到一个能够表示改组思想共性的名词。</li>
+<li>识别并提出改组思想中与其他思想的不对称的思想。</li>
+</ul>
+</li>
+</ol>
+<p>总结：演绎关系的建立，要求推理过程中第二部对第一步做出评述，并推导出一个结论。归纳关系则基于句子结构，必须找出各句主语或谓语之间的共同点，并根据这一共同点得出结论。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jcr
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.jcr.pub/2020/06/27/pyramid-principle-after-reading/" title="《金字塔原理》读书笔记">http://blog.jcr.pub/2020/06/27/pyramid-principle-after-reading/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/22/resolve-php-method-timeout/" rel="next" title="解决 PHP 方法执行时间过长导致 502 Bad Gateway">
+                <i class="fa fa-chevron-left"></i> 解决 PHP 方法执行时间过长导致 502 Bad Gateway
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/23/kotlin-multiplatform-upload-maven-central/" rel="prev" title="Kotlin 跨平台项目上传至 Maven 中央仓库">
+                Kotlin 跨平台项目上传至 Maven 中央仓库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Jcr" />
+          <p class="site-author-name" itemprop="name">Jcr</p>
+           
+              <p class="site-description motion-element" itemprop="description">Jcr - A positive and progressive Android developer </p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#读书之前"><span class="nav-text">读书之前</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、表达的逻辑"><span class="nav-text">一、表达的逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-为什么要用金字塔结构"><span class="nav-text">1.1 为什么要用金字塔结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-金字塔内部的结构"><span class="nav-text">1.2 金字塔内部的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-如何构建金字塔结构"><span class="nav-text">1.3 如何构建金字塔结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-自上而下法"><span class="nav-text">1.3.1 自上而下法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-自下而上法"><span class="nav-text">1.3.2 自下而上法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-序言的具体写法"><span class="nav-text">1.4 序言的具体写法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-演绎推理和归纳推理"><span class="nav-text">1.5 演绎推理和归纳推理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2019 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Mist
+  </a>
+  <span style="padding-left:10px;padding-right:10px">|</span> Modified by Jcr
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz", "E3QdwSk7zihkWEvVryc0lqS1");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
