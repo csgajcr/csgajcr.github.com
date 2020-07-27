@@ -94,12 +94,12 @@
 
 
 
-<meta name="description" content="序言将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、坑和其处理方式。">
+<meta name="description" content="序言将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、配置、坑和其处理方式。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kotlin 跨平台项目上传至 Maven 中央仓库">
 <meta property="og:url" content="http://blog.jcr.pub/2020/07/23/kotlin-multiplatform-upload-maven-central/index.html">
 <meta property="og:site_name" content="Jcr&#39;s Blog">
-<meta property="og:description" content="序言将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、坑和其处理方式。">
+<meta property="og:description" content="序言将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、配置、坑和其处理方式。">
 <meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/d87549eb-d39a-4b89-bc17-ae6df843b437.png">
 <meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/45952179-2021-4bbd-ba7b-0e333fc4def5.png">
 <meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/8e1cdabf-2603-400d-a33f-166ced443e22.png">
@@ -109,8 +109,14 @@
 <meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/fdeb645b-4745-43d5-bbb0-76c2257f8974.png">
 <meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/627c1d9e-c2f5-46ad-afb3-cd9415359738.png">
 <meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/023bb3b5-b9fc-4f93-aab2-d60b022d8325.png">
+<meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/b05e9687-4c36-4ba5-9804-980ad344422e.png">
+<meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/24563be4-b6b9-4cd8-b7bb-d838a0884c69.png">
+<meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/6acbd5e9-86f5-4130-b1f3-b73c2156793d.png">
+<meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/a696b5e6-d752-4c8b-85a7-add943bacdca.png">
+<meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/b046fb41-b7f1-4007-b324-fb8980dc5378.png">
+<meta property="og:image" content="https://imgkr.cn-bj.ufileos.com/71a16d4d-90b1-4a8c-ab0d-f53760486220.png">
 <meta property="article:published_time" content="2020-07-23T14:01:54.000Z">
-<meta property="article:modified_time" content="2020-07-25T07:29:01.491Z">
+<meta property="article:modified_time" content="2020-07-27T03:32:49.479Z">
 <meta property="article:author" content="Jcr">
 <meta property="article:tag" content="Kotlin">
 <meta property="article:tag" content="Maven Central">
@@ -422,7 +428,7 @@
       
 
       
-        <h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><p>将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。<br>本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、坑和其处理方式。</p>
+        <h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><p>将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。<br>本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、配置、坑和其处理方式。</p>
 <a id="more"></a>
 
 <h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><blockquote>
@@ -445,8 +451,8 @@
 <p>「概要」和「描述」填写关于项目的简单概要和详细介绍，如果不知道填啥可以填项目名和简介。</p>
 <p><img src="https://imgkr.cn-bj.ufileos.com/27ebc190-e838-4969-9d79-91ab5aabd07c.png" alt="WX20200725-112528@2x"></p>
 <p>「GroupId」为 Maven 坐标的 GroupId，不能随便填写。需要持有该域名才能使用该 GroupId。<br>例如我的域名为 <code>jcr.pub</code> 那么我的 GroupId 可以填写 <code>pub.jcr.*</code> 这种格式。<br>如果没有自己的域名，那么可以使用 Github 的其用户名作为 GroupId 。我的 Github 用户名为 <code>csgajcr</code> 那么我可以填写 <code>com.github.csgajcr</code> 作为我的 GroupId。</p>
-<p>「Project URL」填写项目的链接地址。<br><code>https://github.com/csgajcr/unity-bridge-android</code>    </p>
-<p>「SCM URL」填写项目的版本管理地址。<br><code>https://github.com/csgajcr/unity-bridge-android.git</code>   </p>
+<p>「Project URL」填写项目的链接地址。<br><a href="https://github.com/csgajcr/unity-bridge-android" target="_blank" rel="noopener">https://github.com/csgajcr/unity-bridge-android</a></p>
+<p>「SCM URL」填写项目的版本管理地址。<br><a href="https://github.com/csgajcr/unity-bridge-android.git" target="_blank" rel="noopener">https://github.com/csgajcr/unity-bridge-android.git</a></p>
 <p>填写完成后，点击「新建」</p>
 <p>至此，就已经成功提交一个申请了。</p>
 <blockquote>
@@ -467,7 +473,87 @@
 <p>添加之后，点击前面 issue 页面上方的按钮「Response」，问题会变成 「open」状态。继续等待 10 分钟左右。如果验证成功就会看到成功的评论，如果失败，请参考在 issue 中的回复内容，进行修改即可。</p>
 <p><img src="https://imgkr.cn-bj.ufileos.com/023bb3b5-b9fc-4f93-aab2-d60b022d8325.png" alt="image"></p>
 <p>上图为认证成功的评论。</p>
-<h2 id="二、项目配置"><a href="#二、项目配置" class="headerlink" title="二、项目配置"></a>二、项目配置</h2><h2 id="三、发布"><a href="#三、发布" class="headerlink" title="三、发布"></a>三、发布</h2><h2 id="四、首次发布后续"><a href="#四、首次发布后续" class="headerlink" title="四、首次发布后续"></a>四、首次发布后续</h2>
+<h2 id="二、项目配置"><a href="#二、项目配置" class="headerlink" title="二、项目配置"></a>二、项目配置</h2><p>本节主要介绍在跨平台项目中 Gradle 脚本应该如何配置上传功能。</p>
+<h3 id="2-1-引入插件"><a href="#2-1-引入插件" class="headerlink" title="2.1 引入插件"></a>2.1 引入插件</h3><p>在项目根目录的 <code>build.gradle</code> 中加入如下代码：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">plugin:</span> <span class="string">'maven-publish'</span></span><br><span class="line">apply <span class="string">plugin:</span> <span class="string">'signing'</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>maven-publish 是将项目发布到 Maven 仓库的插件。</li>
+<li>signing 是签名插件，为发布生成的文件进行签名。</li>
+</ul>
+<h3 id="2-2-GPG-密钥设置"><a href="#2-2-GPG-密钥设置" class="headerlink" title="2.2 GPG 密钥设置"></a>2.2 GPG 密钥设置</h3><p>Maven Central 会对我们上传的包进行签名。这里使用的签名采用的是公私钥（RSA）的模式，即私钥签名，公钥验证。所以我们需要先为项目生成一份公私钥对，并将公钥上传至公钥中心，再把私钥配置到项目中，为生成的包签名。   </p>
+<blockquote>
+<p>这里涉及的概念 「公钥」、「私钥」、「签名」如果不太清楚可以自行查阅相关资料。</p>
+</blockquote>
+<ol>
+<li><p>GPG 安装<br>GPG 在 Max OSX 环境下可以直接通过命令行安装。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>-v gpg</span><br></pre></td></tr></table></figure>
+<p>Windows 下可以使用 <a href="https://www.gpg4win.org/download.html" target="_blank" rel="noopener">gpg4win</a></p>
+<blockquote>
+<p>以下将以 Mac OSX 为基准演示操作流程。Windows 用户可以使用可视化 GPG 管理工具，或者 Windows 下的 bash ，具体请自行查阅相关资料，这里不做太多详述。</p>
+</blockquote>
+</li>
+<li><p>新建密钥<br>执行如下命令</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpg --<span class="keyword">generate</span>-key</span><br></pre></td></tr></table></figure>
+<p>执行后会让你输入密钥的相关信息，根据你的信息输入即可。执行结果：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pub   rsa2048 <span class="number">2020</span><span class="number">-07</span><span class="number">-27</span> [SC] [有效至：<span class="number">2022</span><span class="number">-07</span><span class="number">-27</span>]</span><br><span class="line">      BB53A3118459F41C4E355D31E90A28513D397F2F</span><br><span class="line">uid                      Jcr &lt;<span class="symbol">i@</span>jcr.pub&gt;</span><br><span class="line">sub   rsa2048 <span class="number">2020</span><span class="number">-07</span><span class="number">-27</span> [E] [有效至：<span class="number">2022</span><span class="number">-07</span><span class="number">-27</span>]</span><br></pre></td></tr></table></figure>
+<p>查看已经生成的密钥，可以看到刚才生成的密钥。</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">gpg -k</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 BB53A3118459F41C4E355D31E90A28513D397F2F 为密钥指纹，指纹的后 8 位 「3D397F2F」为密钥的 KeyId，后续在 Gradle 配置中将会使用到。 </p>
+</blockquote>
+</li>
+<li><p>导出刚创建的私钥<br>执行命令</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpg --<span class="keyword">export</span>-secret-keys [密钥指纹] &gt; <span class="keyword">private</span>-key.gpg</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>将导出之后的 <code>private-key.gpg</code> 放置到项目目录，方便下一步的配置使用。</p>
+</blockquote>
+</li>
+<li><p>上传公钥到公钥服务器<br>执行命令</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">gpg</span> <span class="selector-tag">--keyserver</span> <span class="selector-tag">keyserver</span><span class="selector-class">.ubuntu</span><span class="selector-class">.com</span> <span class="selector-tag">--send-keys</span> <span class="selector-attr">[密钥指纹]</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：keyserver.ubuntu.com 为公钥服务器的地址，Maven Central 在校验签名是会从公钥服务器拉取。Maven Central 支持的公钥服务器地址有三个 <code>pool.sks-keyservers.net</code>、<code>keyserver.ubuntu.com</code> 、<code>keys.gnupg.net</code>。如果一个地址访问失败，替换成换成其中任意一个都是可以的。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="2-3-配置发布参数"><a href="#2-3-配置发布参数" class="headerlink" title="2.3 配置发布参数"></a>2.3 配置发布参数</h3><p>在 <code>build.gradle</code> 中设置项目的 groupId 和 version，actifactId 会自动获取你的项目名称。</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">group</span> <span class="string">'pub.jcr.android'</span> <span class="comment">//这里的 groupId 需要和 OSSRH 中申请的保持一致</span></span><br><span class="line">version <span class="string">'0.0.0.9'</span></span><br></pre></td></tr></table></figure>
+<p>添加 Maven 发布相关代码</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">def javadocTask = task javadocJar(type: Jar) &#123;</span><br><span class="line">    archiveClassifier.<span class="keyword">set</span>(<span class="string">"javadoc"</span>)</span><br><span class="line">    classifier <span class="comment">=</span> <span class="comment">"javadoc"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">publishing <span class="comment">&#123;</span></span><br><span class="line">    publications.configureEach <span class="comment">&#123;</span></span><br><span class="line">        <span class="comment">// 添加生成 javadoc 的任务</span></span><br><span class="line">        artifact <span class="comment">javadocTask</span></span><br><span class="line"></span><br><span class="line">        setArtifactId(<span class="string">"card-message-core"</span>) <span class="comment">//设置 artifactId</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//配置上传源码</span></span><br><span class="line">        pom <span class="comment">&#123;</span></span><br><span class="line">            <span class="comment">// 构件名称</span></span><br><span class="line">            <span class="comment">// 区别于artifactId，可以理解为artifactName</span></span><br><span class="line">            name <span class="comment">=</span> <span class="comment">'card-message-core'</span></span><br><span class="line">            <span class="comment">// 构件描述</span></span><br><span class="line">            description <span class="comment">=</span> <span class="comment">'A qingtui card message component'</span></span><br><span class="line">            <span class="comment">// 构件主页</span></span><br><span class="line">            url <span class="comment">=</span> <span class="comment">'https://github.com/im-qingtui/card-message-core'</span></span><br><span class="line">            <span class="comment">// 许可证名称和地址</span></span><br><span class="line">            licenses <span class="comment">&#123;</span></span><br><span class="line">                license <span class="comment">&#123;</span></span><br><span class="line">                    name <span class="comment">=</span> <span class="comment">'The Apache License, Version 2.0'</span></span><br><span class="line">                    url <span class="comment">=</span> <span class="comment">'http://www.apache.org/licenses/LICENSE-2.0.txt'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 开发者信息</span></span><br><span class="line">            developers <span class="comment">&#123;</span></span><br><span class="line">                developer <span class="comment">&#123;</span></span><br><span class="line">                    name <span class="comment">=</span> <span class="comment">'Jcr'</span></span><br><span class="line">                    email <span class="comment">=</span> <span class="comment">'i@jcr.pub'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 版本控制仓库地址</span></span><br><span class="line">            scm <span class="comment">&#123;</span></span><br><span class="line">                url <span class="comment">=</span> <span class="comment">'https://github.com/im-qingtui/card-message-core'</span></span><br><span class="line">                connection <span class="comment">=</span> <span class="comment">'scm:git:git://github.com/im-qingtui/card-message-core.git'</span></span><br><span class="line">                developerConnection <span class="comment">=</span> <span class="comment">'scm:git:ssh://git@github.com:im-qingtui/card-message-core.git'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    repositories <span class="comment">&#123;</span></span><br><span class="line">        maven <span class="comment">&#123;</span></span><br><span class="line">            <span class="comment">//指定要上传的maven私服仓库，这里只设置了 release 仓库地址。</span></span><br><span class="line">            url <span class="comment">=</span> <span class="comment">"https://oss.sonatype.org/service/local/staging/deploy/maven2"</span></span><br><span class="line">            <span class="comment">//认证用户和密码，配置到 gradle.properties 中</span></span><br><span class="line">            credentials <span class="comment">&#123;</span></span><br><span class="line">                username <span class="comment">sonatypeUsername</span></span><br><span class="line">                password <span class="comment">sonatypePassword</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    signing <span class="comment">&#123;</span></span><br><span class="line">        <span class="comment">// 设置对生成文件进行签名</span></span><br><span class="line">        sign <span class="comment">publishing.publications</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>gradle.properties</code> 中添加</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">signing.keyId</span>=[签名 keyId]</span><br><span class="line"><span class="attr">signing.password</span>=[签名 password]</span><br><span class="line"><span class="attr">signing.secretKeyRingFile</span>=[签名的相对路径 例：publish/secret.gpg]</span><br><span class="line"></span><br><span class="line"><span class="attr">sonatypeUsername</span>=[OSSRH 用户名]</span><br><span class="line"><span class="attr">sonatypePassword</span>=[OSSRH 密码]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>keyId 为上一步 GPG 密钥所包含的。</li>
+<li>secretKeyRingFile 为上一步导出的签名路径，</li>
+</ul>
+<h2 id="三、发布"><a href="#三、发布" class="headerlink" title="三、发布"></a>三、发布</h2><p>完成以上步骤后，执行 <code>Gradle Task - Publishing -&gt; publish</code> 或者 <code>Gradle Task - Publishing -&gt; publishJvmPublicationToMavenRepository</code>，前者是发布整个跨平台项目，后者是发布其中的 JVM 部分。<br>如果前面配置没有出错，那么这里执行完成之后就上传成功了。但这并没有结束，本地上传成功之后实际会在 Nexus 中生成一个申请，Nexus 会根据校验规则校验我们上传的包，校验通过后，才可以正式发布。所以我们需要登录 Nexus 去查看我们生成的申请。步骤如下：</p>
+<h3 id="3-1-登录-Nexus"><a href="#3-1-登录-Nexus" class="headerlink" title="3.1 登录 Nexus"></a>3.1 登录 Nexus</h3><p>使用 OSSRH 的账号登录 <a href="https://oss.sonatype.org/" target="_blank" rel="noopener">https://oss.sonatype.org/</a></p>
+<h3 id="3-2-处理申请"><a href="#3-2-处理申请" class="headerlink" title="3.2 处理申请"></a>3.2 处理申请</h3><p>点击 「Staging Repositories」<br><img src="https://imgkr.cn-bj.ufileos.com/b05e9687-4c36-4ba5-9804-980ad344422e.png" alt="image"><br>这条记录就是我们刚才创建的申请，当前状态是「Open」，我们需要选择该条申请，点击「Close」。<br><img src="https://imgkr.cn-bj.ufileos.com/24563be4-b6b9-4cd8-b7bb-d838a0884c69.png" alt="image"><br>等待 1 min 后，刷新页面，选择该申请，点击「Activity」-&gt; 「close」 查看审核结果。<br><img src="https://imgkr.cn-bj.ufileos.com/6acbd5e9-86f5-4130-b1f3-b73c2156793d.png" alt="image"><br>如果没有报错，就说明审核通过了。<br>点击 「Release」<br><img src="https://imgkr.cn-bj.ufileos.com/a696b5e6-d752-4c8b-85a7-add943bacdca.png" alt="image"><br><strong>如果是首次发布，请跳到「四、首次发布后续」继续操作，如果不是首次发布，那么到这里，就已经完成发布了，就可以通过你配置的 Maven 坐标下载到对应的包了。</strong></p>
+<blockquote>
+<p>注：项目生成的文件可以 「Activity」右边的「Content」 查看，如果出错可以检查上传的文件是否完整。</p>
+</blockquote>
+<h3 id="3-3-审核步骤详解和排错"><a href="#3-3-审核步骤详解和排错" class="headerlink" title="3.3 审核步骤详解和排错"></a>3.3 审核步骤详解和排错</h3><p>在上图中，列出了每一条审核的信息。如果审核失败，会在这里具体标出那一条失败。下面开始说明每一条检验规则。</p>
+<ol>
+<li><p>Javadoc Validation<br>上传的文件之中必须包含 javadoc，如果没有则报错</p>
+</li>
+<li><p>Archives must not contain insecure paths<br>上传的文件包中不能包含不安全的路径。只要我们没有违规配置，这一点一般都没问题</p>
+</li>
+<li><p>Signature Validation<br>上传的文件中需要包含 <code>.asc</code> 签名文件，并且会对其进行校验。要和之前密钥配置中匹配</p>
+</li>
+<li><p>POM Validation<br>校验 POM 文件中的信息是否完整，除了基本配置之外，还需要包含 「SCM」信息、项目基本信息（名称、详情、URL）、licenses、developers</p>
+</li>
+<li><p>Profile target matcher<br>配置是否匹配</p>
+</li>
+<li><p>Checksum Validation<br>文件 hash 校验</p>
+</li>
+<li><p>Sources Validation<br>上传的文件中必须包含 sources</p>
+</li>
+</ol>
+<h2 id="四、首次发布后续"><a href="#四、首次发布后续" class="headerlink" title="四、首次发布后续"></a>四、首次发布后续</h2><p>还记得在前面 OSSRH 认证成功之后工作人员的回复吗？其中有一句「please comment on this ticket when you promoted your first release, thanks」<br>「三、发布」完成之后，我们需要回到 OSSRH 中对最开始申请的 issue 进行回复。告诉工作人员，我们完成了第一次发布。<br><img src="https://imgkr.cn-bj.ufileos.com/b046fb41-b7f1-4007-b324-fb8980dc5378.png" alt="image"><br>「I have success to promoted my first release.」</p>
+<p>稍等一会儿，管理员回复之后，Maven Central 会开始进行同步，大约 2 小时之后就可以通过 Maven 坐标检索到你的包了。<br><img src="https://imgkr.cn-bj.ufileos.com/71a16d4d-90b1-4a8c-ab0d-f53760486220.png" alt="image"></p>
+<p>至此，首次发布完成。</p>
+
       
     </div>
     
@@ -667,7 +753,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序言"><span class="nav-text">序言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、准备工作"><span class="nav-text">一、准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-注册-Sonatype-JIRA-账号"><span class="nav-text">1.1 注册 Sonatype JIRA 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-提交发布项目申请"><span class="nav-text">1.2 提交发布项目申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-配置域名通过认证"><span class="nav-text">1.3 配置域名通过认证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、项目配置"><span class="nav-text">二、项目配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、发布"><span class="nav-text">三、发布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、首次发布后续"><span class="nav-text">四、首次发布后续</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序言"><span class="nav-text">序言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、准备工作"><span class="nav-text">一、准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-注册-Sonatype-JIRA-账号"><span class="nav-text">1.1 注册 Sonatype JIRA 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-提交发布项目申请"><span class="nav-text">1.2 提交发布项目申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-配置域名通过认证"><span class="nav-text">1.3 配置域名通过认证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、项目配置"><span class="nav-text">二、项目配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-引入插件"><span class="nav-text">2.1 引入插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-GPG-密钥设置"><span class="nav-text">2.2 GPG 密钥设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-配置发布参数"><span class="nav-text">2.3 配置发布参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、发布"><span class="nav-text">三、发布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-登录-Nexus"><span class="nav-text">3.1 登录 Nexus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-处理申请"><span class="nav-text">3.2 处理申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-审核步骤详解和排错"><span class="nav-text">3.3 审核步骤详解和排错</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、首次发布后续"><span class="nav-text">四、首次发布后续</span></a></li></ol></div>
             
 
           </div>
