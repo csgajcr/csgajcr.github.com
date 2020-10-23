@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="引言随着研发技术的发展，跨平台混合开发越来越流行，Flutter、React Native（以下简称 RN） 这样的框架有越来越多的公司和项目开始使用，Flutter 近两年的迭代速度逐步加快，Google 官方的开发工具 Android Studio 也对其做了许多优化。Flutter 和 RN 专注于多平台构建同一套 UI，已经接受过许多项目的检验，表现还不错。但在面对一些数据处理、后台任务、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 跨平台实践经验分享">
+<meta property="og:url" content="http://blog.jcr.pub/2020/10/20/kotlin-multiplatform-exp-share/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="引言随着研发技术的发展，跨平台混合开发越来越流行，Flutter、React Native（以下简称 RN） 这样的框架有越来越多的公司和项目开始使用，Flutter 近两年的迭代速度逐步加快，Google 官方的开发工具 Android Studio 也对其做了许多优化。Flutter 和 RN 专注于多平台构建同一套 UI，已经接受过许多项目的检验，表现还不错。但在面对一些数据处理、后台任务、">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2020-10-12/1602502553687-image.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2020-10-21/1603263111969-image.png">
+<meta property="article:published_time" content="2020-10-20T07:02:33.000Z">
+<meta property="article:modified_time" content="2020-10-23T07:40:02.296Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="Jcr Android Blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2020-10-12/1602502553687-image.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.jcr.pub/2020/10/20/kotlin-multiplatform-exp-share/"/>
+
+
+
+
+
+  <title>Kotlin 跨平台实践经验分享 | Jcr's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-170483642-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66569732";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jcr's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">A positive and progressive Android developer</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2020/10/20/kotlin-multiplatform-exp-share/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jcr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin 跨平台实践经验分享</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-20T15:02:33+08:00">
+                2020-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/10/20/kotlin-multiplatform-exp-share/" class="leancloud_visitors" data-flag-title="Kotlin 跨平台实践经验分享">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着研发技术的发展，跨平台混合开发越来越流行，Flutter、React Native（以下简称 RN） 这样的框架有越来越多的公司和项目开始使用，Flutter 近两年的迭代速度逐步加快，Google 官方的开发工具 Android Studio 也对其做了许多优化。Flutter 和 RN 专注于多平台构建同一套 UI，已经接受过许多项目的检验，表现还不错。但在面对一些数据处理、后台任务、原生调用的场景时，它们的表现都不尽人意。而这时 Kotlin Multiplatform（以下简称 KMP） 的出现，似乎可以来解决这个问题，如果能够解决，理论上 KMP 是否可以做到不仅 UI 跨平台，全项目都跨平台呢？为了解答这个问题，我开始在项目中实验是否可行。与此同时(2020.9)，KMP 也从 Experimental（实验性的）功能升级到了 Alpha（内测的）功能（Kotlin 1.4.0），KMP 的功能、性能和稳定性都改进了许多，表现出了良好的潜力。<br>参与实践的项目一共有 4 个，类型分为两种，一种是利用 KMP 来构建独立的多端项目。一种是使用 KMP 来构建公共库以供现有的项目使用。我将分享这两种类型的项目中的实践经验。</p>
+<a id="more"></a>
+
+<h2 id="一、使用-KMP-构建独立的多端项目"><a href="#一、使用-KMP-构建独立的多端项目" class="headerlink" title="一、使用 KMP 构建独立的多端项目"></a>一、使用 KMP 构建独立的多端项目</h2><h3 id="1-1-项目背景"><a href="#1-1-项目背景" class="headerlink" title="1.1 项目背景"></a>1.1 项目背景</h3><p>这是第一次使用 KMP 研发独立的项目，主要功能是做数据采集的 SDK，虽然项目并不直接生成应用程序（apk、html），但拥有独立的逻辑闭环和生命周期控制。<br>项目包含 Android、iOS、Web 三端，没有 UI 界面。Android 部分生成 <code>.aar</code>，iOS 部分生成 <code>.framework</code>，Web 部分生成 <code>js、ts</code> 可上传到 npm 仓库。   </p>
+<h3 id="1-2-项目架构"><a href="#1-2-项目架构" class="headerlink" title="1.2 项目架构"></a>1.2 项目架构</h3><p>项目主要结构如下：<br><img src="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2020-10-12/1602502553687-image.png" alt="image"></p>
+<ul>
+<li><p>公共模块<br>公共模块是三端一样的代码，我将能抽离出去的代码都写到了公共模块，包括主要的业务逻辑、数据处理、网络请求等代码。将存储和 IO 的具体实现放到了原生模块，公共模块只需要调用其统一的接口。网络请求框架使用的官方提供的 Ktor Client，可以直接在公共模块使用。</p>
+</li>
+<li><p>Android 模块<br>Android 模块包括在 Android 设备上的存储和、IO 以及 SDK 接入入口的相关代码，并抽象成相应的接口给公共模块调用，存储使用的是 SharedPerference 和 File。Ktor Http 引擎使用的是 OKHttp。</p>
+</li>
+<li><p>iOS 模块<br>与 Android 模块的内容大致相同。</p>
+</li>
+<li><p>Web 模块<br>与 Android 模块的内容大致相同，存储采用的 localStorage。</p>
+</li>
+</ul>
+<p>项目配置的是 1.4.0 版本的 Kotlin，并使用了 1.4.0 的新特性「IR 编译器」，可以将 Web 模块的代码生成 Typescript 定义文件，方便接入方使用。<br><a href="https://kotlinlang.org/docs/reference/whatsnew14.html#new-js-ir-backend" target="_blank" rel="noopener">参考链接</a></p>
+<p>这样做的优势在于可以实现一套代码多端使用，并且可以保证主业务逻辑的一致性，从代码层面上提升研发效率。</p>
+<h3 id="1-3-踩坑"><a href="#1-3-踩坑" class="headerlink" title="1.3 踩坑"></a>1.3 踩坑</h3><ol>
+<li><p>IR 编译器不稳定<br>IR 编译器在发布的第一个版本存在诸多问题，例如和 kotlinx.serialization 一起使用时，会出现编译不通过的情况，这将导致在项目中使用 kotlinx.serialization 后，无法正常 IR 编译器的 <code>@JsExport</code> 功能。</p>
+</li>
+<li><p>iOS framework 编译时间过长<br>KMP 工程生成 framework 文件需要使用 Xcode command line，这期间需要耗费很长的时间，在这个项目中，Android 和 Web 构建的时间加起来仅有两分钟不到，而构建 iOS framework 需要接近 10 分钟。</p>
+</li>
+<li><p>Ktor Client 使用不方便<br>项目使用 Kotlin 官方提供的网络请求库 Ktor Client 发送业务的网络请求，但其功能有限，不支持统一拦截器，实际使用体验并不好。<br>其中还有一个小插曲，项目中使用 Ktor Client 往 Aliyun OSS 传文件，采用 postObject 的方式，但 Ktor Client 上传文件的报文始终通不过 Aliyun 的校验，提客服工单检查之后，问题竟然是 Ktor Client 会自动的去补充一些 post formData 请求的报文，导致无法通过 postObject 上传文件。</p>
+</li>
+<li><p>Kotlin coroutines 协程在集成进 iOS 项目后崩溃<br>项目使用协程进行统一的后台任务管理，同一套代码在 Android 上可以正常使用，打包成 iOS framework 使用时会产生崩溃。</p>
+</li>
+</ol>
+<h3 id="1-4-小结"><a href="#1-4-小结" class="headerlink" title="1.4 小结"></a>1.4 小结</h3><p>KMP 在独立的项目研发场景表现一般，虽然结果是可以使用起来，但在一路上踩坑许多，暴露出了 KMP 目前在独立项目的研发场景下稳定性不够、生态不够好，导致研发效率反而降低同时还拥有新技术的不确定性风险。</p>
+<h2 id="二、使用-KMP-构建公共库"><a href="#二、使用-KMP-构建公共库" class="headerlink" title="二、使用 KMP 构建公共库"></a>二、使用 KMP 构建公共库</h2><h3 id="2-1-背景"><a href="#2-1-背景" class="headerlink" title="2.1 背景"></a>2.1 背景</h3><p>我们想在现有的项目中尝试 KMP，将一部分新功能的业务逻辑和数据模型抽离至的 KMP 项目，不包含网络请求、IO、数据库等原生操作，再用原生项目引用 KMP 项目生成的包，达到一套代码多端使用的目的。尝试这种方式的项目有 3 个。</p>
+<h3 id="2-2-架构思路"><a href="#2-2-架构思路" class="headerlink" title="2.2 架构思路"></a>2.2 架构思路</h3><p>项目主要结构如下：<br><img src="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2020-10-21/1603263111969-image.png" alt="image"></p>
+<ul>
+<li><p>公共模块<br>我们将一些新功能的纯业务逻辑、常量定义和数据模型写到了公共模块，可以供服务端和客户端一并使用，达到全端的统一。</p>
+</li>
+<li><p>各个端的模块<br>在这个架构中，各个端的模块中不会包含过多的代码，一般会包含对模型的处理以及对业务逻辑的封装，以供接入方更好的使用。</p>
+</li>
+</ul>
+<p>这样做的优势在于可以对现有的项目影响较小，仅仅只是一小部分新功能的业务抽离出去使用 KMP，即使发现无法解决的阻塞性问题，也可以及时更换为原生代码。如果能够稳固运行，后续也很好扩展。</p>
+<h3 id="2-3-踩坑"><a href="#2-3-踩坑" class="headerlink" title="2.3 踩坑"></a>2.3 踩坑</h3><ol>
+<li><p>能抽离出去的逻辑有限<br>新功能能抽离出去的公用纯业务逻辑很少。在实践的时候，许多看似可以抽离出去的业务逻辑实际上都会带有一些与现有项目的耦合，并且多端统一的逻辑往往是有限的。</p>
+</li>
+<li><p>调试阶段，编译打包跨平台库消耗时间过长。<br>在研发和调试阶段，需要频改动公共库，有的时候甚至只是改动一行代码都需要重新编译项目，导出对应平台的包再让原生项目依赖，整个流程比较消耗时间，影响研发效率。</p>
+</li>
+<li><p>使用时相比原生代码体验有一定差距<br>在使用这种架构的项目中，尝试过导出 framework（iOS）、js（Web）、js + ts（Web Kotlin 1.4.0）、dll（win）。其中：</p>
+</li>
+</ol>
+<ul>
+<li>iOS framework 包在 iOS 中的使用体验一般，能够正常使用，但会繁琐一点，和原生代码还有差距的。</li>
+<li>js 在现有 React Web 项目中使用体验较差，由于缺少 ts 定义文件，所以使用的时候只能记住对应的函数和变量。</li>
+<li>js + ts 在现有 React Web 项目中体验不错。</li>
+<li>dll 在 Windows 开发中（C#）体验很差，虽然可以使用，但加载 Kotlin 生成的动态（和静态）链接库都很繁琐，使用的成本增加了不少。</li>
+</ul>
+<h3 id="2-4-小结"><a href="#2-4-小结" class="headerlink" title="2.4 小结"></a>2.4 小结</h3><p>使用 KMP 构建公共库的形态总体来说使用体验一般，虽然可以做到多平台兼容，但是在 3 个项目实施后并没有达到很理想的效果，主要体现在两点，分别是：</p>
+<ul>
+<li>开发效率提升不明显</li>
+<li>由于抽离的代码较少，所以代码统一所带来的稳定性提升、易维护的价值较少。</li>
+<li>部分端因使用体验较差用原生代码重写。</li>
+</ul>
+<h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><h3 id="3-1-目前不适合在生产项目中使用"><a href="#3-1-目前不适合在生产项目中使用" class="headerlink" title="3.1 目前不适合在生产项目中使用"></a>3.1 目前不适合在生产项目中使用</h3><p>本次 KMP 项目的实践虽然最终都能够成功运行，但在过程中遇到了较多的坑，结合目前官方 KMP 依然处于测试（Alpha）阶段，社区资料和轮子较少，所以得出的结论是目前不适合在生产项目中使用。</p>
+<p>主要问题如下：</p>
+<ul>
+<li>使用期间的不确定坑较多，遇到疑难的坑一般只能向社区求助（官方社区 YouTrack 或 Github）。</li>
+<li>社区资料和轮子较少。</li>
+<li>与原生代码的契合度还需要提高。</li>
+<li>开发效率提高不明显。在实际开发中，虽然各端一起使用 KMP，但依然需要足够多的原生开发知识作为支撑才能进行开发，且需要最好每位参与开发的人员都会 Kotlin。</li>
+<li>KMP 生成的包依赖较多，会增加最终应用体积。例如在 KMP 研发业务库的场景，原生项目本身没有 kotlin 相关的依赖，但使用就必须得依赖 kotlin 基础库以及使用到的 kotlinx 库</li>
+<li>性能问题。我们发现在一个 iOS 原生项目使用多个 KMP 生成的 framework 时，会依赖多份 kotlin 基础库，并且这些库在应用启动时就会加载，对应用的性能产生一定影响。</li>
+</ul>
+<h3 id="3-2-KMP-的未来"><a href="#3-2-KMP-的未来" class="headerlink" title="3.2 KMP 的未来"></a>3.2 KMP 的未来</h3><p>虽然当下 KMP 的表现在生产项目中不尽人意，但作为技术的探索，KMP 目标做到在所有平台下都能轻松的使用 Kotlin 开发，纵观 Kotlin 的发展史，KMP 的发展越来越迅速，目前已经到测试阶段，且所应用的场景确实为混合开发的痛点之一。所以我认为 KMP 的未来是很有前景的，一起期待吧。</p>
+<h3 id="3-3-新技术在团队推行的考虑"><a href="#3-3-新技术在团队推行的考虑" class="headerlink" title="3.3 新技术在团队推行的考虑"></a>3.3 新技术在团队推行的考虑</h3><p>本次 KMP 的实践，也是一项新技术在团队推行的尝试，我认为这其中还有许多可以优化的地方和值得考虑的问题。这里聊一聊我的看法，未来其他新技术实践时可以参考。<br>团队内新技术的推行，我觉得需要考虑以下问题：   </p>
+<ol>
+<li>新技术是否成熟、稳定性、社区资料、生态怎么样，是否具备接入生产项目的条件，对新技术的原理掌控如何。</li>
+<li>与当前团队的技术栈该如何结合，有哪些风险和价值，价值是否大于风险，如何最小化验证。</li>
+<li>最小化验证的结果如何，是否可以支撑与当前的团队技术栈结合。</li>
+<li>如何设计落地方案，评估风险与容错机制，保证稳定优先。</li>
+<li>如何执行落地方案，如何保证顺利执行、预防事故以及事故解决方案。</li>
+<li>无论是成功落地还是放弃，如何储备技术能力。</li>
+</ol>
+<p>以上的推行方式采用循序渐进的模式，虽然标准很严苛，但是让新技术在团队内落地得到很好的把控，避免因为实际尝试后发现致命性问题而造成返工。即使新技术在中间阶段验证之后发现无法落地，也可以作为技术储备，提升团队的技术能力。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jcr
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.jcr.pub/2020/10/20/kotlin-multiplatform-exp-share/" title="Kotlin 跨平台实践经验分享">http://blog.jcr.pub/2020/10/20/kotlin-multiplatform-exp-share/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/23/kotlin-multiplatform-upload-maven-central/" rel="next" title="Kotlin 跨平台项目上传至 Maven 中央仓库">
+                <i class="fa fa-chevron-left"></i> Kotlin 跨平台项目上传至 Maven 中央仓库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Jcr" />
+          <p class="site-author-name" itemprop="name">Jcr</p>
+           
+              <p class="site-description motion-element" itemprop="description">Jcr - A positive and progressive Android developer </p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、使用-KMP-构建独立的多端项目"><span class="nav-text">一、使用 KMP 构建独立的多端项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-项目背景"><span class="nav-text">1.1 项目背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-项目架构"><span class="nav-text">1.2 项目架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-踩坑"><span class="nav-text">1.3 踩坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-小结"><span class="nav-text">1.4 小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、使用-KMP-构建公共库"><span class="nav-text">二、使用 KMP 构建公共库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-背景"><span class="nav-text">2.1 背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-架构思路"><span class="nav-text">2.2 架构思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-踩坑"><span class="nav-text">2.3 踩坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-小结"><span class="nav-text">2.4 小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、总结"><span class="nav-text">三、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-目前不适合在生产项目中使用"><span class="nav-text">3.1 目前不适合在生产项目中使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-KMP-的未来"><span class="nav-text">3.2 KMP 的未来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-新技术在团队推行的考虑"><span class="nav-text">3.3 新技术在团队推行的考虑</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2019 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Mist
+  </a>
+  <span style="padding-left:10px;padding-right:10px">|</span> Modified by Jcr
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz", "E3QdwSk7zihkWEvVryc0lqS1");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
