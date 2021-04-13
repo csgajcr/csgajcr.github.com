@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据分析点,思考," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="背景去年从一位牛逼的同事那搞了一份「数据分析基础」的课程，没想到最近才有空学习。然后打开课程，发现是 19 年的课程，突然就觉得自己拖了几个月学习也不算长，课程应该还没过时。为什么要学数据分析基础呢？因为我认为数据思维和分析的逻辑不光是在相关行业可以得到使用，作为一个程序员学学数据分析，在未来的工作中也能提供一些思路上的帮助。之前写过一篇初始「数据分析」，里面仅仅只是了解了数据分析的操作框架，没有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「数据分析基础」课程的学习与思考">
+<meta property="og:url" content="http://blog.jcr.pub/2021/04/08/study-fundamentals-of-data-analysis/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="背景去年从一位牛逼的同事那搞了一份「数据分析基础」的课程，没想到最近才有空学习。然后打开课程，发现是 19 年的课程，突然就觉得自己拖了几个月学习也不算长，课程应该还没过时。为什么要学数据分析基础呢？因为我认为数据思维和分析的逻辑不光是在相关行业可以得到使用，作为一个程序员学学数据分析，在未来的工作中也能提供一些思路上的帮助。之前写过一篇初始「数据分析」，里面仅仅只是了解了数据分析的操作框架，没有">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-8/1617894272342-image.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-8/1617896138915-image.png">
+<meta property="article:published_time" content="2021-04-08T10:38:23.000Z">
+<meta property="article:modified_time" content="2021-04-13T02:56:44.920Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="数据分析点">
+<meta property="article:tag" content="思考">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-8/1617894272342-image.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.jcr.pub/2021/04/08/study-fundamentals-of-data-analysis/"/>
+
+
+
+
+
+  <title>「数据分析基础」课程的学习与思考 | Jcr's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-170483642-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66569732";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jcr's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">A positive and progressive Android developer</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2021/04/08/study-fundamentals-of-data-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jcr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「数据分析基础」课程的学习与思考</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-08T18:38:23+08:00">
+                2021-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index">
+                    <span itemprop="name">数据分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2021/04/08/study-fundamentals-of-data-analysis/" class="leancloud_visitors" data-flag-title="「数据分析基础」课程的学习与思考">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>去年从一位牛逼的同事那搞了一份「数据分析基础」的课程，没想到最近才有空学习。然后打开课程，发现是 19 年的课程，突然就觉得自己拖了几个月学习也不算长，课程应该还没过时。<br>为什么要学数据分析基础呢？因为我认为数据思维和分析的逻辑不光是在相关行业可以得到使用，作为一个程序员学学数据分析，在未来的工作中也能提供一些思路上的帮助。之前写过一篇初始「数据分析」，里面仅仅只是了解了数据分析的操作框架，没有实操的环节，甚至都不算入门。而这次学习数据分析基础，可以让我对数据分析有更深入的了解和认识，而这门课程的内容正好特别适合我这种入门级选手。<br>课程虽然知识很基础，但思考却可以更深入。我从课程的这些基础知识中，做了更深入的总结和思考，本文就是总结和思考的记录。</p>
+<a id="more"></a>
+<h2 id="一、课程内容"><a href="#一、课程内容" class="headerlink" title="一、课程内容"></a>一、课程内容</h2><p>课程的内容整体来说比较基础，没有特别难懂的地方，老师讲的也很通俗，结合实战案例，可以说连不会编程的小白都能轻松理解。</p>
+<h3 id="以互联网运营的视角出发"><a href="#以互联网运营的视角出发" class="headerlink" title="以互联网运营的视角出发"></a>以互联网运营的视角出发</h3><p>课程面向的学生是互联网运营岗（初学数据分析的那种），所有知识和案例都是以一个运营的视角出发，从发现问题到解决问题，介绍了一些基础概念、市面上常用的工具和一些上手即用的方法论。</p>
+<h3 id="课程主题"><a href="#课程主题" class="headerlink" title="课程主题"></a>课程主题</h3><p>课程的内容主要包含以下部分：</p>
+<ul>
+<li>指标建模 - 数据指标所代表的含义，将业务指标变成具体数据的指标。</li>
+<li>数据工具 - 用于存放和分析的数据工具。</li>
+<li>数据分析基础 - 介绍对比分析、维度拆解、漏斗等基础分析方法。</li>
+<li>数据分析进阶 - 介绍用户画像、归因查找等方法和实战问题的解决。</li>
+<li>数据采集 - 介绍如何埋点，要埋哪些，如何与研发沟通要怎么埋。</li>
+</ul>
+<p>以上就是对课程内容的简介，下面开始本文的正文。</p>
+<h2 id="二、分析的逻辑"><a href="#二、分析的逻辑" class="headerlink" title="二、分析的逻辑"></a>二、分析的逻辑</h2><p>数据分析中最重要的当然是分析的逻辑，课程虽然只是站在运营的视角介绍了许多方法论，但我认为这些方法底层都是基于这些分析的逻辑而来的。</p>
+<h3 id="自上而下"><a href="#自上而下" class="headerlink" title="自上而下"></a>自上而下</h3><p>就如金字塔一般，「自上而下」的分析逻辑就像解决问题一样。拿到一个具体的业务问题，通过一级一级的拆分，将其从一个业务问题拆分成多个业务指标，再由多个业务指标转化为数据指标，从而基于数据指标进行分析，如图：<br><img src="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-8/1617894272342-image.png" alt=""><br>自上而下的分析逻辑很容易理解，也是我们经常都会用到的场景。这样的分析方法在对一个具体业务问题分析的时候适合使用，核心在于拆分。例如业务问题是「这个月的订单量为什么下降了」，那么这个问题的核心就要提出假设，然后根据假设和核心数据指标「订单量」逐级展开，验证假设，根据各项数据指标的表现找出原因。又例如问题是「如何让下个月订单量翻倍」，那么就要根据订单的转化流程做拆分，然后结合业务现状和对应的数据指标，产出方案。</p>
+<h3 id="自下而上"><a href="#自下而上" class="headerlink" title="自下而上"></a>自下而上</h3><p>「自下而上」的分析逻辑和「自上而下」相反，没有明确顶层的业务问题出发。我们拿到现有的数据指标，通过这些数据指标的表现来找出业务问题，更像是「数据挖掘」。更多用于产品的「健康状况监控」等场景。如下图：<br><img src="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-8/1617896138915-image.png" alt=""><br>数据指标通过组合和计算，可以得出一个又一个的业务指标。通过对这些数据和业务指标的观察和分析，就可以得到很多价值信息。就如我们所用的「数据透视表」，通过把多个数据指标组合并绘制出图形，就可以获得走势、占比等信息。多维度的组合就是抽象的过程，也是金字塔自下而上的过程。<br>自下而上的分析逻辑需要较高的数据量和维度作为基础，越好的数据基础能带来的价值就越多。当然，自下而上的分析并不针对某一个特定的业务问题，在分析的过程就会不断的产出业务指标、业务问题和其他的价值信息。</p>
+<h3 id="从数据的层面出发"><a href="#从数据的层面出发" class="headerlink" title="从数据的层面出发"></a>从数据的层面出发</h3><p>无论是自上而下还是自下而上，更多的是以业务为中心来看，也许你会问怎么区分业务指标和数据指标，他们之间的界线又是什么。<br>如果以数据为中心的角度来看，就可以解释这个问题。在自动化领域，有一种数据分类的方法将数据分为 L1 - L4 四个等级。他们分别的定义是这样的：</p>
+<ul>
+<li>L1：最底层的数据，一般是时序数据、过程数据、状态数据等，数据量大，无效数据多，一般需要清洗。例如打开 App 的事件，当前的温度等。</li>
+<li>L2：将底层数据经过初步转换和计算后的数据，带有一点业务性。例如当日是否活跃。</li>
+<li>L3：将 L2 层的数据再次转换和计算，带有一定业务属性和价值。例如用户增长率。</li>
+<li>L4：将 L3 层的数据再次转换和计算，富有业务价值的数据。例如北极星指标。<br>从 L1 - L4，数据量成指数型减少，更像是一个将数据浓缩为价值的过程。这个过程也是分析过程的一种。对一个整体来说，任何一个数据都可以归到 L1 - L4 中的一种，对数据的获取和转换，都可以类比成从 L1 - L4 的转换，每一个数据指标都需要经过这个过程。<br>至此，也可以回答刚才的问题：业务指标和数据指标的界线是什么？这里并没有明确的界线，L1 - L4 是人根据广义上的数据层级分类。我个人认为，能够解释业务问题的数据指标就可以称之为业务指标，按照这个模型分类，从 L3 开始，就和业务强相关，具备直接解释业务问题的特点，也可以称之为业务指标了。</li>
+</ul>
+<h2 id="三、连接"><a href="#三、连接" class="headerlink" title="三、连接"></a>三、连接</h2><p>现在无论是做产品还是做技术，大家都在谈连接，那「数据分析」自然也可以是在连接。</p>
+<h3 id="连接的是什么"><a href="#连接的是什么" class="headerlink" title="连接的是什么"></a>连接的是什么</h3><p>那么数据到底连接的是什么？数据反映的是事实，从而连接业务。所以数据分析的核心就是「业务数据化」和「数据业务化」。通俗一点，就是把数据和业务绑在一起，达到「共创」的目的，理论上连接的最高境界是：「你就是我我就是你」。<br>纵观整个互联网行业，每个领域都在谈数据，小到一行代码，大到大数据平台；从运营一侧解决运营问题，到机器学习一侧解决脑子的问题。所以作为数据本身而言，连接的业务越多，解决的问题就越多。    </p>
+<h3 id="数据驱动-事实驱动"><a href="#数据驱动-事实驱动" class="headerlink" title="数据驱动 - 事实驱动"></a>数据驱动 - 事实驱动</h3><p>回到业务的层面，站在公司或产品的视角，聊聊最近比较火的「数据驱动」。</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>首先数据驱动的定义，网上看了一下，对数据驱动的定义很多，大家似乎没有达成一致。再看看百度百科的描述：</p>
+<blockquote>
+<p>一种问题求解方法。从初始的数据或观测值出发，运用启发式规则，寻找和建立内部特征之间的关系，从而发现一些定理或定律。通常也指基于大规模统计数据的自然语言处理方法。   </p>
+</blockquote>
+<p>emmm，很抽象，说说我个人的理解吧，如果用一句通俗的话来描述数据驱动，我称之为：</p>
+<blockquote>
+<p>使用数据直接产出结论。   </p>
+</blockquote>
+<p>数据驱动的输入是数据，输出是结论，中间是将数据转化为结论的模型。数据反映的是事实，所以数据驱动的本质是事实驱动，核心在于两点：</p>
+<ol>
+<li>如何让数据反应的事实更准确</li>
+<li>如何让已有的事实变成结论（决策）   </li>
+</ol>
+<h4 id="玩法"><a href="#玩法" class="headerlink" title="玩法"></a>玩法</h4><p>数据驱动一般是怎么玩的呢？驱动的东西不同有不同的玩法，不过都是以「输入-&gt;模型-&gt;输出」的流程为基础演变的。这里拿驱动产品或运营举例，玩法一般是这样的：</p>
+<ol>
+<li>提出目标</li>
+<li>数据建模</li>
+<li>输入数据</li>
+<li>模型计算</li>
+<li>输出结论</li>
+<li>A/B 测试验证</li>
+<li>再输出结论</li>
+</ol>
+<p>对比一下传统模式的玩法，以人或职责驱动的模式：</p>
+<ol>
+<li>提出目标</li>
+<li>分析目标</li>
+<li>调研/讨论</li>
+<li>输出报告</li>
+<li>再讨论</li>
+<li>输出结论</li>
+</ol>
+<p>传统的以人或职责驱动的模式，主要依靠主观臆断和个人的经验决策，相比数据驱动这样的决策不稳定，不易复制。<br>后来流程驱动出现了，流程驱动的模式相比人或职责驱动的模式又更进了一步，虽然解决了可复制，不稳定的问题，但在准确性上还是没法保证。<br>而数据驱动的优势就很明显了：</p>
+<ul>
+<li>结论更加客观准确</li>
+<li>步骤简单，支持快速变化以满足其他场景</li>
+<li>步骤可自动化</li>
+</ul>
+<p>当然，这些优势也伴随着对企业或产品极高的要求：</p>
+<ul>
+<li>对数据的数量和质量要求较高</li>
+<li>对企业的数字化能力要求较高</li>
+</ul>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><p>那么面对数据驱动的各种特点，在实际的场景中应该怎么应用呢，毕竟不是每个产品每家公司都具备数据驱动的条件。这里我个人的观点是：「不同时期的产品，应用的方式不同」<br>如果产品还在孵化期或验证期，那么数据量一定很少，而且质量不高。这时数据只能作为参考因素来辅助决策，甚至许多决策还依然只能靠传统的人来驱动。<br>到了增长期，产品有一定的数据基础，但依然离数据驱动的要求差得很远，这时就可以将数据作为辅助决策的一部分，人工数据分析结合现有工具来帮助决策。<br>到了成熟期，产品拥有一定的数据基础，可以开始逐渐尝试依靠丰富的数据、数据建模和机器学习的能力，形成高响应速度、高决策质量的玩法。     </p>
+<h4 id="数据驱动是终点吗"><a href="#数据驱动是终点吗" class="headerlink" title="数据驱动是终点吗"></a>数据驱动是终点吗</h4><p>上述的应用场景是比较理想的情况。按照这个说法，数据驱动就是企业发展的最终形态吗？<br>我个人的答案是「不一定」。原因有两点：</p>
+<ol>
+<li>数据驱动无法一步到位，更像是锦上添花。达成数据驱动必须经过基于人、职能、流程驱动的业务系统，通过系统产生数据达成，当企业真正达到数据驱动的门槛时，其他驱动的方式必然也很成熟了。</li>
+<li>不是每一个场景都需要高响应速度、高决策质量，需要考虑投入产出。数据驱动的成本和代价是偏高的，相比之下，传统企业或小作坊的玩法不一定不好，适合当下是最重要的。</li>
+</ol>
+<h2 id="四、Next…"><a href="#四、Next…" class="headerlink" title="四、Next…"></a>四、Next…</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jcr
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.jcr.pub/2021/04/08/study-fundamentals-of-data-analysis/" title="「数据分析基础」课程的学习与思考">http://blog.jcr.pub/2021/04/08/study-fundamentals-of-data-analysis/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%82%B9/" rel="tag"># 数据分析点</a>
+          
+            <a href="/tags/%E6%80%9D%E8%80%83/" rel="tag"># 思考</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/04/chat-with-dongbin/" rel="next" title="和「洞宾」的一次聊天">
+                <i class="fa fa-chevron-left"></i> 和「洞宾」的一次聊天
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Jcr" />
+          <p class="site-author-name" itemprop="name">Jcr</p>
+           
+              <p class="site-description motion-element" itemprop="description">Jcr - A positive and progressive Android developer </p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、课程内容"><span class="nav-text">一、课程内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#以互联网运营的视角出发"><span class="nav-text">以互联网运营的视角出发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#课程主题"><span class="nav-text">课程主题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、分析的逻辑"><span class="nav-text">二、分析的逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自上而下"><span class="nav-text">自上而下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自下而上"><span class="nav-text">自下而上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从数据的层面出发"><span class="nav-text">从数据的层面出发</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、连接"><span class="nav-text">三、连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#连接的是什么"><span class="nav-text">连接的是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据驱动-事实驱动"><span class="nav-text">数据驱动 - 事实驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#玩法"><span class="nav-text">玩法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用"><span class="nav-text">应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据驱动是终点吗"><span class="nav-text">数据驱动是终点吗</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Next…"><span class="nav-text">四、Next…</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2019 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Mist
+  </a>
+  <span style="padding-left:10px;padding-right:10px">|</span> Modified by Jcr
+  <span style="padding-left:10px;padding-right:10px">|</span>
+  <a class="theme-link" href="http://www.miitbeian.gov.cn/" target="_blank" rel="noopener">渝ICP备16008150号</a> 
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz", "E3QdwSk7zihkWEvVryc0lqS1");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
