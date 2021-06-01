@@ -105,7 +105,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-5-28/1622192030980-image.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-5-29/1622254339541-image.png">
 <meta property="article:published_time" content="2021-04-28T13:31:20.000Z">
-<meta property="article:modified_time" content="2021-05-31T02:24:41.773Z">
+<meta property="article:modified_time" content="2021-06-01T16:54:44.035Z">
 <meta property="article:author" content="Jcr">
 <meta property="article:tag" content="Web">
 <meta property="article:tag" content="Web前端">
@@ -484,7 +484,7 @@
 <blockquote>
 <p>In Chinese traditional culture qian means heaven and kun stands for earth, so qiankun is the universe.</p>
 </blockquote>
-<p>看到乾坤的作者用英语描述乾坤的含义时，竟然有一点点想笑。<br>市面上的微前端框架除了乾坤之外，应该就属 <code>single-spa</code> 最流行了，<code>single-spa</code> 是一个扩展性极高的微前端框架，他仅仅只实现了微前端基座与子应用的一些约定部分，例如生命周期，加载方式等等。其余的东西都需要自己开发，对于一个普通用户来说 <code>single-spa</code> 是无法直接上手使用，需要进行二次开发。<br>而乾坤是正是基于 <code>single-spa</code> 二次开发的，在 <code>single-spa</code> 的基础上优化了使用体验并扩展了功能，使得乾坤成为了一个开箱即用，功能强大的微前端框架。可以说乾坤是站在 <code>single-spa</code> 的肩膀上成为微前端之巅的。<br>目前国内大多数微前端架构的技术方案都是采用的乾坤。</p>
+<p>看到乾坤的作者用英语描述乾坤的含义时，竟然有一点点想笑。<br>为什么说 qiankun 是微前端之巅呢？<br>市面上的微前端框架除了 qiankun 之外，应该就属 <code>single-spa</code> 最流行了，<code>single-spa</code> 是一个扩展性极高的微前端框架，他仅仅只实现了微前端基座与子应用的一些约定部分，例如生命周期，加载方式等等。其余的东西都需要自己开发，对于一个普通用户来说 <code>single-spa</code> 是无法直接上手使用，需要进行二次开发。<br>而乾坤是正是基于 <code>single-spa</code> 二次开发的，在 <code>single-spa</code> 的基础上优化了使用体验并扩展了功能，使得乾坤成为了一个开箱即用，功能强大的微前端框架。可以说乾坤是站在 <code>single-spa</code> 的肩膀上成为微前端之巅的。<br>目前国内大多数微前端架构的技术方案都是采用的乾坤。</p>
 <h3 id="2-2-乾坤的核心实现"><a href="#2-2-乾坤的核心实现" class="headerlink" title="2.2 乾坤的核心实现"></a>2.2 乾坤的核心实现</h3><p>本小结会详细介绍「乾坤」是如何连接基座与子应用的，以及「乾坤」的具体实现和技术原理是怎么样的。</p>
 <blockquote>
 <p>注：下文 qiankun 和 「乾坤」均指这个框架。qiankun 是他的英文名。「基座」代表微前端中的容器 - 主应用，容器内显示的称为「子应用」</p>
@@ -547,7 +547,7 @@
 <p>所以综合权衡之下，qiankun 默认使用方案 1，通过人为约束子应用样式和基座区分开，也可以做到既满足弹框遮罩的场景，又实现基座和子应用样式互不影响。</p>
 <h5 id="js-隔离"><a href="#js-隔离" class="headerlink" title="js 隔离"></a>js 隔离</h5><p>js 隔离的核心是在基座和子应用中使用不同的上下文 (global env)，从而达成基座和子应用之间 js 运行互不影响。</p>
 <blockquote>
-<p>简单来说，就是给子应用单独的 <code>window</code>，避免对基座的 window 造成污染。</p>
+<p>简单来说，就是给子应用单独的 <code>window</code>，避免对基座的 <code>window</code> 造成污染。</p>
 </blockquote>
 <p>qiankun 在 js 隔离上，同样提供了 3 种方案，分别是：</p>
 <ol>
@@ -559,7 +559,7 @@
 <p>注：样式隔离、JS 隔离都在会子应用 mount 前，bootstrap 时处理。</p>
 </blockquote>
 <p>当然除了这些基本的隔离处理之外，qiankun 还提供了对 window 的各种监听和定时器的 Hook，保证子应用完整的销毁。   </p>
-<p>综合来说，这样的 js 隔离方式已经足够满足在子应用内的操作了。</p>
+<p>综合来说，qiankun 的 js 隔离方式比较完善，足够满足在子应用内的隔离需求了。</p>
 <h4 id="2-2-3-通信、路由的原理"><a href="#2-2-3-通信、路由的原理" class="headerlink" title="2.2.3 通信、路由的原理"></a>2.2.3 通信、路由的原理</h4><p>相比于上文子应用隔离的原理而言，通信和路由更加偏向于应用，qiankun 在这两方面的设计基于微前端理念中的「低耦合度」。技术实现则是直接基于 <code>single-spa</code> 的基础，做了一点简单的扩展。</p>
 <h5 id="通信的原理"><a href="#通信的原理" class="headerlink" title="通信的原理"></a>通信的原理</h5><p>在通信部分，qiankun 提供了全局的 state 供子应用和基座使用。同时提供了 2 个函数供子应用操作使用，分别是：</p>
 <ul>
