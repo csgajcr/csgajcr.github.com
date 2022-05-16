@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.jcr.pub","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言事情的起因是这样的，在一次算法的单元测试时，我使用 ES6 的 Map 存放 KeyValue，想要一个哈希表的效果，发现 Map 的存取效率比想象中低很多。从以前 Java 的开发经验来说，HashMap 的存取复杂度是 O(1)，ES6 的 Map 虽然不是 HashMap，但也应该差不多。意外的是，实际测试下来性能竟然差很多，问题究竟出在哪里呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析 Javascript 对象和 Map 的数据结构">
+<meta property="og:url" content="http://blog.jcr.pub/2021/10/21/js-collection-data-stuct/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="前言事情的起因是这样的，在一次算法的单元测试时，我使用 ES6 的 Map 存放 KeyValue，想要一个哈希表的效果，发现 Map 的存取效率比想象中低很多。从以前 Java 的开发经验来说，HashMap 的存取复杂度是 O(1)，ES6 的 Map 虽然不是 HashMap，但也应该差不多。意外的是，实际测试下来性能竟然差很多，问题究竟出在哪里呢？">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-21T08:09:52.000Z">
+<meta property="article:modified_time" content="2022-05-12T12:25:26.919Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://blog.jcr.pub/2021/10/21/js-collection-data-stuct/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://blog.jcr.pub/2021/10/21/js-collection-data-stuct/","path":"2021/10/21/js-collection-data-stuct/","title":"浅析 Javascript 对象和 Map 的数据结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>浅析 Javascript 对象和 Map 的数据结构 | Jcr's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170483642-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-170483642-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jcr's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A positive and progressive all stack developer</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-链接"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>链接</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">Map 的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%94%9F%E5%AF%B9%E8%B1%A1%EF%BC%88%E6%95%B0%E7%BB%84%EF%BC%89%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">原生对象（数组）的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%92%8C-Map-%E5%81%9A%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83"><span class="nav-number">3.1.</span> <span class="nav-text">和 Map 做性能比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8E%9F%E7%94%9F%E5%AF%B9%E8%B1%A1%E6%AF%94-Map-%E6%95%88%E7%8E%87%E6%9B%B4%E4%BD%8E"><span class="nav-number">3.2.</span> <span class="nav-text">为什么原生对象比 Map 效率更低</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chrome-V8-%E6%98%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E5%8E%9F%E5%A7%8B%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84"><span class="nav-number">3.3.</span> <span class="nav-text">Chrome V8 是如何处理原始对象和数组数据结构的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-amp-%E6%80%9D%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">总结 &amp; 思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jcr</p>
+  <div class="site-description" itemprop="description">Jcr - A positive and progressive all stack developer </div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csgajcr" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csgajcr" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@jcr.pub" title="E-Mail → mailto:i@jcr.pub" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/csgajcr" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2021/10/21/js-collection-data-stuct/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jcr">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+      <meta itemprop="description" content="Jcr - A positive and progressive all stack developer ">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="浅析 Javascript 对象和 Map 的数据结构 | Jcr's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅析 Javascript 对象和 Map 的数据结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-21 16:09:52" itemprop="dateCreated datePublished" datetime="2021-10-21T16:09:52+08:00">2021-10-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">Web前端</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/10/21/js-collection-data-stuct/" class="post-meta-item leancloud_visitors" data-flag-title="浅析 Javascript 对象和 Map 的数据结构" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>事情的起因是这样的，在一次算法的单元测试时，我使用 ES6 的 <code>Map</code> 存放 KeyValue，想要一个哈希表的效果，发现 <code>Map</code> 的存取效率比想象中低很多。从以前 Java 的开发经验来说，<code>HashMap</code> 的存取复杂度是 O(1)，ES6 的 <code>Map</code> 虽然不是 <code>HashMap</code>，但也应该差不多。意外的是，实际测试下来性能竟然差很多，问题究竟出在哪里呢？</p>
+<span id="more"></span>
+
+<h2 id="Map-的实现"><a href="#Map-的实现" class="headerlink" title="Map 的实现"></a>Map 的实现</h2><p>遇到问题我的第一反应是去查文档，于是我找到了最新 ES 的规范（<a target="_blank" rel="noopener" href="https://tc39.es/ecma262/#sec-map-objects">TC39:Map</a>），看到 <code>Map</code> 相关的定义。<br>其中 <code>Map.prototype.get</code> 函数的定义如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">The following steps are taken:</span><br><span class="line"></span><br><span class="line">1. Let M be the this value.</span><br><span class="line">2. Perform ? RequireInternalSlot(M, [[MapData]]).</span><br><span class="line">3. Let entries be the List that is M.[[MapData]].</span><br><span class="line">4. For each Record &#123; [[Key]], [[Value]] &#125; p of entries, do</span><br><span class="line">    a. If p.[[Key]] is not empty and SameValueZero(p.[[Key]], key) is true, return p.[[Value]].</span><br><span class="line">5. Return undefined.</span><br></pre></td></tr></table></figure>
+
+<p>好家伙，结果从 Map 里面获取元素是 for 循环去做的，并且会逐一对比 <code>Key</code>，难怪是要比 <code>HashMap</code> 慢很多，这就相当于从 <code>Map</code> 中查询一个值的复杂度是 O(n)。</p>
+<p>我们再看看插入是怎么做的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">The following steps are taken:</span><br><span class="line"></span><br><span class="line">1. Let M be the this value.</span><br><span class="line">2. Perform ? RequireInternalSlot(M, [[MapData]]).</span><br><span class="line">3. Let entries be the List that is M.[[MapData]].</span><br><span class="line">4. For each Record &#123; [[Key]], [[Value]] &#125; p of entries, do</span><br><span class="line">    a. If p.[[Key]] is not empty and SameValueZero(p.[[Key]], key) is true, then</span><br><span class="line">        i. Set p.[[Value]] to value.</span><br><span class="line">        ii. Return M.</span><br><span class="line">5. If key is -0𝔽, set key to +0𝔽.</span><br><span class="line">6. Let p be the Record &#123; [[Key]]: key, [[Value]]: value &#125;.</span><br><span class="line">7. Append p as the last element of entries.</span><br><span class="line">8. Return M.</span><br></pre></td></tr></table></figure>
+
+<p>不出所料，先遍历是否存在，如果存在则覆盖 <code>Value</code>，否则添加到 <code>entries</code> 的末尾。那么插入元素的时间复杂度也是 O(n)。<br>这也就解释了前言中的问题，ES Map 用来做哈希表还是不太行。<br><strong>那么，既然 <code>Map</code> 是增查复杂度是 O(n)，那原生对象的复杂度会不会低一点呢？</strong></p>
+<h2 id="原生对象（数组）的实现"><a href="#原生对象（数组）的实现" class="headerlink" title="原生对象（数组）的实现"></a>原生对象（数组）的实现</h2><h3 id="和-Map-做性能比较"><a href="#和-Map-做性能比较" class="headerlink" title="和 Map 做性能比较"></a>和 Map 做性能比较</h3><p>先贴一段原生对象替代 Map 实现的代码：（替代部分场景）</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> key = <span class="number">1</span>, value = <span class="number">1</span>;</span><br><span class="line"><span class="comment">// map curd</span></span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line">map.<span class="title function_">has</span>(key);</span><br><span class="line">map.<span class="title function_">set</span>(key, value);</span><br><span class="line">map.<span class="title function_">get</span>(key);</span><br><span class="line">map.<span class="title function_">delete</span>(key);</span><br><span class="line"><span class="comment">// obj curd</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;&#125;;</span><br><span class="line">obj[key] !== <span class="literal">undefined</span>;</span><br><span class="line">obj[key] = value;</span><br><span class="line">obj[key]</span><br><span class="line"><span class="keyword">delete</span> obj[key]</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，使用方式非常近似。我使用一个循环在我本地电脑测试了 <code>Map</code> 和 <code>Object</code> 的增查效率，大致代码如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// obj</span></span><br><span class="line"><span class="keyword">const</span> len = <span class="number">1000000</span>;</span><br><span class="line"><span class="keyword">const</span> obj = &#123;&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = <span class="string">&quot;k&quot;</span> + i;</span><br><span class="line">    obj[key] = <span class="string">&quot;value&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> vc = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = <span class="string">&quot;k&quot;</span> + i;</span><br><span class="line">    <span class="keyword">if</span> (obj[key]) &#123;</span><br><span class="line">        vc++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// map</span></span><br><span class="line"><span class="keyword">const</span> len = <span class="number">1000000</span>;</span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = <span class="string">&quot;k&quot;</span> + i;</span><br><span class="line">    map.<span class="title function_">set</span>(key, <span class="string">&quot;value&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> vc = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = <span class="string">&quot;k&quot;</span> + i;</span><br><span class="line">    <span class="keyword">if</span> (map.<span class="title function_">has</span>(key)) &#123;</span><br><span class="line">        vc++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Map</code> 消耗时间：1470 ms</li>
+<li><code>Object</code> 消耗时间：1987 ms</li>
+</ul>
+<p><strong>从结果可以看到，原生 <code>Object</code> 并没有比 Map 的效率更高，反而 <code>Object</code> 还要更慢一点，那这又是为什么呢？</strong></p>
+<h3 id="为什么原生对象比-Map-效率更低"><a href="#为什么原生对象比-Map-效率更低" class="headerlink" title="为什么原生对象比 Map 效率更低"></a>为什么原生对象比 Map 效率更低</h3><p>于是我继续查阅文档（<a target="_blank" rel="noopener" href="https://tc39.es/ecma262/multipage/abstract-operations.html#sec-makebasicobject">TC39:Objects</a>），找到了原始对象的相关定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. Let obj be a newly created object with an internal slot for each name in internalSlotsList.</span><br><span class="line">2. Set obj&#x27;s essential internal methods to the default ordinary object definitions specified in 10.1.</span><br><span class="line">3. Assert: If the caller will not be overriding both obj&#x27;s [[GetPrototypeOf]] and [[SetPrototypeOf]] essential internal methods, then internalSlotsList contains [[Prototype]].</span><br><span class="line">4. Assert: If the caller will not be overriding all of obj&#x27;s [[SetPrototypeOf]], [[IsExtensible]], and [[PreventExtensions]] essential internal methods, then internalSlotsList contains [[Extensible]].</span><br><span class="line">5. If internalSlotsList contains [[Extensible]], set obj.[[Extensible]] to true.</span><br><span class="line">6. Return obj.</span><br></pre></td></tr></table></figure>
+
+<p>这里只提到了原始对象的定义，并没有说具体是怎么实现的，我们可以从文中提到的 <code>internalSlotsList</code> 猜想，难道对象的属性也是一个 <code>slotsList</code> ？，每次查询也是遍历一次拿到，况且因为原生对象的属性还有很多内置属性，所以遍历时会遍历更多的元素，导致对比 <code>Map</code> 还要更低效一点。<br>这个解释很说得通，我自己都差点信了。直到我把苗头转向了数组，我把 <code>Key</code> 变成了纯数字，然后用数组、Map 和原生对象跑了一次，代码如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> len = <span class="number">1000000</span>;</span><br><span class="line"><span class="keyword">const</span> obj = &#123;&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = i;</span><br><span class="line">    obj[key] = <span class="string">&quot;value&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> arr = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = i;</span><br><span class="line">    arr[key] = <span class="string">&quot;value&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = i;</span><br><span class="line">    map.<span class="title function_">set</span>(key, <span class="string">&quot;value&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>数组消耗时间：42 ms</li>
+<li><code>Map</code> 消耗时间：450 ms</li>
+<li>原始对象消耗时间：54 ms</li>
+</ul>
+<p><strong>仅仅是 <code>Key</code> 是字符串还是数字索引的区别，和之前的结果就大相径庭，<code>Map</code> 基本被吊打。所以原生对象并不是比 <code>Map</code> 效率更低，只是在非数组索引时  <code>Map</code> 更适合一些。</strong><br>同时也说明，Javascript 引擎应该对原始对象和数组的数据结构有特殊处理。</p>
+<h3 id="Chrome-V8-是如何处理原始对象和数组数据结构的"><a href="#Chrome-V8-是如何处理原始对象和数组数据结构的" class="headerlink" title="Chrome V8 是如何处理原始对象和数组数据结构的"></a>Chrome V8 是如何处理原始对象和数组数据结构的</h3><p>继续看文档，于是找到了 Chrome V8 引擎相关描述的博文（<a target="_blank" rel="noopener" href="https://v8.dev/blog/fast-properties">Fast properties in V8</a>）<br><strong>原文很长，这里只列出重点：</strong></p>
+<ol>
+<li>对于可被顺序索引的属性，使用数组作为数据结构。例如：0,1,2 （速度最快）</li>
+<li>对于不可顺序被索引的属性，分两种情况：<br>a. 如果是在对象定义时就有的属性，数据结构依然使用数组，但会生成一个属性名到数组索引的映射表，例如：<code>name -&gt; 0</code>，<code>age -&gt; 1</code>。（速度也很快）<br>b. 如果是在运行时动态添加的属性，数据结构使用 <code>Dictionary</code>，引擎会将动态添加的 <code>Key</code> 和 <code>Value</code> 添加到一个字典表中，（速度较慢）</li>
+<li>每一次为原生对象动态添加不可被顺序索引的属性，都会为他生成一个 <code>HiddenClass</code> 用于存储这个对象的元信息。添加顺序索引的属性则不会。</li>
+<li>数组和原生对象的结构差不多，如果数组使用顺序索引，那么参考第 1 条，如果是非顺序索引，则参考第 2.b 条。例如：<br>a. 顺序索引：<code>a[0] = 1;a[1] = 2;</code> 使用数组存储。<br>b. 非顺序索引：<code>a[9999] = 999;a[&#39;abc&#39;] = 123;</code> 使用 <code>Dictionary</code> 存储。</li>
+</ol>
+<p><strong>由这些内容就可以解释上文的案例了：</strong><br>之所以原生对象的效率更低，是因为每一次新增字符串属性（非顺序索引），都会额外创建 <code>HiddenClass</code>，导致开销增大很多，而新增数字索引就不会。所以才导致了上文「仅仅是 Key 类型不同，结果却大相径庭」。</p>
+<p>到这里，也算是对原生对象的数据结构有了更清晰的认识。当然，其实 <a target="_blank" rel="noopener" href="https://v8.dev/blog/fast-properties">Fast properties in V8</a> 这篇博文还说了很多其他关于对象数据结构的细节，讲的更加深入，这里就不多讨论了，有兴趣的小伙伴可自行阅读。</p>
+<h2 id="总结-amp-思考"><a href="#总结-amp-思考" class="headerlink" title="总结 &amp; 思考"></a>总结 &amp; 思考</h2><p>通过这一波儿折腾，感觉对 <code>Chrome V8</code> 引擎的实现细节又多了一些了解。从一开始的猜想到最后找出真相，一步一步挖掘探索，还是很有意思的，有一种解密的感觉，特别是在自己认为已经猜到它的实现时，然后又去写测试代码验证，结果被啪啪打脸的时候，又会更加好奇这 <code>Chrome V8</code> 到底是咋玩儿的。<br>事实证明，还是要多实践多思考，Js 引擎开发者的每一个实现都有很多细节在里面，同时也做足了思考，经过了这么多年的打磨，力求做到更优，并不是我等菜鸟随随便便就能猜到的。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://tc39.es/ecma262/#sec-map.prototype.get">TC39:sec-map-objects.get</a></li>
+<li><a target="_blank" rel="noopener" href="https://tc39.es/ecma262/#sec-map.prototype.set">TC39:sec-map-objects-set</a></li>
+<li><a target="_blank" rel="noopener" href="https://tc39.es/ecma262/multipage/abstract-operations.html#sec-makebasicobject">TC39:sec-makebasicobject</a></li>
+<li><a target="_blank" rel="noopener" href="https://v8.dev/blog/fast-properties">Blog:Fast properties in V8</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/19/make-a-code-diff-viewer/" rel="prev" title="实现了一个查看代码 Diff 的组件">
+                  <i class="fa fa-chevron-left"></i> 实现了一个查看代码 Diff 的组件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/01/jcr-2021/" rel="next" title="Jcr's 2021">
+                  Jcr's 2021 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">渝ICP备16008150号 </a>
+      <img src="/img/beian_bottom.png" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=16008150" rel="noopener" target="_blank">渝公网安备16008150号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz","app_key":"E3QdwSk7zihkWEvVryc0lqS1","server_url":"https://xrkhjriw.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.jcr.pub","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="引言后有「微服务」，前有「微前端」。微前端是一个近几年才火起来的名词，伴随着近年来前端技术的超速发展和 “js 必将一统天下” 的口号，JavaScript 现在已经无所不能了。10 年前，网页前端还是以 html + css + js 为主，被程序员们称为最简单的编程语言，最易上手的一个端，甚至部分前端还需要兼职美工。现在，前端领域已经玩出了各种花样，上能写服务端中间件，下能写移动端 App。连">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微前端架构详解 - 乾坤">
+<meta property="og:url" content="http://blog.jcr.pub/2021/04/28/the-architecture-of-micro-frontends-qiankun/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="引言后有「微服务」，前有「微前端」。微前端是一个近几年才火起来的名词，伴随着近年来前端技术的超速发展和 “js 必将一统天下” 的口号，JavaScript 现在已经无所不能了。10 年前，网页前端还是以 html + css + js 为主，被程序员们称为最简单的编程语言，最易上手的一个端，甚至部分前端还需要兼职美工。现在，前端领域已经玩出了各种花样，上能写服务端中间件，下能写移动端 App。连">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-28/1619619097458-image.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-28/1619619053742-image.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-5-28/1622192030980-image.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-5-29/1622254339541-image.png">
+<meta property="article:published_time" content="2021-04-28T13:31:20.000Z">
+<meta property="article:modified_time" content="2022-05-12T12:25:26.925Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="Web前端">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="微前端">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-28/1619619097458-image.png">
+
+
+<link rel="canonical" href="http://blog.jcr.pub/2021/04/28/the-architecture-of-micro-frontends-qiankun/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://blog.jcr.pub/2021/04/28/the-architecture-of-micro-frontends-qiankun/","path":"2021/04/28/the-architecture-of-micro-frontends-qiankun/","title":"微前端架构详解 - 乾坤"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>微前端架构详解 - 乾坤 | Jcr's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170483642-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-170483642-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jcr's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A positive and progressive all stack developer</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-链接"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>链接</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BE%AE%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">一、微前端架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%BE%AE%E5%89%8D%E7%AB%AF%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 微前端是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%BE%AE%E5%89%8D%E7%AB%AF%E7%9A%84%E6%A0%B8%E5%BF%83%E7%90%86%E5%BF%B5"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 微前端的核心理念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="nav-number">2.2.1.</span> <span class="nav-text">核心思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%90%86%E5%BF%B5"><span class="nav-number">2.2.2.</span> <span class="nav-text">理念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%B7%E5%80%BC"><span class="nav-number">2.2.3.</span> <span class="nav-text">价值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%BD%A2%E5%A6%82-iframe-%E5%8D%B4%E9%9D%9E-iframe"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 形如 iframe 却非 iframe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E8%AF%84%E4%BC%B0%E5%BE%AE%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6"><span class="nav-number">2.4.</span> <span class="nav-text">1.4 评估微前端框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BE%AE%E5%89%8D%E7%AB%AF%E4%B9%8B%E5%B7%85-%E4%B9%BE%E5%9D%A4"><span class="nav-number">3.</span> <span class="nav-text">二、微前端之巅 - 乾坤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Why-%E4%B9%BE%E5%9D%A4"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 Why 乾坤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E4%B9%BE%E5%9D%A4%E7%9A%84%E6%A0%B8%E5%BF%83%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 乾坤的核心实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E5%BA%94%E7%94%A8%E6%8E%A5%E5%85%A5%E5%8E%9F%E7%90%86"><span class="nav-number">3.2.1.</span> <span class="nav-text">2.2.1 应用接入原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E9%9A%94%E7%A6%BB%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">3.2.2.</span> <span class="nav-text">2.2.2 隔离的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A0%B7%E5%BC%8F%E9%9A%94%E7%A6%BB"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">样式隔离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#js-%E9%9A%94%E7%A6%BB"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">js 隔离</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-%E9%80%9A%E4%BF%A1%E3%80%81%E8%B7%AF%E7%94%B1%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">3.2.3.</span> <span class="nav-text">2.2.3 通信、路由的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">通信的原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">路由的原理</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%80%BB%E7%BB%93-amp-%E6%80%9D%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">三、总结 &amp; 思考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jcr</p>
+  <div class="site-description" itemprop="description">Jcr - A positive and progressive all stack developer </div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csgajcr" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csgajcr" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@jcr.pub" title="E-Mail → mailto:i@jcr.pub" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/csgajcr" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2021/04/28/the-architecture-of-micro-frontends-qiankun/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jcr">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+      <meta itemprop="description" content="Jcr - A positive and progressive all stack developer ">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="微前端架构详解 - 乾坤 | Jcr's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微前端架构详解 - 乾坤
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-28 21:31:20" itemprop="dateCreated datePublished" datetime="2021-04-28T21:31:20+08:00">2021-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">Web前端</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/04/28/the-architecture-of-micro-frontends-qiankun/" class="post-meta-item leancloud_visitors" data-flag-title="微前端架构详解 - 乾坤" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>后有「微服务」，前有「微前端」。微前端是一个近几年才火起来的名词，伴随着近年来前端技术的超速发展和 <strong>“js 必将一统天下”</strong> 的口号，JavaScript 现在已经无所不能了。<br>10 年前，网页前端还是以 html + css + js 为主，被程序员们称为最简单的编程语言，最易上手的一个端，甚至部分前端还需要兼职美工。现在，前端领域已经玩出了各种花样，上能写服务端中间件，下能写移动端 App。连最开始的网页前端，也从 jQuery 这样的工具库转化到响应式框架和组件化的时代了。<br>组件化已经基本可以满足大中小型应用的需求了，但面对一些超大体量的应用时，传统组件化架构就会产生诸多问题。这时，为了解决这些问题，微前端架构诞生了。</p>
+<span id="more"></span>
+
+<h2 id="一、微前端架构"><a href="#一、微前端架构" class="headerlink" title="一、微前端架构"></a>一、微前端架构</h2><h3 id="1-1-微前端是什么"><a href="#1-1-微前端是什么" class="headerlink" title="1.1 微前端是什么"></a>1.1 微前端是什么</h3><p>在微前端的定义上，定义有很多。<a target="_blank" rel="noopener" href="https://micro-frontends.org/">微前端官网</a>（没错，概念也有官网）的定义是：</p>
+<blockquote>
+<p>Techniques, strategies and recipes for building a modern web app with multiple teams that can ship features independently.</p>
+</blockquote>
+<p>英语好的自行理解，理解不了的看我的解读：</p>
+<blockquote>
+<p>用于解决多团队开发一个超大型应用的技术。</p>
+</blockquote>
+<p>那么微前端应用的架构又是什么样的呢？<br><img src="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-28/1619619097458-image.png"></p>
+<p>如上图所示，</p>
+<ul>
+<li>「Shared Stitching Layer」代表微前端基座，用于控制当前应该展示哪个页面、加载和移除页面，就像页面的「中控室」。</li>
+<li>中间的「Ads Team」、「Products Team」、「Users Team」分别代表不同团队所开发的不同的前端项目，这些项目往往是直接给用户使用的。</li>
+<li>下面的 「API Service」代表不同项目的后端，为前端项目提供服务。</li>
+</ul>
+<p>基于这样的架构，研发管理上就可以做到不同团队只关注自己的应用功能，不必关心技术上对其他应用的影响，从而提高效率，如下图：<br><img src="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-4-28/1619619053742-image.png"></p>
+<p>你可能会问：</p>
+<blockquote>
+<p>不就是多团队开发然后用个壳子揉到一起吗，这真的能提高很多效率吗？</p>
+</blockquote>
+<p>还真能，这就要从微前端的核心理念说起了。</p>
+<h3 id="1-2-微前端的核心理念"><a href="#1-2-微前端的核心理念" class="headerlink" title="1.2 微前端的核心理念"></a>1.2 微前端的核心理念</h3><h4 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h4><p>微前端的核心思想是<strong>让应用之间技术栈无关</strong>，足够的无关，才叫「微前端」。<br>基于这个核心思想，我将微前端的理念总结为 4 个点，基于这 4 个点的技术发展将直接影响微前端架构的成熟度。</p>
+<h4 id="理念"><a href="#理念" class="headerlink" title="理念"></a>理念</h4><ul>
+<li><p>高隔离性<br>隔离性是微前端最重要的特性之一，良好的隔离性可以让子应用与子应用之间、子应用与基座之间互不干扰，子应用只运行在自己的沙箱里。甚至应用各自可以用不同的技术栈。例如基座用 Vuejs，A 应用使用 React，B 应用使用原生 html + jQuery。</p>
+</li>
+<li><p>低耦合度<br>微前端要求各个子应用之间耦合度很低，往往框架的「隔离性」做得越好，子应用间通信的限制就越多，通信成本就越高。如果应用之间耦合度高，则会产生频繁的通信操作，从而增加使用成本。所以微前端架构强制要求应用之间低耦合。如果应用因业务原因耦合度不得不变高，则应从业务拆分的角度考虑是否将两个子应用整合成为一个。</p>
+</li>
+<li><p>高扩展性<br>微前端框架是一个非常灵活的框架，允许框架内的子应用进行任意形式的扩展，不限制基座和子应用依赖，基座和子应用可以基于业务和技术上来扩展功能，例如可以把基座扩展成一个云平台架子，或者改造成一个应用编排器。</p>
+</li>
+<li><p>低侵入性<br>从微前端框架层来说，无论是对基座还是子应用，都需要保证尽可能低的侵入。能只侵入依赖的就不侵入代码，能只侵入 10 行代码的坚决不侵入 20 行。过高的侵入性会增加使用成本，降低扩展性和协作效率。侵入性和扩展性共同决定了微前端框架的易用性。</p>
+</li>
+</ul>
+<h4 id="价值"><a href="#价值" class="headerlink" title="价值"></a>价值</h4><p>如果用一句话来形容微前端的价值，我称之为：</p>
+<blockquote>
+<p>因「无关」而「效率」</p>
+</blockquote>
+<p><strong>微前端解决应用在研发、维护、升级、变迁时因耦合而造成的维护性降低的问题，在超大型前端应用中尤为明显。</strong>    </p>
+<p>试想一下，如果一个巨型的 React(15) 单页应用，需要升级到 React(16) 的版本，那必定会迎来一波腥风血雨，做过此类不兼容升级工作的小伙伴一定知道心里的苦。<br>但如果是这个应用是微前端架构，完全可以保持基座依然是 React(15)，先将 A 子应用升级到 React(16)，既可以降低升级风险，还可以平稳过度。同理，这个机制在新技术实践的时候也适用，例如如果想试用 Vue3，就可以让 B 子应用使用 Vue3 开发，和 React 基座完成契合。甚至如果有一个 5 年前的项目 C 应用，突然想接入到我们系统里，按照传统的方式我们需要对这个 5 年前的项目做一次痛苦的改造，但按照微前端的模式他只需要在做一点接入相关的开发，即可与基座和 A、B 子应用融合。</p>
+<h3 id="1-3-形如-iframe-却非-iframe"><a href="#1-3-形如-iframe-却非-iframe" class="headerlink" title="1.3 形如 iframe 却非 iframe"></a>1.3 形如 iframe 却非 iframe</h3><p>写到这里，如果你对前端有了解，你可能会问：</p>
+<blockquote>
+<p>你说的这些我明白，但 iframe 不是可以解决你说的这些问题吗？</p>
+</blockquote>
+<p>那是当然，从 iframe 的机制来看，简直是为微前端而生的 html 原生组件，但回头一想，那些研究微前端的人总不能是傻子吧，如果 iframe 真的这么好用，还研究这么多干什么。    </p>
+<p>iframe 在使用上的确很方便，但功能限制缺有很多，有的微前端架构也是用 iframe 实现的，但都会面对如下问题：</p>
+<ul>
+<li>URL 状态的问题。iframe 的 url 状态会在刷新时丢失，同时后退、前进按钮都无法控制 iframe</li>
+<li>UI 完全隔离。iframe 内的 UI 只能在 iframe 内，这在需要弹框，或者层叠的时候会特别丑。比如一个 iframe 内部弹窗，遮罩智能盖住 iframe，无法影响到外面，导致看起来恨不协调</li>
+<li>上下文隔离。iframe 内外通信及其不方便，一般通过 url、cookie 等方案来通信</li>
+<li>性能消耗大。每一个 iframe 都可以看成是一个小的浏览器窗口，应用每次进入相当于打开多个窗口。一般会比单页应用更慢。</li>
+</ul>
+<p>这些问题有的可以曲线解决，有的没法解决，这些没法解决的问题会直接影响交互体验，有时这些影响是不被接受的。这促使人们开始寻找新的道路，有没有一种方案可以「形如 iframe 却非 iframe」呢？<br>从目前的发展趋势来看，“让子应用能够像 iframe 一样简单接入，消除 iframe 的那些缺点” 是微前端架构不断在攻坚的目标之一。</p>
+<h3 id="1-4-评估微前端框架"><a href="#1-4-评估微前端框架" class="headerlink" title="1.4 评估微前端框架"></a>1.4 评估微前端框架</h3><p>上文说的都是微前端架构的理论，在实际场景中，往往没有一个微前端框架是处处完美的，那么如果评估一个微前端框架的成熟度呢？<br>我推荐从 3 个维度来评价，分别是：</p>
+<ul>
+<li>运行隔离</li>
+<li>应用侵入</li>
+<li>使用体验</li>
+</ul>
+<p>「运行隔离」代表着微前端框架基座、子应用之间是否会相互影响，能够做到在需要影响的时候影响（例如模态框），不需要影响的时候完全隔离（例如样式污染，上下文污染）。<br>「应用侵入」代表着框架对基座和子应用的侵入性，对应用尽可能低的侵入，才能让应用有更大的扩展空间和更低的接入成本。<br>「使用体验」代表框架在开始开发到上线使用整个流程里的使用体验，包含代码开发、热更新调试、版本控制、持续集成、性能优化等，一个成熟的微前端框架，在使用体验上一定做的不差。</p>
+<h2 id="二、微前端之巅-乾坤"><a href="#二、微前端之巅-乾坤" class="headerlink" title="二、微前端之巅 - 乾坤"></a>二、微前端之巅 - 乾坤</h2><p>说了这些微前端理念，那么在当下的技术生态中，哪个微前端框架最成熟呢？那一定是「乾坤」了，本文除了介绍微前端的概念之外，还会深入「乾坤」的实现原理来剖析，「乾坤」是如何一步一步优化和精进，从而成为当前的「微前端之巅」的。</p>
+<h3 id="2-1-Why-乾坤"><a href="#2-1-Why-乾坤" class="headerlink" title="2.1 Why 乾坤"></a>2.1 Why 乾坤</h3><p><a target="_blank" rel="noopener" href="https://github.com/umijs/qiankun">乾坤(qiankun)</a>的命名由来：</p>
+<blockquote>
+<p>In Chinese traditional culture qian means heaven and kun stands for earth, so qiankun is the universe.</p>
+</blockquote>
+<p>看到乾坤的作者用英语描述乾坤的含义时，竟然有一点点想笑。<br>为什么说 qiankun 是微前端之巅呢？<br>市面上的微前端框架除了 qiankun 之外，应该就属 <code>single-spa</code> 最流行了，<code>single-spa</code> 是一个扩展性极高的微前端框架，他仅仅只实现了微前端基座与子应用的一些约定部分，例如生命周期，加载方式等等。其余的东西都需要自己开发，对于一个普通用户来说 <code>single-spa</code> 是无法直接上手使用，需要进行二次开发。<br>而乾坤是正是基于 <code>single-spa</code> 二次开发的，在 <code>single-spa</code> 的基础上优化了使用体验并扩展了功能，使得乾坤成为了一个开箱即用，功能强大的微前端框架。可以说乾坤是站在 <code>single-spa</code> 的肩膀上成为微前端之巅的。<br>目前国内大多数微前端架构的技术方案都是采用的乾坤。</p>
+<h3 id="2-2-乾坤的核心实现"><a href="#2-2-乾坤的核心实现" class="headerlink" title="2.2 乾坤的核心实现"></a>2.2 乾坤的核心实现</h3><p>本小结会详细介绍「乾坤」是如何连接基座与子应用的，以及「乾坤」的具体实现和技术原理是怎么样的。</p>
+<blockquote>
+<p>注：下文 qiankun 和 「乾坤」均指这个框架。qiankun 是他的英文名。「基座」代表微前端中的容器 - 主应用，容器内显示的称为「子应用」</p>
+</blockquote>
+<h4 id="2-2-1-应用接入原理"><a href="#2-2-1-应用接入原理" class="headerlink" title="2.2.1 应用接入原理"></a>2.2.1 应用接入原理</h4><p>如果把基座看成是一个架子，子应用是架子里内容的一部分。基座和子应用都是单独部署的两个地址，那么第一个问题：</p>
+<blockquote>
+<p>基座是如何加载子应用的？</p>
+</blockquote>
+<p>在主流微前端框架中，加载的方式一般分为两种：</p>
+<ul>
+<li>JS Entry - 子应用打包时将所有资源（html、css、js）全部打包成一个 js 文件。基座通过加载这个 js 加载子应用。</li>
+<li>HTML Entry - 子应用按照原有的模式打包，基座通过加载应用的入口文件（index.html），然后再加载入口文件中的页面资源，最终汇总成 html、css、js 资源再加载到页面。</li>
+</ul>
+<p>两种方式各有优劣，从体验的角度出发，HTML Entry 的体验更好，且侵入性更低，所以 qiankun 选择用 HTML Entry 的方式来加载子应用。   </p>
+<p><strong>那么 qiankun 又是怎么实现 HTML Entry 的呢？</strong><br>在 qiankun 的源码中，作者将这一部分抽离成了单独的 npm 库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;import-html-entry&quot;: &quot;^1.9.0&quot;</span><br></pre></td></tr></table></figure>
+<p>这个库主要做了这些事情：</p>
+<ol>
+<li>加载 entry html (index.html) 的内容到内存。</li>
+<li>将 entry html 中的 css、js、link 等标签下的内容获取出来（包含外部的和内联的），整理成网页所需的 js、css 列表。并将无用标签去掉（例如注释、ignore 等）。</li>
+<li>加载所有外链 js 脚本，并将这些外链 js 和内联 js 一起整理为 script list。</li>
+<li>加载所有外链 css 文件，并将其以内联（<code>&lt;style/&gt;</code>）的方式插入到 entry html 中。</li>
+<li>将处理后的 entry html 和待执行的 script list 返回给调用方（基座）。</li>
+</ol>
+<p>在 <code>import-html-entry</code> 库处理完之后，基座在需要的加载子应用时候将这个 html 放到对应的 DOM 容器节点，并执行 script list，即完成子应用的加载。<br>同时为了满足丰富的实际场景，<code>qiankun</code> 还提供了预加载和按需加载两种策略，以供不同的场景使用，开启预加载之后，基座会在浏览器空闲时（requestIdleCallback）加载其余子应用，反之，只会在需要显示子应用的时候加载。</p>
+<p>到这里，你可能会有第二个问题：</p>
+<blockquote>
+<p>上文只是说如何将应用加载到页面上，并没有说怎么建立关系，基座和子应用之间是如何建立关系的呢？</p>
+</blockquote>
+<p>首先在 <code>qiankun</code> 框架中，约定子应用必须导出 <code>bootstrap、mount、unmount</code> 三个声明周期函数，且必须以 <code>umd</code> 的格式导出模块。以 <code>Vue</code> 子应用的代码举例如下：<br><strong>main.ts</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">export async function bootstrap() &#123;</span><br><span class="line">  console.log(&quot;[vue] vue app bootstraped&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export async function mount(props: any) &#123;</span><br><span class="line">  console.log(&quot;[vue] props from main framework&quot;, props);</span><br><span class="line">  render(props);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export async function unmount() &#123;</span><br><span class="line">  instance.$destroy();</span><br><span class="line">  instance.$el.innerHTML = &quot;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>vue.config.js</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">configureWebpack: &#123;</span><br><span class="line">        output: &#123;</span><br><span class="line">            // 把子应用打包成 umd 库格式</span><br><span class="line">            library: `$&#123;name&#125;-[name]`,</span><br><span class="line">            libraryTarget: &#x27;umd&#x27;,</span><br><span class="line">            jsonpFunction:`webpackJsonp_$&#123;name&#125;`,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>在上文最后，我们在加载子应用时有提到“执行 script list” 的步骤，这个步骤在执行完毕之后，就会检测该模块是否导出这三个生命周期函数，如果导出了，则认为这是一个子应用。    </p>
+<p>这三个生命周期函数分别的含义是：</p>
+<ul>
+<li>bootstrap 应用被装载。在应用首次初始化完成后触发，上文有提到 “执行 script list”，script list 执行完成后，即开始执行 bootstrap 函数。注意，此时应用只是被初始化，并不代表马上将要被显示。</li>
+<li>mount 应用被挂载。在应用需要显示时触发，此时，基座已经为子应用分配了 DOM 节点，然后调用 mount 函数。子应用在 mount 函数中可以根据基座分配的 DOM 节点，将子应用的内容渲染进去。</li>
+<li>unmount 应用被卸载。在子应用被关闭时触发，子应用需要在此函数中做一些清理操作。</li>
+</ul>
+<blockquote>
+<p>需要注意的是，bootstrap 函数只会执行一次，而 mount 和 unmount 会根据基座对子应用的控制可能会执行多次。</p>
+</blockquote>
+<p>qiankun 在加载子应用时，会为 window 注入标志性变量 <code>window.__POWERED_BY_QIANKUN__</code>，子应用通过此标志来决定在基座中的加载逻辑和独立运行的加载逻辑，从而实现子应用可以在基座内外均可独立运行。</p>
+<h4 id="2-2-2-隔离的原理"><a href="#2-2-2-隔离的原理" class="headerlink" title="2.2.2 隔离的原理"></a>2.2.2 隔离的原理</h4><p>子应用和基座的隔离主要有两点：</p>
+<ol>
+<li>样式隔离</li>
+<li>js 隔离</li>
+</ol>
+<h5 id="样式隔离"><a href="#样式隔离" class="headerlink" title="样式隔离"></a>样式隔离</h5><p>要想做到子应用和基座之间的样式不会相互干扰，首先要做的就是样式隔离。<br>qiankun 提供了 3 种模式来实现不同效果的样式隔离：</p>
+<ol>
+<li><strong>动态载入 CSS(默认)</strong> - 代码中的配置为 <code>sandbox = true</code> ，这种模式的做法是直接将子应用的样式（2.2.1 中的 css 列表）全部直接加载到子应用挂载的 DOM 节点内，这样在卸载子应用的时候，移除该 DOM 节点，就可以自动去掉子应用使用的 css。但这种模式可能会导致子应用内的样式影响到基座。（例如子应用内和基座对同一个 id 的 DOM 元素配置了样式）</li>
+<li><strong>Shadow DOM 样式隔离</strong> - 代码中的配置为 <code>sandbox.strictStyleIsolation = true</code>，这种模式是使用浏览器原生的 Shadow DOM(mode = open) 实现，从而达到 Shadow Root 下的 css 无法影响到外部。参考链接：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Web_Components/Using_shadow_DOM">Shadow DOM</a></li>
+<li><strong>Scoped CSS 样式隔离</strong> - 代码中的配置为 <code>sandbox.experimentalStyleIsolation = true</code>。这种模式通过为 css 选择器添加 <code>[data-...]</code> 限制，从而实现样式的隔离，这种模式可以做到应用内的样式不会影响到外部。</li>
+</ol>
+<p><strong>咋眼一看，你一定会觉得，第 2，3 种方案更好，能够做到完全隔离，第一种会影响基座，但为什么 qiankun 默认的是第 1 种方案呢？</strong>   </p>
+<p>当然还是因为体验的原因，我们在 UI 开发的过程中，会使用到类似「模态框」、「引导框」这样的组件，这样的组件往往需要直接挂载到 body 下，对网页整体加上蒙版什么的，如果我们使用第 2，3 种方案，那么子应用就只能在子应用内部玩，对子应用外的样式全部无效，弹框之类的也会变得很丑，还可能有 bug。如下图：<br>第 2,3 种方案：<br><img src="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-5-28/1622192030980-image.png"><br>第 1 种方案：<br><img src="https://cdn.jsdelivr.net/gh/csgajcr/imageroom/2021-5-29/1622254339541-image.png"></p>
+<p>可见，没有遮罩的弹框显得索然无味。 </p>
+<p>所以综合权衡之下，qiankun 默认使用方案 1，通过人为约束子应用样式和基座区分开，也可以做到既满足弹框遮罩的场景，又实现基座和子应用样式互不影响。</p>
+<h5 id="js-隔离"><a href="#js-隔离" class="headerlink" title="js 隔离"></a>js 隔离</h5><p>js 隔离的核心是在基座和子应用中使用不同的上下文 (global env)，从而达成基座和子应用之间 js 运行互不影响。</p>
+<blockquote>
+<p>简单来说，就是给子应用单独的 <code>window</code>，避免对基座的 <code>window</code> 造成污染。</p>
+</blockquote>
+<p>qiankun 在 js 隔离上，同样提供了 3 种方案，分别是：</p>
+<ol>
+<li><code>LegacySandbox</code> - 传统 js 沙箱，目前已弃用，需要配置 <code>sandbox.loose = true</code> 开启。此沙箱使用 <code>Proxy</code> 代理子应用对 window 的操作，将子应用对 window 的操作同步到全局 window 上，造成侵入。但同时会将期间对 window 的新增、删除、修改操作记录到沙箱变量中，在子应用关闭时销毁，再根据记录将 window 还原到初始状态。</li>
+<li><code>ProxySandbox</code> - 代理 js 沙箱，非 IE 浏览器默认使用此沙箱。和 <code>LegacySandbox</code> 同样基于 <code>Proxy</code> 代理子应用对 window 的操作，和 <code>LegacySandbox</code> 不同的是，<code>ProxySandbox</code> 会创建一个虚拟的 window 对象提供给子应用使用，哪怕是在运行时，子应用也不会侵入对 window，实现完全的隔离。</li>
+<li><code>SnapshotSandbox</code> - 快照 js 沙箱，IE 浏览器默认使用此沙箱。因为 IE 不支持 <code>Proxy</code>。此沙箱的原理是在子应用启动时，创建基座 window 的快照，存到一个变量中，子应用的 window 操作实质上是对这个变量操作。<code>SnapshotSandbox</code> 同样会将子应用运行期间的修改存储至 <code>modifyPropsMap</code> 中，以便在子应用创建和销毁时还原。</li>
+</ol>
+<blockquote>
+<p>注：样式隔离、JS 隔离都在会子应用 mount 前，bootstrap 时处理。</p>
+</blockquote>
+<p>当然除了这些基本的隔离处理之外，qiankun 还提供了对 window 的各种监听和定时器的 Hook，保证子应用完整的销毁。   </p>
+<p>综合来说，qiankun 的 js 隔离方式比较完善，足够满足在子应用内的隔离需求了。</p>
+<h4 id="2-2-3-通信、路由的原理"><a href="#2-2-3-通信、路由的原理" class="headerlink" title="2.2.3 通信、路由的原理"></a>2.2.3 通信、路由的原理</h4><p>相比于上文子应用隔离的原理而言，通信和路由更加偏向于应用，qiankun 在这两方面的设计基于微前端理念中的「低耦合度」。技术实现则是直接基于 <code>single-spa</code> 的基础，做了一点简单的扩展。</p>
+<h5 id="通信的原理"><a href="#通信的原理" class="headerlink" title="通信的原理"></a>通信的原理</h5><p>在通信部分，qiankun 提供了全局的 state 供子应用和基座使用。同时提供了 2 个函数供子应用操作使用，分别是：</p>
+<ul>
+<li>onGlobalStateChange: <code>(callback: OnGlobalStateChangeCallback, fireImmediately?: boolean) =&gt; void</code> 在当前应用监听全局状态，有变更触发 callback，fireImmediately = true 立即触发 callback</li>
+<li>setGlobalState: <code>(state: Record&lt;string, any&gt;) =&gt; boolean</code> 按一级属性设置全局状态，子应用中只能修改已存在的一级属性</li>
+</ul>
+<blockquote>
+<p>注：<code>setGlobalState</code> 子应用仅能对全局 state 已存在的一级属性做修改，不能对 state 新增或删除属性。<code>onGlobalStateChange</code> 监听数据变化同样只针对于 state 已存在的一级属性。</p>
+</blockquote>
+<p>这样设计的目的是想把全局 state 的掌控权交给基座主应用，避免子应用乱操作。   </p>
+<p>如果以上数据的通信不够用，也可以使用 <code>window.addEventListener</code> 直接进行事件通信。</p>
+<h5 id="路由的原理"><a href="#路由的原理" class="headerlink" title="路由的原理"></a>路由的原理</h5><p>qiankun 提供单实例（单个子应用）和多实例（多个子应用同时显示）模式。这里我们只讨论单实例模式，多实例模式目前还处于实验性阶段，多实例路由目前无法使用。</p>
+<p>单实例模式下，qiankun 支持子应用使用 <code>hash</code> 和 <code>history</code> 两种路由模式，如果使用 <code>history</code> 需要设置 <code>base</code>。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const router = new VueRouter(&#123;</span><br><span class="line">  mode: &#x27;history&#x27;,</span><br><span class="line">  base: &quot;/frame1&quot;,</span><br><span class="line">  routes</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>qiankun 在 <code>registerMicroApps</code> 中获取应用激活规则和入口地址，在规则触发时就会加载该子应用，子应用加载完成后，应用内路由的权利就完全交给子应用了。<br>如果子应用资源使用的相对路径加载，那么子应用需要在被加载的第一时间指定 <code>webpack_public_path</code> 然后再初始化。代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (window.__POWERED_BY_QIANKUN__) &#123;</span><br><span class="line">  __webpack_public_path__ = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一步，qiankun 将子应用在基座中配置的入口地址传递给子应用，子应用指定 <code>webpack_public_path</code> 后即可正确加载页面资源。</p>
+<h2 id="三、总结-amp-思考"><a href="#三、总结-amp-思考" class="headerlink" title="三、总结 &amp; 思考"></a>三、总结 &amp; 思考</h2><p>本文的写作过程是非常花费精力的，作者从一开始对微前端不怎么了解，通过大量查阅资料、阅读源码配合一些实际操作经验，结合自身对微前端的理解，最终输出了本篇文章。<br>在这一路上，我发现了 qiankun 的一路迭代不光是依靠一个又一个的技术人书写精巧的代码堆砌而成，更重要的是 qiankun 的使命和设计思路的构建，在阅读乾坤技术圆桌的文章时，qiankun 的作者 <code>kuitos</code>、阿里内部开发者、社区贡献者对 qiankun 的使命和核心进行了非常深度的思考，多次精彩的脑暴和思维碰撞，这些思考指引着 qiankun 的发展，让 qiankun 的未来脱离传统「微前端」思想的束缚。<br>放眼整个框架圈，不光是 qiankun，许多知名开源框架都有这个过程。由此可以去想，我们在做技术组件，在做一些抽象的底层代码时，是否仔细去想过它的核心价值是什么。缺乏核心价值指导的组件是缺少灵魂的，它可以解决当下的问题，但也许无法面向未来。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web%E5%89%8D%E7%AB%AF/" rel="tag"># Web前端</a>
+              <a href="/tags/Web/" rel="tag"># Web</a>
+              <a href="/tags/%E5%BE%AE%E5%89%8D%E7%AB%AF/" rel="tag"># 微前端</a>
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/15/study-fundamentals-of-data-analysis/" rel="prev" title="「数据分析基础」课程的学习与思考">
+                  <i class="fa fa-chevron-left"></i> 「数据分析基础」课程的学习与思考
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/28/how-to-reading/" rel="next" title="聊聊如何读书">
+                  聊聊如何读书 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">渝ICP备16008150号 </a>
+      <img src="/img/beian_bottom.png" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=16008150" rel="noopener" target="_blank">渝公网安备16008150号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz","app_key":"E3QdwSk7zihkWEvVryc0lqS1","server_url":"https://xrkhjriw.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

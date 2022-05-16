@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.jcr.pub","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="序言将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、配置、坑和其处理方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 跨平台项目上传至 Maven 中央仓库">
+<meta property="og:url" content="http://blog.jcr.pub/2020/07/23/kotlin-multiplatform-upload-maven-central/index.html">
+<meta property="og:site_name" content="Jcr&#39;s Blog">
+<meta property="og:description" content="序言将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、配置、坑和其处理方式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/1.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/2.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/3.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/4.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/5.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/6.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/7.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/8.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/9.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/10.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/11.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/12.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/13.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/14.png">
+<meta property="og:image" content="http://blog.jcr.pub/img/kotlin-mumc/15.png">
+<meta property="article:published_time" content="2020-07-23T14:01:54.000Z">
+<meta property="article:modified_time" content="2022-05-12T12:25:26.921Z">
+<meta property="article:author" content="Jcr">
+<meta property="article:tag" content="Kotlin">
+<meta property="article:tag" content="Maven Central">
+<meta property="article:tag" content="Kotlin multiplatform">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.jcr.pub/img/kotlin-mumc/1.png">
+
+
+<link rel="canonical" href="http://blog.jcr.pub/2020/07/23/kotlin-multiplatform-upload-maven-central/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://blog.jcr.pub/2020/07/23/kotlin-multiplatform-upload-maven-central/","path":"2020/07/23/kotlin-multiplatform-upload-maven-central/","title":"Kotlin 跨平台项目上传至 Maven 中央仓库"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kotlin 跨平台项目上传至 Maven 中央仓库 | Jcr's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170483642-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-170483642-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jcr's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A positive and progressive all stack developer</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-链接"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>链接</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">序言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">一、准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%B3%A8%E5%86%8C-Sonatype-JIRA-%E8%B4%A6%E5%8F%B7"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 注册 Sonatype JIRA 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%8F%90%E4%BA%A4%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE%E7%94%B3%E8%AF%B7"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 提交发布项目申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E9%85%8D%E7%BD%AE%E5%9F%9F%E5%90%8D%E9%80%9A%E8%BF%87%E8%AE%A4%E8%AF%81"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 配置域名通过认证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">二、项目配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%BC%95%E5%85%A5%E6%8F%92%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 引入插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-GPG-%E5%AF%86%E9%92%A5%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 GPG 密钥设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E9%85%8D%E7%BD%AE%E5%8F%91%E5%B8%83%E5%8F%82%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 配置发布参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%8F%91%E5%B8%83"><span class="nav-number">4.</span> <span class="nav-text">三、发布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E7%99%BB%E5%BD%95-Nexus"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 登录 Nexus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%A4%84%E7%90%86%E7%94%B3%E8%AF%B7"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 处理申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E5%AE%A1%E6%A0%B8%E6%AD%A5%E9%AA%A4%E8%AF%A6%E8%A7%A3%E5%92%8C%E6%8E%92%E9%94%99"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 审核步骤详解和排错</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%A6%96%E6%AC%A1%E5%8F%91%E5%B8%83%E5%90%8E%E7%BB%AD"><span class="nav-number">5.</span> <span class="nav-text">四、首次发布后续</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jcr</p>
+  <div class="site-description" itemprop="description">Jcr - A positive and progressive all stack developer </div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csgajcr" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csgajcr" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@jcr.pub" title="E-Mail → mailto:i@jcr.pub" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/csgajcr" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.jcr.pub/2020/07/23/kotlin-multiplatform-upload-maven-central/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jcr">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jcr's Blog">
+      <meta itemprop="description" content="Jcr - A positive and progressive all stack developer ">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Kotlin 跨平台项目上传至 Maven 中央仓库 | Jcr's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kotlin 跨平台项目上传至 Maven 中央仓库
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-23 22:01:54" itemprop="dateCreated datePublished" datetime="2020-07-23T22:01:54+08:00">2020-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Kotlin/" itemprop="url" rel="index"><span itemprop="name">Kotlin</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2020/07/23/kotlin-multiplatform-upload-maven-central/" class="post-meta-item leancloud_visitors" data-flag-title="Kotlin 跨平台项目上传至 Maven 中央仓库" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><p>将一个普通的 Java 上传至 Maven 中央仓库并不是一件很困难的事情。按照官方提供的配置即可。但如果想上传一个 Kotlin 多平台项目，就没那么方便了。网上关于 Kotlin 多平台项目的资料很少，如何上传至中央仓库更是几乎没有。<br>本篇文章将介绍将 Kotlin 多平台项目上传至 Maven 中央仓库的方法、流程、配置、坑和其处理方式。</p>
+<span id="more"></span>
+
+<h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><blockquote>
+<p>先了解一下概念，OSSRH - Sonatype OSSRH 是为开源软件提供 Maven 仓库托管的服务。要在 Maven 中央仓库（ Maven Central ）中发布，需要先注册账号。</p>
+</blockquote>
+<h3 id="1-1-注册-Sonatype-JIRA-账号"><a href="#1-1-注册-Sonatype-JIRA-账号" class="headerlink" title="1.1 注册 Sonatype JIRA 账号"></a>1.1 注册 Sonatype JIRA 账号</h3><p>注册链接：<a target="_blank" rel="noopener" href="https://issues.sonatype.org/secure/Signup!default.jspa">https://issues.sonatype.org/secure/Signup!default.jspa</a></p>
+<p>注册成功后会进入如下界面：<br><img src="/img/kotlin-mumc/1.png" alt="WX20200725-111323@2x"></p>
+<p>英语不够好的请选择「中文（中国）」</p>
+<p><img src="/img/kotlin-mumc/2.png" alt="WX20200725-111444@2x"></p>
+<p>选择「下一步」</p>
+<h3 id="1-2-提交发布项目申请"><a href="#1-2-提交发布项目申请" class="headerlink" title="1.2 提交发布项目申请"></a>1.2 提交发布项目申请</h3><p><img src="/img/kotlin-mumc/3.png" alt="WX20200725-111519@2x"></p>
+<p>选择「创建一个问题」</p>
+<blockquote>
+<p>注：如果已经注册，则在主页上点击「新建」也可以进入到创建 issue 的页面。</p>
+</blockquote>
+<p><img src="/img/kotlin-mumc/4.png" alt="WX20200725-111557@2x"></p>
+<p>「项目」一栏选择 <code>Community Support - Open Source Project Repository Hosting (OSSRH)</code> ，选择这一项代表我们是要发布一个开源项目。   </p>
+<p>「问题类型」一栏选择 <code>New Project</code>，然后「下一步」</p>
+<p><img src="/img/kotlin-mumc/5.png" alt="WX20200725-112517@2x"></p>
+<p>「概要」和「描述」填写关于项目的简单概要和详细介绍，如果不知道填啥可以填项目名和简介。</p>
+<p><img src="/img/kotlin-mumc/6.png" alt="WX20200725-112528@2x"></p>
+<p>「GroupId」为 Maven 坐标的 GroupId，不能随便填写。需要持有该域名才能使用该 GroupId。<br>例如我的域名为 <code>jcr.pub</code> 那么我的 GroupId 可以填写 <code>pub.jcr.*</code> 这种格式。<br>如果没有自己的域名，那么可以使用 Github 的其用户名作为 GroupId 。我的 Github 用户名为 <code>csgajcr</code> 那么我可以填写 <code>com.github.csgajcr</code> 作为我的 GroupId。</p>
+<p>「Project URL」填写项目的链接地址。<br><a target="_blank" rel="noopener" href="https://github.com/csgajcr/unity-bridge-android">https://github.com/csgajcr/unity-bridge-android</a></p>
+<p>「SCM URL」填写项目的版本管理地址。<br><a target="_blank" rel="noopener" href="https://github.com/csgajcr/unity-bridge-android.git">https://github.com/csgajcr/unity-bridge-android.git</a></p>
+<p>填写完成后，点击「新建」</p>
+<p>至此，就已经成功提交一个申请了。</p>
+<blockquote>
+<p>注：提交之后需要等待 10 分钟左右，工作人员会给我们提交的 issue 一个回复，让你验证域名。（因为我之前选择的域名作为 GroupId）   </p>
+</blockquote>
+<h3 id="1-3-配置域名通过认证"><a href="#1-3-配置域名通过认证" class="headerlink" title="1.3 配置域名通过认证"></a>1.3 配置域名通过认证</h3><p>大约 10 分钟后，工作人员会给你一个回复，并且会把 issue 的状态修改为 「wait for response」</p>
+<p><img src="/img/kotlin-mumc/7.png" alt="image"></p>
+<p>根据回复的内容，可以通过两种方式证明你拥有这个域名：</p>
+<ol>
+<li>为域名添加 TXT 记录</li>
+<li>为域名设置重定向到 Github page</li>
+</ol>
+<p>我选择的「为域名添加 TXT 记录」</p>
+<blockquote>
+<p>注：我的域名在阿里云购买，所以进入阿里云控制台配置即可，其他域名服务商也有对应的设置位置。</p>
+</blockquote>
+<p><img src="/img/kotlin-mumc/8.png" alt="image"></p>
+<p>添加之后，点击前面 issue 页面上方的按钮「Response」，问题会变成 「open」状态。继续等待 10 分钟左右。如果验证成功就会看到成功的评论，如果失败，请参考在 issue 中的回复内容，进行修改即可。</p>
+<p><img src="/img/kotlin-mumc/9.png" alt="image"></p>
+<p>上图为认证成功的评论。</p>
+<h2 id="二、项目配置"><a href="#二、项目配置" class="headerlink" title="二、项目配置"></a>二、项目配置</h2><p>本节主要介绍在跨平台项目中 Gradle 脚本应该如何配置上传功能。</p>
+<h3 id="2-1-引入插件"><a href="#2-1-引入插件" class="headerlink" title="2.1 引入插件"></a>2.1 引入插件</h3><p>在项目根目录的 <code>build.gradle</code> 中加入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &#x27;maven-publish&#x27;</span><br><span class="line">apply plugin: &#x27;signing&#x27;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>maven-publish 是将项目发布到 Maven 仓库的插件。</li>
+<li>signing 是签名插件，为发布生成的文件进行签名。</li>
+</ul>
+<h3 id="2-2-GPG-密钥设置"><a href="#2-2-GPG-密钥设置" class="headerlink" title="2.2 GPG 密钥设置"></a>2.2 GPG 密钥设置</h3><p>Maven Central 会对我们上传的包进行签名。这里使用的签名采用的是公私钥（RSA）的模式，即私钥签名，公钥验证。所以我们需要先为项目生成一份公私钥对，并将公钥上传至公钥中心，再把私钥配置到项目中，为生成的包签名。   </p>
+<blockquote>
+<p>这里涉及的概念 「公钥」、「私钥」、「签名」如果不太清楚可以自行查阅相关资料。</p>
+</blockquote>
+<ol>
+<li><p>GPG 安装<br>GPG 在 Max OSX 环境下可以直接通过命令行安装。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install -v gpg</span><br></pre></td></tr></table></figure>
+<p>Windows 下可以使用 <a target="_blank" rel="noopener" href="https://www.gpg4win.org/download.html">gpg4win</a></p>
+<blockquote>
+<p>以下将以 Mac OSX 为基准演示操作流程。Windows 用户可以使用可视化 GPG 管理工具，或者 Windows 下的 bash ，具体请自行查阅相关资料，这里不做太多详述。</p>
+</blockquote>
+</li>
+<li><p>新建密钥<br>执行如下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpg --generate-key</span><br></pre></td></tr></table></figure>
+<p>执行后会让你输入密钥的相关信息，根据你的信息输入即可。执行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pub   rsa2048 2020-07-27 [SC] [有效至：2022-07-27]</span><br><span class="line">      BB53A3118459F41C4E355D31E90A28513D397F2F</span><br><span class="line">uid                      Jcr &lt;i@jcr.pub&gt;</span><br><span class="line">sub   rsa2048 2020-07-27 [E] [有效至：2022-07-27]</span><br></pre></td></tr></table></figure>
+<p>查看已经生成的密钥，可以看到刚才生成的密钥。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpg -k</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 BB53A3118459F41C4E355D31E90A28513D397F2F 为密钥指纹，指纹的后 8 位 「3D397F2F」为密钥的 KeyId，后续在 Gradle 配置中将会使用到。 </p>
+</blockquote>
+</li>
+<li><p>导出刚创建的私钥<br>执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpg --export-secret-keys [密钥指纹] &gt; private-key.gpg</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>将导出之后的 <code>private-key.gpg</code> 放置到项目目录，方便下一步的配置使用。</p>
+</blockquote>
+</li>
+<li><p>上传公钥到公钥服务器<br>执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpg --keyserver keyserver.ubuntu.com --send-keys [密钥指纹]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：keyserver.ubuntu.com 为公钥服务器的地址，Maven Central 在校验签名是会从公钥服务器拉取。Maven Central 支持的公钥服务器地址有三个 <code>pool.sks-keyservers.net</code>、<code>keyserver.ubuntu.com</code> 、<code>keys.gnupg.net</code>。如果一个地址访问失败，替换成换成其中任意一个都是可以的。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="2-3-配置发布参数"><a href="#2-3-配置发布参数" class="headerlink" title="2.3 配置发布参数"></a>2.3 配置发布参数</h3><p>在 <code>build.gradle</code> 中设置项目的 groupId 和 version，actifactId 会自动获取你的项目名称。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">group &#x27;pub.jcr.android&#x27; //这里的 groupId 需要和 OSSRH 中申请的保持一致</span><br><span class="line">version &#x27;0.0.0.9&#x27;</span><br></pre></td></tr></table></figure>
+<p>添加 Maven 发布相关代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">def javadocTask = task javadocJar(type: Jar) &#123;</span><br><span class="line">    archiveClassifier.set(&quot;javadoc&quot;)</span><br><span class="line">    classifier = &quot;javadoc&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">publishing &#123;</span><br><span class="line">    publications.configureEach &#123;</span><br><span class="line">        // 添加生成 javadoc 的任务</span><br><span class="line">        artifact javadocTask</span><br><span class="line"></span><br><span class="line">        setArtifactId(&quot;card-message-core&quot;) //设置 artifactId</span><br><span class="line"></span><br><span class="line">        //配置上传源码</span><br><span class="line">        pom &#123;</span><br><span class="line">            // 构件名称</span><br><span class="line">            // 区别于artifactId，可以理解为artifactName</span><br><span class="line">            name = &#x27;card-message-core&#x27;</span><br><span class="line">            // 构件描述</span><br><span class="line">            description = &#x27;A qingtui card message component&#x27;</span><br><span class="line">            // 构件主页</span><br><span class="line">            url = &#x27;https://github.com/im-qingtui/card-message-core&#x27;</span><br><span class="line">            // 许可证名称和地址</span><br><span class="line">            licenses &#123;</span><br><span class="line">                license &#123;</span><br><span class="line">                    name = &#x27;The Apache License, Version 2.0&#x27;</span><br><span class="line">                    url = &#x27;http://www.apache.org/licenses/LICENSE-2.0.txt&#x27;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            // 开发者信息</span><br><span class="line">            developers &#123;</span><br><span class="line">                developer &#123;</span><br><span class="line">                    name = &#x27;Jcr&#x27;</span><br><span class="line">                    email = &#x27;i@jcr.pub&#x27;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            // 版本控制仓库地址</span><br><span class="line">            scm &#123;</span><br><span class="line">                url = &#x27;https://github.com/im-qingtui/card-message-core&#x27;</span><br><span class="line">                connection = &#x27;scm:git:git://github.com/im-qingtui/card-message-core.git&#x27;</span><br><span class="line">                developerConnection = &#x27;scm:git:ssh://git@github.com:im-qingtui/card-message-core.git&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            //指定要上传的maven私服仓库，这里只设置了 release 仓库地址。</span><br><span class="line">            url = &quot;https://oss.sonatype.org/service/local/staging/deploy/maven2&quot;</span><br><span class="line">            //认证用户和密码，配置到 gradle.properties 中</span><br><span class="line">            credentials &#123;</span><br><span class="line">                username sonatypeUsername</span><br><span class="line">                password sonatypePassword</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    signing &#123;</span><br><span class="line">        // 设置对生成文件进行签名</span><br><span class="line">        sign publishing.publications</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>gradle.properties</code> 中添加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">signing.keyId=[签名 keyId]</span><br><span class="line">signing.password=[签名 password]</span><br><span class="line">signing.secretKeyRingFile=[签名的相对路径 例：publish/secret.gpg]</span><br><span class="line"></span><br><span class="line">sonatypeUsername=[OSSRH 用户名]</span><br><span class="line">sonatypePassword=[OSSRH 密码]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>keyId 为上一步 GPG 密钥所包含的。</li>
+<li>secretKeyRingFile 为上一步导出的签名路径，</li>
+</ul>
+<h2 id="三、发布"><a href="#三、发布" class="headerlink" title="三、发布"></a>三、发布</h2><p>完成以上步骤后，执行 <code>Gradle Task - Publishing -&gt; publish</code> 或者 <code>Gradle Task - Publishing -&gt; publishJvmPublicationToMavenRepository</code>，前者是发布整个跨平台项目，后者是发布其中的 JVM 部分。<br>如果前面配置没有出错，那么这里执行完成之后就上传成功了。但这并没有结束，本地上传成功之后实际会在 Nexus 中生成一个申请，Nexus 会根据校验规则校验我们上传的包，校验通过后，才可以正式发布。所以我们需要登录 Nexus 去查看我们生成的申请。步骤如下：</p>
+<h3 id="3-1-登录-Nexus"><a href="#3-1-登录-Nexus" class="headerlink" title="3.1 登录 Nexus"></a>3.1 登录 Nexus</h3><p>使用 OSSRH 的账号登录 <a target="_blank" rel="noopener" href="https://oss.sonatype.org/">https://oss.sonatype.org/</a></p>
+<h3 id="3-2-处理申请"><a href="#3-2-处理申请" class="headerlink" title="3.2 处理申请"></a>3.2 处理申请</h3><p>点击 「Staging Repositories」<br><img src="/img/kotlin-mumc/10.png" alt="image"><br>这条记录就是我们刚才创建的申请，当前状态是「Open」，我们需要选择该条申请，点击「Close」。<br><img src="/img/kotlin-mumc/11.png" alt="image"><br>等待 1 min 后，刷新页面，选择该申请，点击「Activity」-&gt; 「close」 查看审核结果。<br><img src="/img/kotlin-mumc/12.png" alt="image"><br>如果没有报错，就说明审核通过了。<br>点击 「Release」<br><img src="/img/kotlin-mumc/13.png" alt="image"><br><strong>如果是首次发布，请跳到「四、首次发布后续」继续操作，如果不是首次发布，那么到这里，就已经完成发布了，就可以通过你配置的 Maven 坐标下载到对应的包了。</strong></p>
+<blockquote>
+<p>注：项目生成的文件可以 「Activity」右边的「Content」 查看，如果出错可以检查上传的文件是否完整。</p>
+</blockquote>
+<h3 id="3-3-审核步骤详解和排错"><a href="#3-3-审核步骤详解和排错" class="headerlink" title="3.3 审核步骤详解和排错"></a>3.3 审核步骤详解和排错</h3><p>在上图中，列出了每一条审核的信息。如果审核失败，会在这里具体标出那一条失败。下面开始说明每一条检验规则。</p>
+<ol>
+<li><p>Javadoc Validation<br>上传的文件之中必须包含 javadoc，如果没有则报错</p>
+</li>
+<li><p>Archives must not contain insecure paths<br>上传的文件包中不能包含不安全的路径。只要我们没有违规配置，这一点一般都没问题</p>
+</li>
+<li><p>Signature Validation<br>上传的文件中需要包含 <code>.asc</code> 签名文件，并且会对其进行校验。要和之前密钥配置中匹配</p>
+</li>
+<li><p>POM Validation<br>校验 POM 文件中的信息是否完整，除了基本配置之外，还需要包含 「SCM」信息、项目基本信息（名称、详情、URL）、licenses、developers</p>
+</li>
+<li><p>Profile target matcher<br>配置是否匹配</p>
+</li>
+<li><p>Checksum Validation<br>文件 hash 校验</p>
+</li>
+<li><p>Sources Validation<br>上传的文件中必须包含 sources</p>
+</li>
+</ol>
+<h2 id="四、首次发布后续"><a href="#四、首次发布后续" class="headerlink" title="四、首次发布后续"></a>四、首次发布后续</h2><p>还记得在前面 OSSRH 认证成功之后工作人员的回复吗？其中有一句「please comment on this ticket when you promoted your first release, thanks」<br>「三、发布」完成之后，我们需要回到 OSSRH 中对最开始申请的 issue 进行回复。告诉工作人员，我们完成了第一次发布。<br><img src="/img/kotlin-mumc/14.png" alt="image"><br>「I have success to promoted my first release.」</p>
+<p>稍等一会儿，管理员回复之后，Maven Central 会开始进行同步，大约 2 小时之后就可以通过 Maven 坐标检索到你的包了。<br><img src="/img/kotlin-mumc/15.png" alt="image"></p>
+<p>至此，首次发布完成。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+              <a href="/tags/Maven-Central/" rel="tag"># Maven Central</a>
+              <a href="/tags/Kotlin-multiplatform/" rel="tag"># Kotlin multiplatform</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/27/pyramid-principle-after-reading/" rel="prev" title="《金字塔原理》读书笔记">
+                  <i class="fa fa-chevron-left"></i> 《金字塔原理》读书笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/20/kotlin-multiplatform-exp-share/" rel="next" title="Kotlin 跨平台实践经验分享">
+                  Kotlin 跨平台实践经验分享 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">渝ICP备16008150号 </a>
+      <img src="/img/beian_bottom.png" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=16008150" rel="noopener" target="_blank">渝公网安备16008150号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jcr</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"xrKhjrIWGRP4Y1o1djvbaRwv-gzGzoHsz","app_key":"E3QdwSk7zihkWEvVryc0lqS1","server_url":"https://xrkhjriw.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>
